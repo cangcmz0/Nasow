@@ -1,0 +1,47 @@
+name: SkyCore
+version: '${version}'
+main: net.skysurvival.skycore.SkyCore
+api-version: '1.21'
+description: Sky Survival'a ozel ozellikler (savas modu, sohbet oyunlari, banknot, kelle avi, gunluk odul...)
+authors: [Sky Survival]
+depend: [Vault]
+softdepend: [Essentials, AuthMe]
+
+commands:
+  skycore:
+    description: SkyCore yonetim komutlari
+    aliases: [sc]
+    permission: skycore.admin
+  banknot:
+    description: Parayi banknota cevirir
+    usage: /banknot <miktar>
+    aliases: [cek]
+    permission: skycore.banknot
+  kelle:
+    description: Kelle avi (oduller)
+    usage: /kelle [koy <oyuncu> <miktar> | liste | <oyuncu>]
+    aliases: [bounty]
+    permission: skycore.kelle
+  odul:
+    description: Gunluk odul
+    aliases: [gunlukodul, daily]
+    permission: skycore.odul
+  discord:
+    description: Discord adresimiz
+  site:
+    description: Web sitemiz
+    aliases: [web]
+
+permissions:
+  skycore.admin:
+    description: SkyCore yonetim komutlari
+    default: op
+  skycore.banknot:
+    default: true
+  skycore.kelle:
+    default: true
+  skycore.odul:
+    default: true
+  skycore.savas.bypass:
+    description: Savas moduna girmez (yetkililer icin)
+    default: false

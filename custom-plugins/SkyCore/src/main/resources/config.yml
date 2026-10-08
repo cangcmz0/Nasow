@@ -1,0 +1,190 @@
+# ============================================================================
+#  SkyCore - Sky Survival'a ozel eklenti
+# ============================================================================
+#  Her ozellik "aktif: true/false" ile acilip kapatilabilir.
+#  Renk kodlari: &a yesil  &c kirmizi  &e sari  &b acik mavi  &6 altin
+#                &7 gri  &f beyaz  &8 koyu gri  &l kalin
+#  {oyuncu} gibi suslu parantezli yazilar otomatik doldurulur, silme.
+#  Degisiklikten sonra oyunda/konsolda: /skycore reload
+# ============================================================================
+
+onek: "&8[&b&lSKY&8] &r"
+
+# ---------------------------------------------------------------------------
+# Savas modu: PvP'ye giren oyuncu belirli sure oyundan cikamaz ve
+# isinlanma komutlarini kullanamaz. Savastayken cikan oyuncu olur.
+# ---------------------------------------------------------------------------
+savas:
+  aktif: true
+  sure-saniye: 15
+  # Savastayken oyundan cikan oyuncu olur ve esyalari yere duser.
+  kacana-ceza: true
+  yasakli-komutlar: [spawn, home, homes, tpa, tpahere, tpaccept, tpyes, warp, warps, tpr, rtp, back, ec, enderchest, echest, sethome, afk, fly, tptoggle, kit]
+  mesajlar:
+    basladi: "&c⚔ Savaşa girdin! &7{sure} saniye boyunca oyundan çıkma."
+    actionbar: "&c⚔ Savaştasın: &f{kalan} sn"
+    bitti: "&a✔ Artık savaşta değilsin."
+    komut-yasak: "&cSavaştayken bu komutu kullanamazsın! &7({kalan} sn)"
+    kacti: "&c{oyuncu} &7savaştan kaçmaya çalıştı ve öldü!"
+
+# ---------------------------------------------------------------------------
+# Sohbet oyunlari: belirli araliklarla sohbete soru gelir, ilk bilen kazanir.
+# turler: yaz (kelimeyi ilk yazan), matematik (islem), karisik (harfleri coz)
+# ---------------------------------------------------------------------------
+sohbet-oyunlari:
+  aktif: true
+  aralik-dakika: 10
+  min-oyuncu: 2
+  sure-saniye: 60
+  odul: 250
+  turler: [yaz, matematik, karisik]
+  kelimeler: [elmas, zumrut, netherit, obsidyen, creeper, enderman, kilic, kalkan, sandik, firin,
+    ejderha, iksir, buyu, madenci, ciftci, oduncu, balikci, kale, koy, kopek, kedi, inek, koyun,
+    tavuk, zombi, iskelet, orumcek, slime, blaze, ghast, wither, portal, elytra, trident, yay,
+    ok, mesale, kazma, kurek, balta, capa, demir, altin, komur, kirmizitas, lapis, kuvars, bal,
+    karpuz, balkabagi, havuc, patates, ekmek, kurabiye, pasta, harita, pusula, saat, kitap]
+  mesajlar:
+    yaz: "&e&lSOHBET OYUNU &8» &fİlk yazan kazanır: &b{soru}"
+    matematik: "&e&lSOHBET OYUNU &8» &fSonucu ilk yazan kazanır: &b{soru} = ?"
+    karisik: "&e&lSOHBET OYUNU &8» &fKarışık harflerden kelimeyi bul: &b{soru}"
+    odul-bilgi: "&7Ödül: &a{odul} &8| &7Süre: &f{sure} sn"
+    kazandi: "&e&lSOHBET OYUNU &8» &a{oyuncu} &fkazandı! &7({saniye} sn) &8| &fCevap: &b{cevap} &8| &a+{odul}"
+    bilen-yok: "&e&lSOHBET OYUNU &8» &cKimse bilemedi! &fCevap: &b{cevap}"
+
+# ---------------------------------------------------------------------------
+# Banknot: /banknot <miktar> ile para kagida doner; sag tikla paraya cevrilir.
+# Oyuncular arasi takas ve sandikta para saklamak icin.
+# ---------------------------------------------------------------------------
+banknot:
+  aktif: true
+  min-miktar: 10
+  max-miktar: 10000000
+  esya-adi: "&a&lBanknot &8(&f{miktar}&8)"
+  aciklama:
+    - "&7Değer: &a{miktar}"
+    - "&7Yazan: &f{oyuncu}"
+    - ""
+    - "&eSağ tık: &fparaya çevir"
+    - "&eShift + sağ tık: &ftümünü çevir"
+  mesajlar:
+    kullanim: "&cKullanım: &f/banknot <miktar>"
+    gecersiz: "&cGeçersiz miktar! &7({min} - {max} arası)"
+    yetersiz: "&cYeterli paran yok!"
+    verildi: "&a{miktar} &fdeğerinde banknot oluşturuldu."
+    bozduruldu: "&a+{miktar} &fhesabına yatırıldı."
+
+# ---------------------------------------------------------------------------
+# Kelle avi: oyuncularin kellesine para odulu konur, oldurene verilir.
+# ---------------------------------------------------------------------------
+kelle-avi:
+  aktif: true
+  min-miktar: 100
+  # Ayni IP'deki oyuncular birbirini oldurerek odul alamaz (yan hesap hilesi).
+  ayni-ip-odul-yok: true
+  mesajlar:
+    kullanim:
+      - "&6&lKELLE AVI"
+      - "&e/kelle koy <oyuncu> <miktar> &7- kellesine ödül koy"
+      - "&e/kelle liste &7- en yüksek ödüller"
+      - "&e/kelle <oyuncu> &7- oyuncunun ödülüne bak"
+    kendine: "&cKendi kellene ödül koyamazsın!"
+    bulunamadi: "&cOyuncu bulunamadı."
+    min: "&cEn az &f{min} &cödül koyabilirsin."
+    yetersiz: "&cYeterli paran yok!"
+    konuldu: "&6&lKELLE AVI &8» &e{koyan}&f, &c{hedef} &fkellesine &a{miktar} &fekledi! &7(Toplam: &a{toplam}&7)"
+    alindi: "&6&lKELLE AVI &8» &c{hedef} &földürüldü! &e{avci} &a{miktar} &fkazandı!"
+    ayni-ip: "&cAynı IP'deki oyuncudan kelle ödülü alınamaz."
+    liste-baslik: "&6&lEN YÜKSEK KELLE ÖDÜLLERİ"
+    liste-satir: "&e{sira}. &f{oyuncu} &8- &a{miktar}"
+    liste-bos: "&7Şu an kimsenin kellesinde ödül yok."
+    bilgi: "&c{oyuncu} &fkellesindeki ödül: &a{miktar}"
+
+# ---------------------------------------------------------------------------
+# Gunluk odul serisi: /odul ile her gun odul; ust uste gelindikce odul artar.
+# ---------------------------------------------------------------------------
+gunluk-odul:
+  aktif: true
+  taban: 100
+  seri-artis: 50
+  max: 1000
+  saat-dilimi: Europe/Istanbul
+  mesajlar:
+    alindi: "&a&lGÜNLÜK ÖDÜL &8» &a+{miktar} &8| &fSeri: &e{seri}. gün"
+    zaten: "&cBugünkü ödülünü zaten aldın! &7Yarın tekrar gel."
+    hatirlatma: "&e&lGÜNLÜK ÖDÜL &8» &fBugünkü ödülünü almadın! &e/odul &7(Seri: {seri} gün)"
+    seri-bozuldu: "&7Bir gün kaçırdığın için serin sıfırlandı."
+
+# ---------------------------------------------------------------------------
+# Aktiflik odulu: AFK olmadan oynanan her X dakika icin para.
+# (5 dakikadan uzun kipirdamayan oyuncu AFK sayilir.)
+# ---------------------------------------------------------------------------
+aktiflik-odulu:
+  aktif: true
+  dakika: 60
+  odul: 500
+  mesajlar:
+    verildi: "&a&lAKTİFLİK ÖDÜLÜ &8» &f{dakika} dakika aktif oynadın: &a+{odul}"
+
+# ---------------------------------------------------------------------------
+# Otomatik duyurular (sirayla gonderilir)
+# ---------------------------------------------------------------------------
+duyurular:
+  aktif: true
+  aralik-dakika: 5
+  mesajlar:
+    - "&b&lİPUCU &8» &fArazini korumak için &6altın kürekle &fsandığının etrafını işaretle."
+    - "&b&lİPUCU &8» &e/jobs &file meslek seç, çalıştıkça para kazan!"
+    - "&b&lİPUCU &8» &e/odul &file her gün ödül al, seriyi bozma!"
+    - "&b&lİPUCU &8» &e/kelle &file düşmanının kellesine ödül koy."
+    - "&b&lİPUCU &8» &e/banknot &file parayı kağıda çevirip takas et."
+    - "&b&lİPUCU &8» &e/skills &file yeteneklerini gör, seviye atla."
+    - "&b&lİPUCU &8» &fSohbet oyunlarında ilk bilen para kazanır, sohbeti takip et!"
+    - "&b&lİPUCU &8» &fDiscord sunucumuza katıl: &e/discord"
+
+# ---------------------------------------------------------------------------
+# PvP'de olen oyuncunun kafasi duser
+# ---------------------------------------------------------------------------
+kafa-dusurme:
+  aktif: true
+  sans-yuzde: 100
+  esya-adi: "&e{oyuncu} &fkafası"
+  aciklama:
+    - "&7Avcı: &f{avci}"
+    - "&7Tarih: &f{tarih}"
+
+# ---------------------------------------------------------------------------
+# Giris basligi (AuthMe girisinden sonra gosterilir)
+# ---------------------------------------------------------------------------
+hosgeldin:
+  aktif: true
+  baslik: "&b&lSKY SURVIVAL"
+  alt-baslik: "&7Hoş geldin, &f{oyuncu}&7!"
+  ilk-giris-alt-baslik: "&eAramıza hoş geldin, &f{oyuncu}&e!"
+  ses: true
+
+# ---------------------------------------------------------------------------
+# Olunce koordinat mesaji (esyalarini bulabilsin diye)
+# ---------------------------------------------------------------------------
+olum-koordinat:
+  aktif: true
+  mesaj: "&7Öldüğün yer: &f{x}, {y}, {z} &8({dunya})"
+
+# ---------------------------------------------------------------------------
+# /discord ve /site komutlarinin yazdigi satirlar
+# ---------------------------------------------------------------------------
+bilgi:
+  discord:
+    - "&9&lDISCORD &8» &fdiscord.gg/BURAYA-DAVET-KODUNU-YAZ"
+  site:
+    - "&b&lSİTE &8» &fwww.BURAYA-SITENI-YAZ.com"
+
+genel-mesajlar:
+  yetki-yok: "&cBunun için yetkin yok."
+  sadece-oyuncu: "&cBu komut sadece oyunda kullanılabilir."
+  ekonomi-yok: "&cEkonomi sistemi bulunamadı (Vault + EssentialsX gerekli)."
+  yeniden-yuklendi: "&aSkyCore ayarları yeniden yüklendi."
+  admin-yardim:
+    - "&b&lSkyCore &7- yönetim komutları"
+    - "&e/skycore reload &7- ayarları yeniden yükle"
+    - "&e/skycore oyun &7- hemen bir sohbet oyunu başlat"
+    - "&e/skycore duyuru &7- sıradaki duyuruyu gönder"

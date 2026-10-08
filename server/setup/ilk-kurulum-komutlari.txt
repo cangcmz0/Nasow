@@ -160,4 +160,8 @@ chunky start
 #  /dh line add hosgeldin &7Arazini korumak icin altin kurek kullan!
 #  /dh line add hosgeldin &e/jobs &7ile meslek sec, calistikca para kazan
 #  /dh line add hosgeldin &e/skills &7ile yeteneklerini gor
+#  /dh line add hosgeldin &e/odul &7her gun odul, &e/kelle &7kelle avi, &e/banknot &7para cek
+#
+#  SkyCore (sunucuya ozel eklenti) ayarlari: plugins/SkyCore/config.yml
+#  /discord ve /site adreslerini oradaki "bilgi" bolumune yaz, sonra: /skycore reload
 # ============================================================================

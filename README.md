@@ -7,6 +7,7 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 - **Bedrock desteği:** telefon, konsol ve Windows Bedrock oyuncuları da girebilir (Geyser + Floodgate)
 - Türkçe mesajlar, ₺ ekonomi, meslekler, yetenekler, rütbeler, arazi koruması, oyuncu marketleri
 - Hile koruması, X-Ray engeli, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
+- Sunucuya özel yazılmış **SkyCore** eklentisi: savaş modu, sohbet oyunları, banknot, kelle avı, günlük ödül serisi, aktiflik ödülü
 
 ---
 
@@ -23,7 +24,10 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Sandıkla market kurma, başkasının marketinden alışveriş | Sandığa eşya koy, sandığa vurup fiyat yaz |
 | Para işlemleri | `/bal`, `/pay`, `/baltop`, `/sell` (eldeki eşyayı sunucuya sat) |
 | Ev ve ışınlanma | `/sethome`, `/home`, `/tpa`, `/spawn`, `/warp`, `/tpr` (rastgele yere git) |
-| Günlük ödül | `/kit gunluk` |
+| Günlük ödül (seri yaptıkça artar) ve günlük kit | `/odul`, `/kit gunluk` |
+| Parayı kağıda çevirip takas etme | `/banknot <miktar>`, kağıda sağ tık = para |
+| Birinin kellesine ödül koyma | `/kelle koy <oyuncu> <miktar>`, `/kelle liste` |
+| Sohbet oyunları (ilk bilen para kazanır) | Sohbete gelen soruyu ilk yaz |
 | Oturma / uzanma | `/sit`, `/lay`, `/crawl`, merdivene sağ tık |
 
 Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
@@ -105,6 +109,24 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. `/restart` komutunu kulla
 | **DecentHolograms** | Spawn'a yüzen yazılar (`/dh create ...`) |
 | **Chunky** | Dünyayı önceden oluşturur, gezerken lag olmaz |
 
+### Sunucuya özel eklenti: SkyCore
+
+Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp tek bir Türkçe eklentide yazdık:
+`server/plugins/SkyCore-1.0.0.jar` (kaynak kodu: [`custom-plugins/SkyCore`](custom-plugins/SkyCore)).
+
+| Özellik | Ne yapar |
+|---|---|
+| **Savaş modu** | PvP'ye giren 15 sn `/spawn` `/home` `/tpa` gibi kaçış komutlarını kullanamaz; savaştayken oyundan çıkan ölür, eşyaları düşer |
+| **Sohbet oyunları** | 10 dk'da bir sohbete soru: ilk yazan / işlemi çözen / karışık kelimeyi bulan para kazanır |
+| **Banknot** | `/banknot 1000` → para kağıda döner, sağ tıkla geri yatar (takas için) |
+| **Kelle avı** | `/kelle koy <oyuncu> <miktar>` → onu öldüren parayı alır (aynı IP'den alınamaz) |
+| **Günlük ödül serisi** | `/odul` → her gün artan ödül, bir gün kaçırınca sıfırlanır |
+| **Aktiflik ödülü** | AFK olmadan her 60 dk oynayana 500₺ |
+| **Otomatik duyurular, kafa düşürme, ölüm koordinatı, hoş geldin başlığı** | ipuçları; PvP'de ölenin kafası düşer; öldüğün yer yazılır; girişte büyük başlık |
+
+Tüm mesajlar ve miktarlar `server/plugins/SkyCore/config.yml` içinden değiştirilebilir (ilk açılışta oluşur), sonra `/skycore reload`.
+**`/discord` ve `/site` adreslerini oradaki `bilgi` bölümüne kendi adreslerinle yazmayı unutma.** Ayrıntı: [SkyCore README](custom-plugins/SkyCore/README.md).
+
 **Ek olarak Paper'ın kendi X-Ray koruması** ikinci açılışta otomatik açılır (`config/paper-world-defaults.yml`).
 
 **İsteğe bağlı (kapalı, açmak için `"enabled": true` yap):**
@@ -167,13 +189,14 @@ server/
 ├── start.bat / start.sh       → sunucuyu başlatır (önce eksikleri indirir, kapanınca yeniden açar)
 ├── update.bat / update.sh     → Paper ve eklentileri günceller
 ├── server.properties          → temel sunucu ayarları
-├── plugins/                   → eklentiler ve ayarları
+├── plugins/                   → eklentiler ve ayarları (SkyCore-1.0.0.jar bizim eklentimiz)
 ├── backups/                   → otomatik yedekler (ilk yedekten sonra oluşur)
 └── setup/
     ├── plugins.json           → eklenti listesi (aç/kapat buradan)
     ├── lock.json              → kurulu sürümler (otomatik yazılır)
     ├── Setup.java             → indirme/güncelleme aracı
     └── ilk-kurulum-komutlari.txt → ilk açılışta konsola yapıştırılacak komutlar
+custom-plugins/SkyCore/          → SkyCore'un kaynak kodu ve testleri
 ```
 
 ## Sonraki adımlar için fikirler
@@ -183,3 +206,4 @@ server/
 - **BlueMap** ile web'den canlı harita
 - Spawn yapısı, warp noktaları (`/setwarp maden`, `/setwarp market`)
 - Sandık kasaları (crates), sezonluk etkinlikler
+- SkyCore'a klan sistemi, KOTH etkinliği, mezar (ölünce eşyaların sandığa girmesi) eklemek

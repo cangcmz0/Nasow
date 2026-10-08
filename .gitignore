@@ -38,3 +38,7 @@ backups/
 *.zip
 .DS_Store
 Thumbs.db
+
+# --- SkyCore gelistirme ciktilari ---
+custom-plugins/**/build/
+custom-plugins/**/.gradle/
