@@ -40,7 +40,8 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 
 ## Hızlı başlangıç
 
-1. Zip'i aç (ya da repoyu `git clone` ile indir).
+1. Zip'e **sağ tıkla → "Tümünü ayıkla" (Extract All)** ile bir klasöre çıkar.
+   Zip'in içinden doğrudan çalıştırma; Windows o zaman sadece tek dosyayı çıkarır ve kurulum çalışmaz.
 2. Başlat:
    - **Windows:** `server/start.bat` dosyasına çift tıkla.
    - **Linux / macOS:** `cd server && ./start.sh`

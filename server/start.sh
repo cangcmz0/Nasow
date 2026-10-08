@@ -10,16 +10,27 @@ cd "$(dirname "$0")"
 RAM="${RAM:-4G}"
 AUTO_RESTART="${AUTO_RESTART:-1}"
 
+if [ ! -f setup/Setup.java ]; then
+  echo "[HATA] setup/Setup.java bulunamadi. Zip'in tamamini bir klasore cikarip start.sh'i oradan calistir."
+  exit 1
+fi
+
 if ! command -v java >/dev/null 2>&1; then
   echo "Java bulunamadi! Java 25 veya daha yenisini kur: https://adoptium.net/"
+  exit 1
+fi
+
+if ! java --version >/dev/null 2>&1; then
+  echo "[HATA] Java cok eski. Minecraft 26.1 sunucusu icin Java 25 gerekiyor: https://adoptium.net/"
+  java -version
   exit 1
 fi
 
 while true; do
   status=0
   java setup/Setup.java || status=$?
-  if [ "$status" -ge 2 ]; then
-    echo "Kurulum tamamlanamadi, sunucu baslatilmadi. Yukaridaki hata mesajina bak."
+  if [ "$status" -ge 2 ] || [ ! -f server.jar ]; then
+    echo "[HATA] Kurulum tamamlanamadi, sunucu baslatilmadi. Yukaridaki hata mesajina bak."
     exit 1
   fi
 
