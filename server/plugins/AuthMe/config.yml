@@ -1,0 +1,38 @@
+# AuthMe - Sky Survival ayarlari (crack + premium sunucu).
+# AuthMe ilk acilista diger tum ayarlari bu dosyaya kendisi ekler (aciklamalariyla birlikte).
+#
+# Oyuncu komutlari:
+#   /register <sifre> <sifre>     ilk giriste kayit
+#   /login <sifre>                sonraki girislerde
+#   /changepassword <eski> <yeni> sifre degistirme
+#   /premium                      orijinal hesabin varsa: bir daha sifre sorulmaz (PacketEvents gerekir)
+# Admin: /authme unregister <oyuncu> (sifresini unutan icin), /authme help
+settings:
+  serverName: 'Sky Survival'
+  messagesLanguage: tr
+  # Orijinal hesabi olanlar /premium yazarak sifresiz girebilir.
+  enablePremium: true
+  sessions:
+    # Ayni IP'den 10 dakika icinde tekrar girene sifre sorulmaz.
+    enabled: true
+    timeout: 10
+  restrictions:
+    # Bir IP'den en fazla kac hesap kaydedilebilir / ayni anda girebilir (bot ve yan hesap korumasi).
+    maxRegPerIp: 3
+    maxJoinPerIp: 3
+    minNicknameLength: 3
+    # Nokta (.) Bedrock oyuncularinin isim onekidir; silme.
+    allowedNicknameCharacters: '[a-zA-Z0-9_.]*'
+    kickOnWrongPassword: true
+  security:
+    minPasswordLength: 6
+Security:
+  captcha:
+    # Birkac yanlis sifreden sonra captcha sorulur.
+    useCaptcha: true
+  tempban:
+    # Cok fazla yanlis sifre deneyen IP gecici olarak banlanir.
+    enableTempban: true
+Protection:
+  # Ayni anda cok sayida oyuncu girmeye calisirsa (bot saldirisi) kayitlari gecici durdurur.
+  enableAntiBot: true

@@ -3,4 +3,5 @@
 &e[2] &fBaşkasının yapısını bozmak (grief) ve sandığından çalmak yasaktır.
 &e[3] &fKüfür, hakaret, spam ve reklam yasaktır.
 &e[4] &fSunucuyu kasan (lag yapan) dev makineler kurma.
-&e[5] &fYetkililere saygılı ol. Bir sorun olursa &c/helpop <mesaj>&f yaz.
+&e[5] &fŞifreni kimseyle paylaşma. Yetkililer şifreni asla sormaz.
+&e[6] &fYetkililere saygılı ol. Bir sorun olursa &c/helpop <mesaj>&f yaz.

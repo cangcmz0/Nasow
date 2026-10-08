@@ -16,6 +16,30 @@
       "project": "luckperms"
     },
     {
+      "id": "authme",
+      "name": "AuthMe",
+      "description": "Crack (orijinal olmayan) hesaplar icin kayit/giris: /register <sifre> <sifre>, /login <sifre>. Premium oyuncular /premium ile sifresiz girer.",
+      "source": "github",
+      "repo": "AuthMe/AuthMeReloaded",
+      "asset": "AuthMe-{version}-Paper.jar"
+    },
+    {
+      "id": "packetevents",
+      "name": "PacketEvents",
+      "description": "AuthMe'nin premium oyunculari dogrulamasi (sifresiz giris) icin gerekli kutuphane.",
+      "source": "github",
+      "repo": "retrooper/packetevents",
+      "asset": "packetevents-spigot-{version}.jar"
+    },
+    {
+      "id": "skinsrestorer",
+      "name": "SkinsRestorer",
+      "description": "Crack oyunculara skin: /skin <oyuncu-adi>. Premium adlarin skinleri otomatik gelir.",
+      "source": "github",
+      "repo": "SkinsRestorer/SkinsRestorer",
+      "asset": "SkinsRestorer.jar"
+    },
+    {
       "id": "vault",
       "name": "VaultUnlocked",
       "description": "Vault yerine gecen ekonomi koprusu. Essentials parasini market gibi eklentilere baglar.",
@@ -86,10 +110,18 @@
     {
       "id": "viabackwards",
       "name": "ViaBackwards",
-      "description": "Daha eski Minecraft surumleriyle de girilebilsin.",
+      "description": "Daha eski Minecraft surumleriyle de girilebilsin (1.10 ve sonrasi).",
       "source": "github",
       "repo": "ViaVersion/ViaBackwards",
       "asset": "ViaBackwards-{version}.jar"
+    },
+    {
+      "id": "viarewind",
+      "name": "ViaRewind",
+      "description": "1.7 - 1.9 surumleriyle de girilebilsin (ViaBackwards ile birlikte).",
+      "source": "github",
+      "repo": "ViaVersion/ViaRewind",
+      "asset": "ViaRewind-{version}.jar"
     },
     {
       "id": "geyser",

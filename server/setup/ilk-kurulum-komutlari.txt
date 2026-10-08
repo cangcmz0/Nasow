@@ -8,6 +8,15 @@
 #
 #  Rutbe yapisi:  default (Oyuncu)  ->  vip  ->  moderator  ->  admin
 #  Her rutbe bir oncekinin tum yetkilerini de alir.
+#
+#  !!! CRACK SUNUCU GUVENLIGI !!!
+#  Sunucu crack girise acik oldugu icin herkes istedigi isimle girebilir.
+#  Seni koruyan tek sey AuthMe sifresidir. Bu yuzden:
+#   1. Sunucu acilir acilmaz OYUNA SEN GIR ve /register <sifre> <sifre> ile kaydol.
+#      (Orijinal hesabin varsa ardindan /premium yaz, bir daha sifre sorulmaz.)
+#   2. Ancak ondan sonra asagidaki 7. adimla kendini admin yap.
+#   3. Yetkililere de once kayit olmalarini soyle, sonra yetki ver.
+#   4. Asla "op" kullanma; yetkiyi sadece LuckPerms ile ver.
 # ============================================================================
 
 
@@ -102,6 +111,7 @@ lp group moderator permission set essentials.sethome.multiple.vip true
 lp group admin permission set * true
 
 # ---------- 7) Kendini admin yap (OYUNCU_ADIN yerine kendi adini yaz) ----------
+# ONCE oyuna girip /register ile kaydol (yukaridaki guvenlik notuna bak)!
 lp user OYUNCU_ADIN parent set admin
 
 # ---------- 8) Skor tablosunda para gostermek icin ----------

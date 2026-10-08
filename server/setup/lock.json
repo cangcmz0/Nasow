@@ -103,5 +103,33 @@
     "file": "AuraSkills-2.4.0.jar",
     "url": "https://github.com/Archy-X/AuraSkills/releases/download/2.4.0/AuraSkills-2.4.0.jar",
     "sha256": "de54cbd2e33d65e8b1704751ae4121ed2f5b466ba89c63a1aadf3a3e629d6a40"
+  },
+  "authme": {
+    "name": "AuthMe",
+    "version": "6.0.1",
+    "file": "AuthMe-6.0.1-Paper.jar",
+    "url": "https://github.com/AuthMe/AuthMeReloaded/releases/download/6.0.1/AuthMe-6.0.1-Paper.jar",
+    "sha256": "7704335e9e73a634d9d926344f77897f4c74f78f82453a59f5aa0f8d2722450a"
+  },
+  "packetevents": {
+    "name": "PacketEvents",
+    "version": "2.14.0",
+    "file": "packetevents-spigot-2.14.0.jar",
+    "url": "https://github.com/retrooper/packetevents/releases/download/v2.14.0/packetevents-spigot-2.14.0.jar",
+    "sha256": "060087c58ec268eae7dd0eb1f17ac3bea1eaadda1693414141ff64e506091bd7"
+  },
+  "skinsrestorer": {
+    "name": "SkinsRestorer",
+    "version": "15.12.6",
+    "file": "SkinsRestorer.jar",
+    "url": "https://github.com/SkinsRestorer/SkinsRestorer/releases/download/15.12.6/SkinsRestorer.jar",
+    "sha256": "a85b4a370f988741c9a38f4d0498262edacbf3220314790ac1c127461996359c"
+  },
+  "viarewind": {
+    "name": "ViaRewind",
+    "version": "4.2.0",
+    "file": "ViaRewind-4.2.0.jar",
+    "url": "https://github.com/ViaVersion/ViaRewind/releases/download/4.2.0/ViaRewind-4.2.0.jar",
+    "sha256": "d6634ba57bb82d5161c68dfb393571cdf40511a0beb1b04b8c7ed794a3532c6a"
   }
 }

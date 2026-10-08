@@ -2,7 +2,8 @@
 
 Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Paper).
 
-- **Minecraft Java 26.1.2** (ViaVersion sayesinde daha yeni/eski sürümlerle de girilebilir)
+- **Minecraft Java 26.1.2** — ViaVersion/ViaBackwards/ViaRewind sayesinde **1.8'den 26.x'e** kadar her sürümle girilebilir
+- **Crack & Premium:** orijinal hesabı olmayanlar da girebilir (AuthMe ile şifreli kayıt), premium oyuncular `/premium` ile şifresiz girer
 - **Bedrock desteği:** telefon, konsol ve Windows Bedrock oyuncuları da girebilir (Geyser + Floodgate)
 - Türkçe mesajlar, ₺ ekonomi, meslekler, yetenekler, rütbeler, arazi koruması, oyuncu marketleri
 - Hile koruması, X-Ray engeli, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
@@ -13,6 +14,9 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 
 | Özellik | Komut / nasıl |
 |---|---|
+| İlk girişte kayıt, sonra giriş | `/register <şifre> <şifre>`, `/login <şifre>` |
+| Orijinal hesapla şifresiz giriş | `/premium` (bir kez yazmak yeterli) |
+| Skin değiştirme | `/skin <oyuncu-adı>` (crack oyuncular da skin kullanabilir) |
 | Meslek seçip çalıştıkça para kazanma (madenci, oduncu, çiftçi, avcı...) | `/jobs` |
 | Yetenek kasma (madencilik, savaş, tarım...) ve güçlenme | `/skills` |
 | Arazi koruma, arkadaş ekleme | Altın kürekle köşeleri işaretle, `/trust <oyuncu>` |
@@ -44,9 +48,10 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
    - Paper (`server.jar`) ve eksik eklentiler resmi sitelerinden **otomatik indirilir**,
    - Minecraft EULA'yı kabul edip etmediğin sorulur (`e` yaz),
    - sunucu açılır.
-4. Konsolda `Done` yazısını görünce [`server/setup/ilk-kurulum-komutlari.txt`](server/setup/ilk-kurulum-komutlari.txt) içindeki komutları konsola yapıştır
+4. Konsolda `Done` yazısını görünce oyuna `localhost` (aynı bilgisayar) ya da sunucunun IP adresiyle gir ve
+   **hemen `/register <şifre> <şifre>` ile kaydol** (crack sunucuda adını başkası alamasın diye).
+5. [`server/setup/ilk-kurulum-komutlari.txt`](server/setup/ilk-kurulum-komutlari.txt) içindeki komutları konsola yapıştır
    (rütbeler, yetkiler, kendini admin yapma, dünya ön-oluşturma). Sonra `stop` yaz; sunucu kendiliğinden yeniden açılır ve X-Ray koruması devreye girer.
-5. Oyunda `localhost` (aynı bilgisayar) ya da sunucunun IP adresi ile bağlan.
 
 RAM miktarını `start.bat` içindeki `set RAM=4G` satırından değiştirebilirsin (Linux'ta `RAM=8G ./start.sh`).
 
@@ -63,8 +68,10 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. `/restart` komutunu kulla
 - **VIP satışı (Minecraft kuralları):** Mojang, herkese açık sunucularda **parayla oyun avantajı satmayı yasaklar**.
   VIP'ye sadece kozmetik şeyler verebilirsin (renkli yazı, önek, `/nick`, `/hat`). Bu yüzden hazır VIP yetkileri sadece kozmetiktir.
   VIP'yi parayla değil oylama ya da oyun süresiyle veriyorsan istediğin yetkiyi ekleyebilirsin.
-- **Premium (orijinal hesap) zorunlu:** `online-mode=true`. Crack (orijinal olmayan) hesaplar giremez; bu, başkasının senin
-  ya da yetkililerin adıyla girmesini engeller. Bedrock oyuncuları kendi Microsoft hesaplarıyla girer.
+- **Crack açık (`online-mode=false`) — güvenlik çok önemli:** Herkes istediği isimle girebildiği için seni ve yetkilileri koruyan tek şey
+  **AuthMe şifresi**. Sunucu açılınca oyuna **ilk sen gir** ve `/register` ile kaydol, ancak ondan sonra kendini admin yap.
+  Orijinal hesabın varsa `/premium` yaz; o isim artık sadece orijinal hesapla kullanılabilir. **`op` kullanma**, yetkiyi LuckPerms ile ver.
+  Şifresini unutan oyuncu için: `/authme unregister <oyuncu>`.
 - **Kurallar:** `server/plugins/Essentials/rules.txt` (oyunda `/rules`). Grief olursa: `/co inspect` ile kim yaptı bak, `/co rollback` ile geri al.
 
 ---
@@ -76,6 +83,9 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. `/restart` komutunu kulla
 | Eklenti | Ne işe yarar |
 |---|---|
 | **LuckPerms** | Rütbe ve yetki sistemi. Tarayıcıda düzenlemek için: `/lp editor` |
+| **AuthMe** | Crack oyuncular için kayıt/giriş, premium oyunculara şifresiz giriş, bot ve şifre deneme koruması — Türkçe |
+| **PacketEvents** | AuthMe'nin premium hesapları doğrulaması için gerekli kütüphane |
+| **SkinsRestorer** | Crack oyunculara skin (`/skin <ad>`) |
 | **EssentialsX** (+ Chat, Spawn) | `/home` `/tpa` `/spawn` `/warp` `/kit` `/msg` `/pay` `/bal` `/sell` `/tpr`, ban/mute ve ekonomi |
 | **VaultUnlocked** | Ekonomi köprüsü (Vault'un güncel hâli) |
 | **Jobs Reborn** (+ CMILib) | Meslekler, çalıştıkça para kazanma (`/jobs`) — Türkçe |
@@ -85,7 +95,7 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. `/restart` komutunu kulla
 | **HuskClaims** | Altın kürekle arazi koruma, `/trust <oyuncu>` ile arkadaş ekleme |
 | **GrimAC** | Hile koruması (fly, speed, killaura...). Moderatörler uyarıları görür |
 | **DriveBackupV2** | 3 saatte bir otomatik yedek (`server/backups/`, son 24 saat saklanır). Elle: `/drivebackup backup` |
-| **ViaVersion** + **ViaBackwards** | Farklı Minecraft sürümleriyle giriş |
+| **ViaVersion** + **ViaBackwards** + **ViaRewind** | 1.8'den en yeni sürüme kadar her Minecraft sürümüyle giriş |
 | **Geyser** + **Floodgate** | Bedrock (telefon/konsol) oyuncular girebilir |
 | **PlaceholderAPI** | Skor tablosunda para, rütbe vb. göstermek için |
 | **TAB** | Tab listesi başlığı, rütbe önekleri, yan skor tablosu (`/sb` ile gizlenir) |
@@ -125,7 +135,8 @@ Sunucu **kapalıyken** `server/update.bat` (Linux: `./update.sh`) çalıştır. 
 
 | Dosya | Ne ayarlandı |
 |---|---|
-| `server/server.properties` | MOTD, 100 oyuncu, görüş mesafesi 8 / simülasyon 6 (performans), normal zorluk, spawn koruması WorldGuard'da |
+| `server/server.properties` | Crack açık (`online-mode=false`), MOTD, 100 oyuncu, görüş mesafesi 8 / simülasyon 6 (performans), normal zorluk, spawn koruması WorldGuard'da |
+| `server/plugins/AuthMe/config.yml` | Türkçe, premium şifresiz giriş açık, IP başına en fazla 3 hesap, en az 6 karakter şifre, yanlış şifrede captcha + geçici ban, anti-bot |
 | `server/plugins/Essentials/config.yml` | Dil **Türkçe**, para birimi **₺**, başlangıç parası **100₺**, ışınlanmada 3 sn bekleme (savaştan kaçış olmasın), sohbet `[Rütbe] İsim » mesaj` |
 | `server/plugins/Essentials/kits.yml` | `baslangic` (ilk girişte otomatik, arazi küreği dahil), `gunluk` |
 | `server/plugins/Essentials/motd.txt`, `rules.txt` | Türkçe giriş mesajı ve kurallar |
