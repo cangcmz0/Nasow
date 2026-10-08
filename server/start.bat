@@ -10,6 +10,7 @@ rem Sunucuya ayrilacak bellek. Bilgisayarinda 8 GB RAM varsa 4G, 16 GB varsa 6G-
 set RAM=4G
 rem Kapaninca otomatik yeniden baslatma: 1 = acik, 0 = kapali
 set AUTO_RESTART=1
+rem Java dili Ingilizce sabitlenir: Turkce Windows'ta bazi eklentiler "I" harfinde bozulur (Turkce I hatasi). Eklentilerin dili ayrica Turkce ayarli.
 
 rem Zip'in icinden calistirilirsa Windows sadece bu dosyayi cikarir; diger dosyalar olmaz.
 if not exist "setup\Setup.java" goto :notextracted
@@ -29,7 +30,7 @@ findstr /b /i /c:"eula=true" eula.txt >nul 2>nul || goto :eula
 echo.
 echo Sunucu baslatiliyor... Kapatmak icin bu pencereye "stop" yazip Enter'a bas.
 echo.
-"%JAVA%" -Xms%RAM% -Xmx%RAM% -XX:+IgnoreUnrecognizedVMOptions -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -jar server.jar --nogui
+"%JAVA%" -Xms%RAM% -Xmx%RAM% -XX:+IgnoreUnrecognizedVMOptions -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true -Duser.language=en -Duser.country=US -jar server.jar --nogui
 echo.
 if not "%AUTO_RESTART%"=="1" goto :end
 echo Sunucu kapandi. 10 saniye icinde yeniden baslatilacak.

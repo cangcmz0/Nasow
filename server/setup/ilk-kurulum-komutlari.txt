@@ -129,6 +129,14 @@ chunky world world
 chunky radius 5000
 chunky start
 
+# ---------- 10b) WorldGuard uyarilari Turkce (korumali bolgelerde) ----------
+# WorldGuard'in Turkcesi yok; "Hey! Sorry, but you can't..." yerine bunlar yazar.
+rg flag -w world __global__ deny-message &cBurası korumalı bölge, burada bunu yapamazsın!
+rg flag -w world __global__ entry-deny-message &cBu bölgeye giremezsin!
+rg flag -w world __global__ exit-deny-message &cBu bölgeden çıkamazsın!
+rg flag -w world_nether __global__ deny-message &cBurası korumalı bölge, burada bunu yapamazsın!
+rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, burada bunu yapamazsın!
+
 # ---------- 11) Yeniden baslat ----------
 # Paper X-Ray korumasi ve diger ayarlar bir sonraki acilista devreye girer.
 # "stop" yazinca start dosyasi sunucuyu 10 saniye icinde otomatik yeniden acar.
@@ -154,7 +162,6 @@ chunky start
 #  /rg flag spawn creeper-explosion deny
 #  /rg flag spawn tnt deny
 #  /rg flag spawn greeting &bSpawn'a hos geldin!
-#  /rg flag spawn deny-message &cBurası korumalı bölge, burada bunu yapamazsın!
 #
 #  Spawn'a hologram (DecentHolograms):
 #  /dh create hosgeldin &b&lSKY SURVIVAL

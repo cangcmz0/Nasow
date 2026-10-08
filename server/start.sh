@@ -4,6 +4,7 @@
 # Sunucu kapanir ya da coker ise 10 saniye sonra otomatik yeniden acilir.
 # Bellek miktarini degistirmek icin:  RAM=6G ./start.sh
 # Otomatik yeniden baslatmayi kapatmak icin:  AUTO_RESTART=0 ./start.sh
+# Java dili Ingilizce sabitlenir: Turkce sistemlerde bazi eklentiler "I" harfinde bozulur (Turkce I hatasi). Eklentilerin dili ayrica Turkce ayarli.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -56,6 +57,7 @@ while true; do
     -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 \
     -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 \
     -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true \
+    -Duser.language=en -Duser.country=US \
     -jar server.jar --nogui || true
 
   if [ "$AUTO_RESTART" != "1" ]; then

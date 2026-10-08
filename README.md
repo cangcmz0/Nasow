@@ -156,24 +156,31 @@ Sunucu **kapalıyken** `server/update.bat` (Linux: `./update.sh`) çalıştır. 
 
 ## Dil durumu: her şey Türkçe mi?
 
-Oyuncuların gördüğü mesajların neredeyse tamamı Türkçe. Eklentilerin bir kısmı Türkçeyi kendisi destekliyor,
-desteklemeyenlerin mesajlarını biz çevirdik:
+Evet. Oyuncuların gördüğü her şey, oyunlarının dili ne olursa olsun **Türkçe**. Türkçesi olmayan eklentileri biz çevirdik:
 
-| Eklenti | Durum |
+| Eklenti | Nasıl Türkçe |
 |---|---|
-| **SkyCore** (bizim eklenti) | ✅ Türkçe |
-| **AuthMe** (kayıt/giriş) | ✅ Türkçe |
-| **EssentialsX** | ✅ Türkçe (eksik 103 mesajı biz tamamladık: `plugins/Essentials/messages/messages_tr.properties`) |
-| **HuskClaims** (arazi koruma) | ✅ Türkçe — eklentinin Türkçesi yoktu, 239 mesajın hepsini biz çevirdik (`plugins/HuskClaims/messages-tr-tr.yml`) |
-| **Jobs Reborn**, **AuraSkills**, **GSit** | ✅ Türkçe |
-| **TAB** (tab listesi, `/sb`) | ✅ Türkçe — mesajlarını biz çevirdik (`plugins/TAB/messages.yml`) |
-| **CoreProtect**, **Chunky** | ✅ Türkçe (dil ayarı açıldı) |
-| **QuickShop**, **SkinsRestorer**, **LuckPerms**, **Geyser** | ✅ Oyuncunun oyun dili Türkçeyse Türkçe gösterir |
-| **GrimAC** (hile koruması) | ✅ Bilgisayarın dili Türkçeyse kendiliğinden Türkçe |
-| Paper/Spigot mesajları ("Böyle bir komut yok", "yetkin yok", "sunucu dolu") | ✅ Türkçe (`spigot.yml` + kurulum aracı) |
-| **WorldGuard** | ⚠️ Eklentinin Türkçesi yok; spawn için Türkçe uyarı komutu `ilk-kurulum-komutlari.txt` içinde |
-| **WorldEdit**, **DecentHolograms**, **ViaVersion**, **PlaceholderAPI** | ⚠️ Sadece yöneticilerin gördüğü İngilizce mesajlar |
-| **DriveBackupV2** | ➖ İngilizce yedek mesajları oyunculara gösterilmiyor, sadece konsolda |
+| **SkyCore** (bizim eklenti), **AuthMe**, **Jobs**, **AuraSkills** | Türkçe yazıldı / dil ayarı Türkçe |
+| **EssentialsX** | Kendi çevirisinde eksik 103 mesajı ve 321 komut kullanım satırını biz tamamladık (`plugins/Essentials/messages/messages_tr.properties`) |
+| **HuskClaims** (arazi koruma) | Türkçesi yoktu; 239 mesajın hepsini biz çevirdik |
+| **TAB** | 49 mesajın hepsini biz çevirdik (`/sb` dahil) |
+| **DecentHolograms** | Türkçesi yoktu; 130 mesajın hepsini biz çevirdik |
+| **QuickShop**, **SkinsRestorer**, **GSit** | Oyuncunun oyun dili İngilizce olsa bile herkese Türkçe gösterecek şekilde ayarlandı |
+| **CoreProtect**, **Chunky**, **WorldEdit** | Dil ayarı Türkçe |
+| **GrimAC** (hile koruması) | Grim'in Türkçe ayar/mesaj dosyaları eklendi, yarım kalan satırlarını biz tamamladık (`plugins/GrimAC/`) |
+| **ViaVersion** | Oyuncuya giden tüm atılma mesajları Türkçe |
+| **PlaceholderAPI** | evet/hayır ve tarih biçimi Türkçe |
+| **WorldGuard** | Türkçesi yok; uyarı mesajları bölge ayarıyla Türkçe yapıldı (`ilk-kurulum-komutlari.txt` 10b) |
+| Paper/Spigot ("Böyle bir komut yok", "yetkin yok", "sunucu dolu", yeniden başlatma) | Türkçe (`spigot.yml` + kurulum aracı) |
+| **DriveBackupV2** | Yedek mesajları oyunculara gösterilmiyor |
+| **Geyser/Floodgate**, **LuckPerms** | Bedrock cihazının / oyuncunun diline göre; Türkçe oyuncuya Türkçe |
+
+> Not: `start` dosyaları Java'yı bilerek **İngilizce sistem diliyle** açar (`-Duser.language=en`). Türkçe Windows'ta bazı eklentiler
+> "I/İ" harfi yüzünden bozulabiliyor (meşhur "Türkçe I" hatası). Eklentilerin dili bundan etkilenmez, hepsi ayrı ayrı Türkçe ayarlı.
+
+İngilizce kalan tek yer: sunucu **konsolundaki** teknik kayıtlar (Paper ve eklentilerin açılış/hata kayıtları) ve sadece yöneticinin kullandığı
+`/papi`, `/lp` gibi bazı komutların çıktıları. Oyuncular bunları görmez.
+Minecraft'ın kendi yazıları (ölüm mesajları, başarımlar, menüler) ise her oyuncuda kendi oyun dilinde görünür.
 
 ## Hazır ayarlar
 
@@ -200,6 +207,7 @@ Geyser ilk açılışta `plugins/Geyser-Spigot/config.yml` dosyasını oluşturu
 2. Kendi bilgisayarında bir kez `server` klasöründe `java setup/Setup.java` çalıştır (eksik eklentiler insin).
 3. `server` klasörünün **içindekileri** panelin dosya yöneticisine yükle.
 4. Panel kendi başlatma komutunu kullandığı için X-Ray korumasını elle aç: `config/paper-world-defaults.yml` → `anticheat` → `anti-xray` → `enabled: true`.
+5. Panelde Java başlatma ayarlarına (JVM flags / Startup) `-Duser.language=en -Duser.country=US` ekle (Türkçe I hatasına karşı).
 
 ---
 

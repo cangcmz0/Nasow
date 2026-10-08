@@ -1,0 +1,6 @@
+# SkinsRestorer - Sky Survival ayari. Eksik ayarlari eklenti ilk acilista kendisi ekler.
+messages:
+  # Herkese Turkce (oyuncunun oyun dili ne olursa olsun)
+  locale: tr
+  consoleLocale: tr
+  perIssuerLocale: false
