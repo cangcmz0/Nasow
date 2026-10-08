@@ -117,6 +117,7 @@ public class Setup {
         }
 
         enablePaperAntiXray(lock);
+        translatePaperMessages();
         Files.writeString(LOCK, Json.write(lock) + System.lineSeparator());
 
         System.out.println();
@@ -222,6 +223,45 @@ public class Setup {
         }
         settings.put("anti-xray", result);
         lock.put("_settings", settings);
+    }
+
+    /**
+     * Paper'in config/paper-global.yml icindeki oyuncuya giden Ingilizce mesajlari Turkceye cevirir.
+     * Sadece hala Paper'in varsayilan Ingilizce metni duran satirlar degisir; admin kendi mesajini
+     * yazdiysa dokunulmaz.
+     */
+    static void translatePaperMessages() throws IOException {
+        Path file = SERVER_DIR.resolve("config").resolve("paper-global.yml");
+        if (!Files.exists(file)) {
+            return;
+        }
+        String[][] replacements = {
+                {"no-permission:", "I'm sorry",
+                        "no-permission: \"<red>Bu komutu kullanmak için yetkin yok.\""},
+                {"connection-throttle:", "Connection throttled",
+                        "connection-throttle: \"Çok hızlı tekrar bağlanmaya çalıştın! Birkaç saniye bekleyip tekrar dene.\""},
+        };
+        List<String> lines = new ArrayList<>(Files.readAllLines(file));
+        boolean changed = false;
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            String trimmed = line.trim();
+            for (String[] r : replacements) {
+                if (trimmed.startsWith(r[0]) && (line.contains(r[1]) || line.contains(r[1].replace("'", "''")))) {
+                    int indent = indentOf(line);
+                    lines.set(i, " ".repeat(indent) + r[2]);
+                    // Uzun metinler YAML'da alt satirlara bolunur; o devam satirlarini da sil.
+                    while (i + 1 < lines.size() && !lines.get(i + 1).isBlank() && indentOf(lines.get(i + 1)) > indent) {
+                        lines.remove(i + 1);
+                    }
+                    changed = true;
+                }
+            }
+        }
+        if (changed) {
+            Files.write(file, lines);
+            System.out.println("  [AYAR]  Paper mesajlari Turkceye cevrildi (config/paper-global.yml)");
+        }
     }
 
     static int indentOf(String line) {

@@ -3,6 +3,7 @@
 # local-keep-count: server/backups klasorunde tutulacak yedek sayisi (8 x 3 saat = son 24 saat)
 # backups-require-players: true ise sadece o arada oyuncu girdiyse yedek alir
 # Elle yedek almak icin oyunda/konsolda: /drivebackup backup
+# Yedek mesajlari (Ingilizce) oyunculara gosterilmez, sadece konsolda gorunur (messages > send-in-chat).
 # Google Drive, FTP vb. uzak yedek icin: https://github.com/MaxMaeder/DriveBackupV2/wiki
 version: 2
 
@@ -67,7 +68,7 @@ ftp:
   working-dir:
 
 messages:
-  send-in-chat: true
+  send-in-chat: false
   prefix: "&6[&4DriveBackupV2&6] "
   default-color: "&3"
 

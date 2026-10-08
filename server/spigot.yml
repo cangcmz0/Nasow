@@ -1,0 +1,14 @@
+# Sky Survival - Spigot ayarlari (Turkce mesajlar).
+# Sunucu ilk acilista diger tum ayarlari bu dosyaya kendisi ekler.
+config-version: 13
+messages:
+  whitelist: '&cSunucu şu an bakımda veya beyaz listede! Daha sonra tekrar dene.'
+  unknown-command: '&cBöyle bir komut yok. Komutlar için &e/help &cyaz.'
+  server-full: '&cSunucu şu an dolu! Biraz sonra tekrar dene.'
+  outdated-client: '&cMinecraft sürümün desteklenmiyor. Lütfen {0} sürümünü kullan.'
+  outdated-server: '&cSunucu henüz {0} sürümünde. Daha eski bir sürümle gir.'
+  restart: '&eSunucu yeniden başlatılıyor, birazdan tekrar gir!'
+settings:
+  # start.bat / start.sh sunucu kapaninca zaten kendisi yeniden aciyor. Bu dosya yok,
+  # boylece /restart komutu sunucuyu ikinci kez acmaya calismaz, sadece kapatir.
+  restart-script: ./restart-start-dosyasi-yapiyor

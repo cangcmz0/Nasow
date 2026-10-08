@@ -61,7 +61,7 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 RAM miktarını `start.bat` içindeki `set RAM=4G` satırından değiştirebilirsin (Linux'ta `RAM=8G ./start.sh`).
 
 **Sunucuyu kapatmak / yeniden başlatmak:** konsola `stop` yaz → 10 saniye içinde otomatik yeniden açılır (çökmelerde de).
-Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. `/restart` komutunu kullanma.
+Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` de kullanılabilir (sunucu kapanır, 10 saniyede geri açılır).
 
 ---
 
@@ -153,6 +153,27 @@ Sunucu **kapalıyken** `server/update.bat` (Linux: `./update.sh`) çalıştır. 
 İndirilen sürümler `server/setup/lock.json` dosyasında tutulur; güncellemeden sonra bir sorun olursa o dosyayı geri alıp tekrar başlatman yeterli.
 
 ---
+
+## Dil durumu: her şey Türkçe mi?
+
+Oyuncuların gördüğü mesajların neredeyse tamamı Türkçe. Eklentilerin bir kısmı Türkçeyi kendisi destekliyor,
+desteklemeyenlerin mesajlarını biz çevirdik:
+
+| Eklenti | Durum |
+|---|---|
+| **SkyCore** (bizim eklenti) | ✅ Türkçe |
+| **AuthMe** (kayıt/giriş) | ✅ Türkçe |
+| **EssentialsX** | ✅ Türkçe (eksik 103 mesajı biz tamamladık: `plugins/Essentials/messages/messages_tr.properties`) |
+| **HuskClaims** (arazi koruma) | ✅ Türkçe — eklentinin Türkçesi yoktu, 239 mesajın hepsini biz çevirdik (`plugins/HuskClaims/messages-tr-tr.yml`) |
+| **Jobs Reborn**, **AuraSkills**, **GSit** | ✅ Türkçe |
+| **TAB** (tab listesi, `/sb`) | ✅ Türkçe — mesajlarını biz çevirdik (`plugins/TAB/messages.yml`) |
+| **CoreProtect**, **Chunky** | ✅ Türkçe (dil ayarı açıldı) |
+| **QuickShop**, **SkinsRestorer**, **LuckPerms**, **Geyser** | ✅ Oyuncunun oyun dili Türkçeyse Türkçe gösterir |
+| **GrimAC** (hile koruması) | ✅ Bilgisayarın dili Türkçeyse kendiliğinden Türkçe |
+| Paper/Spigot mesajları ("Böyle bir komut yok", "yetkin yok", "sunucu dolu") | ✅ Türkçe (`spigot.yml` + kurulum aracı) |
+| **WorldGuard** | ⚠️ Eklentinin Türkçesi yok; spawn için Türkçe uyarı komutu `ilk-kurulum-komutlari.txt` içinde |
+| **WorldEdit**, **DecentHolograms**, **ViaVersion**, **PlaceholderAPI** | ⚠️ Sadece yöneticilerin gördüğü İngilizce mesajlar |
+| **DriveBackupV2** | ➖ İngilizce yedek mesajları oyunculara gösterilmiyor, sadece konsolda |
 
 ## Hazır ayarlar
 

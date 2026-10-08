@@ -133,7 +133,7 @@ chunky start
 # Paper X-Ray korumasi ve diger ayarlar bir sonraki acilista devreye girer.
 # "stop" yazinca start dosyasi sunucuyu 10 saniye icinde otomatik yeniden acar.
 # (Chunky yarida kalirsa sunucu acilinca "chunky continue" yaz.)
-# NOT: /restart komutunu KULLANMA, her zaman "stop" kullan.
+# (Oyun icinden /restart da ayni isi yapar.)
 
 
 # ============================================================================
@@ -154,6 +154,7 @@ chunky start
 #  /rg flag spawn creeper-explosion deny
 #  /rg flag spawn tnt deny
 #  /rg flag spawn greeting &bSpawn'a hos geldin!
+#  /rg flag spawn deny-message &cBurası korumalı bölge, burada bunu yapamazsın!
 #
 #  Spawn'a hologram (DecentHolograms):
 #  /dh create hosgeldin &b&lSKY SURVIVAL
