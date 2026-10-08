@@ -1,0 +1,145 @@
+# ============================================================================
+#  Sky Survival - ILK KURULUM KOMUTLARI (sadece bir kez)
+# ============================================================================
+#  Sunucu ilk kez TAMAMEN acildiktan sonra ("Done" yazisini gordugunde)
+#  asagidaki komutlari sunucu KONSOLUNA yapistir. # ile baslayan satirlar
+#  aciklamadir, onlari yapistirmana gerek yok. Konsolda komutlarin basina /
+#  koyma.
+#
+#  Rutbe yapisi:  default (Oyuncu)  ->  vip  ->  moderator  ->  admin
+#  Her rutbe bir oncekinin tum yetkilerini de alir.
+# ============================================================================
+
+
+# ---------- 1) Rutbeleri olustur ----------
+lp creategroup vip
+lp creategroup moderator
+lp creategroup admin
+lp group vip parent add default
+lp group moderator parent add vip
+lp group admin parent add moderator
+lp group default setweight 0
+lp group vip setweight 10
+lp group moderator setweight 50
+lp group admin setweight 100
+
+# ---------- 2) Rutbe onekleri (sohbet + tab listesi) ----------
+lp group default meta setprefix 0 "&7[Oyuncu] &f"
+lp group vip meta setprefix 10 "&a[VIP] &f"
+lp group moderator meta setprefix 50 "&9[Mod] &f"
+lp group admin meta setprefix 100 "&c[Admin] &f"
+
+# ---------- 3) Oyuncu (herkes) yetkileri ----------
+lp group default permission set essentials.spawn true
+lp group default permission set essentials.home true
+lp group default permission set essentials.sethome true
+lp group default permission set essentials.sethome.multiple true
+lp group default permission set essentials.delhome true
+lp group default permission set essentials.tpa true
+lp group default permission set essentials.tpahere true
+lp group default permission set essentials.tpaccept true
+lp group default permission set essentials.tpdeny true
+lp group default permission set essentials.tpacancel true
+lp group default permission set essentials.tpr true
+lp group default permission set essentials.back true
+lp group default permission set essentials.warp true
+lp group default permission set essentials.warp.list true
+lp group default permission set essentials.kit true
+lp group default permission set essentials.kits.gunluk true
+lp group default permission set essentials.msg true
+lp group default permission set essentials.r true
+lp group default permission set essentials.mail true
+lp group default permission set essentials.mail.send true
+lp group default permission set essentials.ignore true
+lp group default permission set essentials.afk true
+lp group default permission set essentials.balance true
+lp group default permission set essentials.balancetop true
+lp group default permission set essentials.pay true
+lp group default permission set essentials.sell true
+lp group default permission set essentials.worth true
+lp group default permission set essentials.list true
+lp group default permission set essentials.motd true
+lp group default permission set essentials.rules true
+lp group default permission set essentials.help true
+lp group default permission set essentials.helpop true
+lp group default permission set essentials.seen true
+lp group default permission set quickshop.create.sell true
+lp group default permission set quickshop.create.buy true
+lp group default permission set quickshop.create.double true
+lp group default permission set quickshop.create.changeprice true
+
+# ---------- 4) VIP yetkileri ----------
+lp group vip permission set essentials.sethome.multiple.vip true
+lp group vip permission set essentials.kits.vip true
+lp group vip permission set essentials.back.ondeath true
+lp group vip permission set essentials.hat true
+lp group vip permission set essentials.workbench true
+lp group vip permission set essentials.enderchest true
+lp group vip permission set essentials.nick true
+lp group vip permission set essentials.chat.color true
+
+# ---------- 5) Moderator yetkileri ----------
+lp group moderator permission set essentials.sethome.multiple.staff true
+lp group moderator permission set essentials.kick true
+lp group moderator permission set essentials.mute true
+lp group moderator permission set essentials.tempban true
+lp group moderator permission set essentials.ban true
+lp group moderator permission set essentials.unban true
+lp group moderator permission set essentials.vanish true
+lp group moderator permission set essentials.tp true
+lp group moderator permission set essentials.tphere true
+lp group moderator permission set essentials.invsee true
+lp group moderator permission set essentials.socialspy true
+lp group moderator permission set essentials.jail true
+lp group moderator permission set essentials.togglejail true
+lp group moderator permission set essentials.fly true
+lp group moderator permission set coreprotect.inspect true
+lp group moderator permission set coreprotect.lookup true
+lp group moderator permission set coreprotect.help true
+lp group moderator permission set tab.staff true
+
+# ---------- 6) Admin: her sey ----------
+lp group admin permission set * true
+
+# ---------- 7) Kendini admin yap (OYUNCU_ADIN yerine kendi adini yaz) ----------
+lp user OYUNCU_ADIN parent set admin
+
+# ---------- 8) Skor tablosunda para gostermek icin ----------
+papi ecloud download Vault
+papi reload
+
+# ---------- 9) Uyku: oyuncularin yarisi uyuyunca sabah olsun ----------
+# (Komut adi tutmazsa konsolda "gamerule " yazip Tab tusuyla dogru adi bul.)
+gamerule players_sleeping_percentage 50
+
+# ---------- 10) Dunyayi onceden olustur (lag olmasin) ----------
+# 5000 blok yaricap; bilgisayara gore 30 dk - birkac saat surebilir.
+# Durumunu "chunky progress" ile gorebilirsin, sunucu acik kalabilir.
+chunky world world
+chunky radius 5000
+chunky start
+
+
+# ============================================================================
+#  OYUN ICINDEN yapilacaklar (admin olarak girip, basinda / ile):
+# ============================================================================
+#  /setspawn                         -> durdugun yeri spawn yapar
+#  /settpr world center              -> rastgele isinlanma (/tpr) merkezi = durdugun yer
+#  /settpr world minrange 300
+#  /settpr world maxrange 5000
+#  /setwarp <isim>                   -> herkesin gidebilecegi warp noktasi
+#
+#  Spawn'i korumak (WorldGuard):
+#  //wand                            -> tahta balta ile iki kosesini sec (sol tik / sag tik)
+#  //expand vert                     -> secimi yerden gokyuzune kadar uzat
+#  /rg define spawn
+#  /rg flag spawn pvp deny
+#  /rg flag spawn mob-spawning deny
+#  /rg flag spawn creeper-explosion deny
+#  /rg flag spawn tnt deny
+#  /rg flag spawn greeting &bSpawn'a hos geldin!
+#
+#  Spawn'a hologram (DecentHolograms):
+#  /dh create hosgeldin &b&lSKY SURVIVAL
+#  /dh line add hosgeldin &7Arazini korumak icin altin kurek kullan!
+# ============================================================================

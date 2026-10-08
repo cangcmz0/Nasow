@@ -1,0 +1,40 @@
+# --- Sunucu calisinca olusan dosyalar (git'e eklenmez) ---
+server/server.jar
+server/eula.txt
+server/cache/
+server/libraries/
+server/versions/
+server/logs/
+server/crash-reports/
+server/debug/
+server/world/
+server/world_nether/
+server/world_the_end/
+server/usercache.json
+server/usernamecache.json
+server/banned-ips.json
+server/banned-players.json
+server/ops.json
+server/whitelist.json
+server/version_history.json
+*.part
+
+# --- Eklenti verileri: oyuncu verisi, veritabanlari, gizli anahtarlar ---
+server/plugins/bStats/
+server/plugins/LuckPerms/
+server/plugins/.paper-remapped/
+server/plugins/Essentials/userdata/
+server/plugins/Essentials/usermap.*
+server/plugins/**/logs/
+server/plugins/**/*.db
+server/plugins/**/*.db-journal
+server/plugins/**/*.mv.db
+server/plugins/**/*.sqlite
+server/plugins/**/*.pem
+server/plugins/**/*.key
+
+# --- Yedekler ve isletim sistemi cop dosyalari ---
+backups/
+*.zip
+.DS_Store
+Thumbs.db

@@ -1,0 +1,6 @@
+&b&lSKY SURVIVAL KURALLARI
+&e[1] &fHile, X-Ray ve hileli istemci kullanmak yasaktır.
+&e[2] &fBaşkasının yapısını bozmak (grief) ve sandığından çalmak yasaktır.
+&e[3] &fKüfür, hakaret, spam ve reklam yasaktır.
+&e[4] &fSunucuyu kasan (lag yapan) dev makineler kurma.
+&e[5] &fYetkililere saygılı ol. Bir sorun olursa &c/helpop <mesaj>&f yaz.

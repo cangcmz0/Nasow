@@ -1,0 +1,36 @@
+# Sky Survival kitleri (EssentialsX).
+# Kullanim: /kit <isim>   Yetki: essentials.kits.<isim>
+# delay = bekleme suresi (saniye). -1 = sadece bir kez alinabilir.
+# Esya adlari Minecraft ID'leridir (orn. stone_sword). Ayrinti: https://wiki.ess3.net/wiki/Kits
+
+kits:
+  # Yeni oyunculara ilk giriste otomatik verilir (config.yml -> newbies.kit).
+  baslangic:
+    delay: -1
+    items:
+      - stone_sword 1
+      - stone_pickaxe 1
+      - stone_axe 1
+      - stone_shovel 1
+      - bread 16
+      - torch 16
+      - white_bed 1
+      - golden_shovel 1 name:&6Arazi_Küreği lore:Sandığının_etrafını_işaretleyerek|arazini_koru!
+
+  # Herkes gunde bir kez alabilir.
+  gunluk:
+    delay: 86400
+    items:
+      - cooked_beef 16
+      - coal 16
+      - iron_ingot 4
+
+  # VIP oyuncular haftada bir kez alabilir.
+  vip:
+    delay: 604800
+    items:
+      - iron_sword 1 sharpness:2 unbreaking:1
+      - iron_pickaxe 1 efficiency:2 unbreaking:1
+      - golden_apple 4
+      - experience_bottle 16
+      - diamond 2

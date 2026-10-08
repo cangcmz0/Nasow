@@ -1,0 +1,4 @@
+# Windows .bat dosyalari CRLF satir sonuyla saklanir (cmd.exe LF ile sorun cikarabilir).
+*.bat -text
+*.sh text eol=lf
+*.jar binary

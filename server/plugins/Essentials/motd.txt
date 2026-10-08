@@ -1,0 +1,4 @@
+&b&lSKY SURVIVAL &8» &7Hoş geldin, &f{PLAYER}&7!
+&7Komutlar: &e/help &8| &7Kurallar: &e/rules &8| &7Günlük kit: &e/kit gunluk
+&7Arazini korumak için &6altın kürekle&7 sandığının etrafını işaretle.
+&7Çevrimiçi oyuncular: &a{ONLINE}

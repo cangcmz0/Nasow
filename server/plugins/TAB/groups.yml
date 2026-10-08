@@ -1,0 +1,8 @@
+# Rutbe onekleri LuckPerms'ten otomatik gelir.
+# Onek degistirmek icin: /lp group <grup> meta setprefix <oncelik> "<onek>"
+_DEFAULT_:
+  tabprefix: "%luckperms-prefix%"
+  tagprefix: "%luckperms-prefix%"
+  customtabname: "%player%"
+  tabsuffix: "%luckperms-suffix%"
+  tagsuffix: "%luckperms-suffix%"

@@ -1,0 +1,79 @@
+{
+  "vault": {
+    "name": "VaultUnlocked",
+    "version": "2.20.1",
+    "file": "VaultUnlocked-2.20.1.jar",
+    "url": "https://github.com/TheNewEconomy/VaultUnlocked/releases/download/2.20.1/VaultUnlocked-2.20.1.jar",
+    "sha256": "4ec21910767a68b2defacb121cffee9840ded8b01abcbff03779fb9ab637296a"
+  },
+  "essentialsx": {
+    "name": "EssentialsX",
+    "version": "2.22.0",
+    "file": "EssentialsX-2.22.0.jar",
+    "url": "https://github.com/EssentialsX/Essentials/releases/download/2.22.0/EssentialsX-2.22.0.jar",
+    "sha256": "bda4685105977fca2e209820a9f0ad24275bd103390a03236f38e59bfdac58e6"
+  },
+  "essentialsx-chat": {
+    "name": "EssentialsX Chat",
+    "version": "2.22.0",
+    "file": "EssentialsXChat-2.22.0.jar",
+    "url": "https://github.com/EssentialsX/Essentials/releases/download/2.22.0/EssentialsXChat-2.22.0.jar",
+    "sha256": "e5b0211f98af1eaba712d9294997639a39209db1fc842394a0923820073ec65a"
+  },
+  "essentialsx-spawn": {
+    "name": "EssentialsX Spawn",
+    "version": "2.22.0",
+    "file": "EssentialsXSpawn-2.22.0.jar",
+    "url": "https://github.com/EssentialsX/Essentials/releases/download/2.22.0/EssentialsXSpawn-2.22.0.jar",
+    "sha256": "dd5377c4c921b9b67814209f4f6646ffbb959729003e721ec5e63c47c7c010b8"
+  },
+  "viaversion": {
+    "name": "ViaVersion",
+    "version": "5.12.0",
+    "file": "ViaVersion-5.12.0.jar",
+    "url": "https://github.com/ViaVersion/ViaVersion/releases/download/5.12.0/ViaVersion-5.12.0.jar",
+    "sha256": "72c40a6a702d67f226fc9a0d8ad82aba1483fdabe2e6159bcdddb2dc070750b0"
+  },
+  "viabackwards": {
+    "name": "ViaBackwards",
+    "version": "5.12.0",
+    "file": "ViaBackwards-5.12.0.jar",
+    "url": "https://github.com/ViaVersion/ViaBackwards/releases/download/5.12.0/ViaBackwards-5.12.0.jar",
+    "sha256": "194e9250224632274d7b3c17e411e031a9223c1863c6f5138d53c721f07ab78d"
+  },
+  "placeholderapi": {
+    "name": "PlaceholderAPI",
+    "version": "2.12.3",
+    "file": "PlaceholderAPI-2.12.3.jar",
+    "url": "https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.12.3/PlaceholderAPI-2.12.3.jar",
+    "sha256": "fde03259f5af6938f3c33eeb4d814000a1adabf1d2304ce14970be81f609a437"
+  },
+  "tab": {
+    "name": "TAB",
+    "version": "6.2.0",
+    "file": "TAB.v6.2.0.jar",
+    "url": "https://github.com/NEZNAMY/TAB/releases/download/6.2.0/TAB.v6.2.0.jar",
+    "sha256": "f94331947134242efa478b9b9bf04b29e37861721dee58c32b7ea57779aa735e"
+  },
+  "quickshop": {
+    "name": "QuickShop-Hikari",
+    "version": "6.3.0.3",
+    "file": "QuickShop-Hikari-6.3.0.3.jar",
+    "url": "https://github.com/QuickShop-Community/QuickShop-Hikari/releases/download/6.3.0.3/QuickShop-Hikari-6.3.0.3.jar",
+    "sha256": "eb65b63d803b2c61be6827f803572ba71f56bbad9f1cd5959b9b746df0669c3a"
+  },
+  "gsit": {
+    "name": "GSit",
+    "version": "3.7.0",
+    "file": "GSit-3.7.0.jar",
+    "url": "https://github.com/Gecolay/GSit/releases/download/3.7.0/GSit-3.7.0.jar",
+    "sha256": "93214c232fe535a6457ad8711cb1e05d0e730a491ce303e39e30c76f88dd2e30"
+  },
+  "decentholograms": {
+    "name": "DecentHolograms",
+    "version": "2.10.1",
+    "file": "DecentHolograms-2.10.1.jar",
+    "url": "https://github.com/DecentSoftware-eu/DecentHolograms/releases/download/2.10.1/DecentHolograms-2.10.1.jar",
+    "sha256": "e247b7362c277dad0596cb48b5d1570b1002fba014a5afd8458d978963a253b4"
+  }
+}

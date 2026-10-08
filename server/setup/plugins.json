@@ -1,0 +1,189 @@
+{
+  "server": "Sky Survival",
+  "minecraft": "26.1.2",
+  "gameVersions": ["26.1.2", "26.1.1", "26.1"],
+  "java": 25,
+  "plugins": [
+    {
+      "id": "luckperms",
+      "name": "LuckPerms",
+      "description": "Yetki ve rutbe sistemi (Oyuncu, VIP, Moderator, Admin).",
+      "source": "modrinth",
+      "project": "luckperms"
+    },
+    {
+      "id": "vault",
+      "name": "VaultUnlocked",
+      "description": "Vault yerine gecen ekonomi koprusu. Essentials parasini market gibi eklentilere baglar.",
+      "source": "github",
+      "repo": "TheNewEconomy/VaultUnlocked",
+      "asset": "VaultUnlocked-{version}.jar"
+    },
+    {
+      "id": "essentialsx",
+      "name": "EssentialsX",
+      "description": "Temel komutlar: /home /tpa /spawn /warp /kit /back /msg /pay /bal /sell /tpr ve ekonomi.",
+      "source": "github",
+      "repo": "EssentialsX/Essentials",
+      "asset": "EssentialsX-{version}.jar"
+    },
+    {
+      "id": "essentialsx-chat",
+      "name": "EssentialsX Chat",
+      "description": "Sohbet formati (rutbe onekleri).",
+      "source": "github",
+      "repo": "EssentialsX/Essentials",
+      "asset": "EssentialsXChat-{version}.jar"
+    },
+    {
+      "id": "essentialsx-spawn",
+      "name": "EssentialsX Spawn",
+      "description": "/setspawn, /spawn ve yeni oyuncu dogma noktasi.",
+      "source": "github",
+      "repo": "EssentialsX/Essentials",
+      "asset": "EssentialsXSpawn-{version}.jar"
+    },
+    {
+      "id": "worldedit",
+      "name": "WorldEdit",
+      "description": "Spawn ve yapilari hizlica duzenlemek icin (sadece yetkililer).",
+      "source": "modrinth",
+      "project": "worldedit"
+    },
+    {
+      "id": "worldguard",
+      "name": "WorldGuard",
+      "description": "Spawn gibi bolgeleri koruma (blok kirma, PvP, mob dogmasi vb.).",
+      "source": "modrinth",
+      "project": "worldguard"
+    },
+    {
+      "id": "coreprotect",
+      "name": "CoreProtect",
+      "description": "Kim hangi blogu kirdi/koydu, sandiktan ne aldi kaydi + grief geri alma (rollback).",
+      "source": "modrinth",
+      "project": "coreprotect"
+    },
+    {
+      "id": "huskclaims",
+      "name": "HuskClaims",
+      "description": "Oyuncularin altin kurekle kendi arazisini korumasi (claim), /trust ile arkadas ekleme.",
+      "source": "modrinth",
+      "project": "huskclaims"
+    },
+    {
+      "id": "viaversion",
+      "name": "ViaVersion",
+      "description": "Daha yeni Minecraft surumleriyle de girilebilsin.",
+      "source": "github",
+      "repo": "ViaVersion/ViaVersion",
+      "asset": "ViaVersion-{version}.jar"
+    },
+    {
+      "id": "viabackwards",
+      "name": "ViaBackwards",
+      "description": "Daha eski Minecraft surumleriyle de girilebilsin.",
+      "source": "github",
+      "repo": "ViaVersion/ViaBackwards",
+      "asset": "ViaBackwards-{version}.jar"
+    },
+    {
+      "id": "geyser",
+      "name": "Geyser",
+      "description": "Bedrock (telefon, konsol, Windows Bedrock) oyuncular da girebilsin. UDP 19132 portu acik olmali.",
+      "source": "geysermc",
+      "project": "geyser",
+      "platform": "spigot"
+    },
+    {
+      "id": "floodgate",
+      "name": "Floodgate",
+      "description": "Bedrock oyuncularin Java hesabi olmadan girebilmesi (Geyser ile birlikte).",
+      "source": "geysermc",
+      "project": "floodgate",
+      "platform": "spigot"
+    },
+    {
+      "id": "placeholderapi",
+      "name": "PlaceholderAPI",
+      "description": "Tab listesi ve skor tablosunda para, rutbe gibi bilgileri gostermek icin.",
+      "source": "github",
+      "repo": "PlaceholderAPI/PlaceholderAPI",
+      "asset": "PlaceholderAPI-{version}.jar"
+    },
+    {
+      "id": "tab",
+      "name": "TAB",
+      "description": "Tab listesi basligi, rutbe onekleri ve yan skor tablosu.",
+      "source": "github",
+      "repo": "NEZNAMY/TAB",
+      "asset": "TAB.v{version}.jar"
+    },
+    {
+      "id": "quickshop",
+      "name": "QuickShop-Hikari",
+      "description": "Oyuncularin sandikla kendi marketini kurmasi (oyuncu ekonomisi).",
+      "source": "github",
+      "repo": "QuickShop-Community/QuickShop-Hikari",
+      "asset": "QuickShop-Hikari-{version}.jar"
+    },
+    {
+      "id": "gsit",
+      "name": "GSit",
+      "description": "Merdivene/bloga oturma, uzanma, surunme (/sit /lay /crawl).",
+      "source": "github",
+      "repo": "Gecolay/GSit",
+      "asset": "GSit-{version}.jar"
+    },
+    {
+      "id": "decentholograms",
+      "name": "DecentHolograms",
+      "description": "Spawn'a bilgi yazilari (hologram) koymak icin.",
+      "source": "github",
+      "repo": "DecentSoftware-eu/DecentHolograms",
+      "asset": "DecentHolograms-{version}.jar"
+    },
+    {
+      "id": "chunky",
+      "name": "Chunky",
+      "description": "Dunyayi onceden olusturur, oyuncular gezerken lag olmaz (/chunky radius 5000, /chunky start).",
+      "source": "modrinth",
+      "project": "chunky"
+    },
+    {
+      "id": "bluemap",
+      "name": "BlueMap",
+      "enabled": false,
+      "description": "ISTEGE BAGLI: Tarayicidan acilan 3D canli harita (TCP 8100 portu). Ilk acilista plugins/BlueMap/core.conf icinde accept-download: true yapilmali.",
+      "source": "github",
+      "repo": "BlueMap-Minecraft/BlueMap",
+      "asset": "bluemap-{version}-paper.jar"
+    },
+    {
+      "id": "auraskills",
+      "name": "AuraSkills",
+      "enabled": false,
+      "description": "ISTEGE BAGLI: mcMMO tarzi yetenek/seviye sistemi (madencilik, savas, tarim...). Daha 'survival' hissi icin ac.",
+      "source": "github",
+      "repo": "Archy-X/AuraSkills",
+      "asset": "AuraSkills-{version}.jar"
+    },
+    {
+      "id": "grim",
+      "name": "GrimAC",
+      "enabled": false,
+      "description": "ISTEGE BAGLI: Hile korumasi (anticheat). Sunucu buyuyunce ac.",
+      "source": "modrinth",
+      "project": "grimac"
+    },
+    {
+      "id": "discordsrv",
+      "name": "DiscordSRV",
+      "enabled": false,
+      "description": "ISTEGE BAGLI: Oyun sohbetini Discord kanalina baglar. Discord bot token'i gerekir.",
+      "source": "github",
+      "repo": "DiscordSRV/DiscordSRV",
+      "asset": "DiscordSRV-Build-{version}.jar"
+    }
+  ]
+}
