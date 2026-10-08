@@ -75,5 +75,33 @@
     "file": "DecentHolograms-2.10.1.jar",
     "url": "https://github.com/DecentSoftware-eu/DecentHolograms/releases/download/2.10.1/DecentHolograms-2.10.1.jar",
     "sha256": "e247b7362c277dad0596cb48b5d1570b1002fba014a5afd8458d978963a253b4"
+  },
+  "cmilib": {
+    "name": "CMILib",
+    "version": "1.5.9.6",
+    "file": "CMILib1.5.9.6.jar",
+    "url": "https://github.com/Zrips/CMILib/releases/download/1.5.9.6/CMILib1.5.9.6.jar",
+    "sha256": "e7fc2613353eb4691ddc9fbcd63018ba6cddcf4d2a2219ede02ee20c1d74b8c5"
+  },
+  "jobs": {
+    "name": "Jobs Reborn",
+    "version": "5.2.6.3",
+    "file": "Jobs5.2.6.3.jar",
+    "url": "https://github.com/Zrips/Jobs/releases/download/v5.2.6.3/Jobs5.2.6.3.jar",
+    "sha256": "ab0c1605641134bfe39cbdffa12fa30988c1bce236d8f0c2ef68816921e15059"
+  },
+  "drivebackup": {
+    "name": "DriveBackupV2",
+    "version": "1.8.1",
+    "file": "DriveBackupV2.jar",
+    "url": "https://github.com/MaxMaeder/DriveBackupV2/releases/download/v1.8.1/DriveBackupV2.jar",
+    "sha256": "c531e8fb6dc446fc710c59440c33ca2c71f15ec3933487cf4ae266b5617c591f"
+  },
+  "auraskills": {
+    "name": "AuraSkills",
+    "version": "2.4.0",
+    "file": "AuraSkills-2.4.0.jar",
+    "url": "https://github.com/Archy-X/AuraSkills/releases/download/2.4.0/AuraSkills-2.4.0.jar",
+    "sha256": "de54cbd2e33d65e8b1704751ae4121ed2f5b466ba89c63a1aadf3a3e629d6a40"
   }
 }

@@ -68,15 +68,13 @@ lp group default permission set quickshop.create.buy true
 lp group default permission set quickshop.create.double true
 lp group default permission set quickshop.create.changeprice true
 
-# ---------- 4) VIP yetkileri ----------
-lp group vip permission set essentials.sethome.multiple.vip true
-lp group vip permission set essentials.kits.vip true
-lp group vip permission set essentials.back.ondeath true
+# ---------- 4) VIP yetkileri (sadece kozmetik) ----------
+# VIP'yi parayla satacaksan Minecraft kurallari geregi oyunda avantaj veren yetki
+# (fazla ev, /back, tasinabilir sandik, kit vb.) veremezsin. Asagidakiler kozmetiktir.
 lp group vip permission set essentials.hat true
-lp group vip permission set essentials.workbench true
-lp group vip permission set essentials.enderchest true
 lp group vip permission set essentials.nick true
 lp group vip permission set essentials.chat.color true
+lp group vip permission set essentials.chat.format true
 
 # ---------- 5) Moderator yetkileri ----------
 lp group moderator permission set essentials.sethome.multiple.staff true
@@ -97,6 +95,8 @@ lp group moderator permission set coreprotect.inspect true
 lp group moderator permission set coreprotect.lookup true
 lp group moderator permission set coreprotect.help true
 lp group moderator permission set tab.staff true
+lp group moderator permission set grim.alerts true
+lp group moderator permission set essentials.sethome.multiple.vip true
 
 # ---------- 6) Admin: her sey ----------
 lp group admin permission set * true
@@ -118,6 +118,12 @@ gamerule players_sleeping_percentage 50
 chunky world world
 chunky radius 5000
 chunky start
+
+# ---------- 11) Yeniden baslat ----------
+# Paper X-Ray korumasi ve diger ayarlar bir sonraki acilista devreye girer.
+# "stop" yazinca start dosyasi sunucuyu 10 saniye icinde otomatik yeniden acar.
+# (Chunky yarida kalirsa sunucu acilinca "chunky continue" yaz.)
+# NOT: /restart komutunu KULLANMA, her zaman "stop" kullan.
 
 
 # ============================================================================
@@ -142,4 +148,6 @@ chunky start
 #  Spawn'a hologram (DecentHolograms):
 #  /dh create hosgeldin &b&lSKY SURVIVAL
 #  /dh line add hosgeldin &7Arazini korumak icin altin kurek kullan!
+#  /dh line add hosgeldin &e/jobs &7ile meslek sec, calistikca para kazan
+#  /dh line add hosgeldin &e/skills &7ile yeteneklerini gor
 # ============================================================================

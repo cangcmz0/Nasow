@@ -3,7 +3,8 @@
 // Paper sunucu dosyasini (server.jar) ve setup/plugins.json icindeki eklentileri
 // resmi kaynaklarindan (PaperMC, Modrinth, GitHub, GeyserMC) indirir. Indirilen
 // surumler setup/lock.json dosyasina yazilir; boylece her calistirmada ayni
-// surumler kullanilir ve yalnizca eksik dosyalar indirilir.
+// surumler kullanilir ve yalnizca eksik dosyalar indirilir. Paper ayar dosyalari olustuktan
+// sonraki ilk calistirmada Paper'in X-Ray korumasini da bir kez acar.
 //
 // Kullanim (server klasorunun icinden, ek bir program gerekmez - sadece Java):
 //   java setup/Setup.java            eksik olanlari indir
@@ -106,14 +107,16 @@ public class Setup {
         }
 
         // plugins.json'dan silinen ya da "enabled": false yapilan eklentileri kaldir.
+        // "_" ile baslayan kayitlar eklenti degil, kurulum aracinin kendi notlaridir.
         for (String id : new ArrayList<>(lock.keySet())) {
-            if (!wanted.contains(id)) {
+            if (!id.startsWith("_") && !wanted.contains(id)) {
                 Map<String, Object> entry = obj(lock.remove(id));
                 Files.deleteIfExists(PLUGINS_DIR.resolve(safeFileName(str(entry, "file"))));
                 System.out.println("  [SIL]   " + entry.getOrDefault("name", id) + " kaldirildi (plugins.json'da kapali)");
             }
         }
 
+        enablePaperAntiXray(lock);
         Files.writeString(LOCK, Json.write(lock) + System.lineSeparator());
 
         System.out.println();
@@ -164,6 +167,69 @@ public class Setup {
             failed.add(name);
             System.out.println("  [HATA]  " + name + ": " + e.getMessage());
         }
+    }
+
+    /**
+     * Paper'in ayar dosyalari sunucunun ilk acilisinda olusur. Olustuktan sonraki ilk calistirmada
+     * Paper'in dahili X-Ray korumasini bir kez acar. lock.json'daki "_settings" kaydi sayesinde
+     * admin bu ayari sonradan kapatirsa tekrar acilmaz.
+     */
+    static void enablePaperAntiXray(Map<String, Object> lock) throws IOException {
+        Path file = SERVER_DIR.resolve("config").resolve("paper-world-defaults.yml");
+        Map<String, Object> settings = lock.containsKey("_settings") ? obj(lock.get("_settings")) : new LinkedHashMap<>();
+        if (settings.containsKey("anti-xray") || !Files.exists(file)) {
+            return;
+        }
+
+        List<String> lines = new ArrayList<>(Files.readAllLines(file));
+        String result = "bulunamadi";
+        for (int block = 0; block < lines.size() && result.equals("bulunamadi"); block++) {
+            if (!lines.get(block).trim().equals("anti-xray:")) {
+                continue;
+            }
+            int blockIndent = indentOf(lines.get(block));
+            int childIndent = -1;
+            for (int i = block + 1; i < lines.size(); i++) {
+                String line = lines.get(i);
+                if (line.isBlank()) {
+                    continue;
+                }
+                int indent = indentOf(line);
+                if (indent <= blockIndent) {
+                    break;
+                }
+                if (childIndent < 0) {
+                    childIndent = indent;
+                }
+                if (indent == childIndent && line.trim().equals("enabled: false")) {
+                    lines.set(i, line.replace("enabled: false", "enabled: true"));
+                    result = "acildi";
+                    break;
+                }
+                if (indent == childIndent && line.trim().equals("enabled: true")) {
+                    result = "zaten-acik";
+                    break;
+                }
+            }
+        }
+
+        if (result.equals("acildi")) {
+            Files.write(file, lines);
+            System.out.println("  [AYAR]  Paper X-Ray korumasi acildi (config/paper-world-defaults.yml)");
+        } else if (result.equals("bulunamadi")) {
+            System.out.println("  [UYARI] Paper X-Ray ayari bulunamadi. Elle acmak icin config/paper-world-defaults.yml"
+                    + " icinde anticheat > anti-xray > enabled: true yap.");
+        }
+        settings.put("anti-xray", result);
+        lock.put("_settings", settings);
+    }
+
+    static int indentOf(String line) {
+        int i = 0;
+        while (i < line.length() && line.charAt(i) == ' ') {
+            i++;
+        }
+        return i;
     }
 
     static Path target(String id, String fileName) {
@@ -369,7 +435,7 @@ public class Setup {
         private int pos;
 
         private Json(String text) {
-            this.text = text.startsWith("﻿") ? text.substring(1) : text; // Not Defteri'nin ekledigi BOM
+            this.text = text.startsWith("\uFEFF") ? text.substring(1) : text; // Not Defteri'nin ekledigi BOM
         }
 
         static Object parse(String text) {

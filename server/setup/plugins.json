@@ -1,7 +1,11 @@
 {
   "server": "Sky Survival",
   "minecraft": "26.1.2",
-  "gameVersions": ["26.1.2", "26.1.1", "26.1"],
+  "gameVersions": [
+    "26.1.2",
+    "26.1.1",
+    "26.1"
+  ],
   "java": 25,
   "plugins": [
     {
@@ -151,19 +155,33 @@
       "project": "chunky"
     },
     {
-      "id": "bluemap",
-      "name": "BlueMap",
-      "enabled": false,
-      "description": "ISTEGE BAGLI: Tarayicidan acilan 3D canli harita (TCP 8100 portu). Ilk acilista plugins/BlueMap/core.conf icinde accept-download: true yapilmali.",
+      "id": "cmilib",
+      "name": "CMILib",
+      "description": "Jobs eklentisinin calismasi icin gereken kutuphane.",
       "source": "github",
-      "repo": "BlueMap-Minecraft/BlueMap",
-      "asset": "bluemap-{version}-paper.jar"
+      "repo": "Zrips/CMILib",
+      "asset": "CMILib{version}.jar"
+    },
+    {
+      "id": "jobs",
+      "name": "Jobs Reborn",
+      "description": "Meslekler: madenci, oduncu, ciftci, avci... Oyuncular calistikca para kazanir: /jobs",
+      "source": "github",
+      "repo": "Zrips/Jobs",
+      "asset": "Jobs{version}.jar"
+    },
+    {
+      "id": "drivebackup",
+      "name": "DriveBackupV2",
+      "description": "Otomatik yedekleme: dunyalar ve eklenti ayarlari 3 saatte bir server/backups klasorune ziplenir.",
+      "source": "github",
+      "repo": "MaxMaeder/DriveBackupV2",
+      "asset": "DriveBackupV2.jar"
     },
     {
       "id": "auraskills",
       "name": "AuraSkills",
-      "enabled": false,
-      "description": "ISTEGE BAGLI: mcMMO tarzi yetenek/seviye sistemi (madencilik, savas, tarim...). Daha 'survival' hissi icin ac.",
+      "description": "mcMMO tarzi yetenekler (madencilik, savas, tarim...). Oyuncular seviye atlayip guclenir: /skills",
       "source": "github",
       "repo": "Archy-X/AuraSkills",
       "asset": "AuraSkills-{version}.jar"
@@ -171,10 +189,18 @@
     {
       "id": "grim",
       "name": "GrimAC",
-      "enabled": false,
-      "description": "ISTEGE BAGLI: Hile korumasi (anticheat). Sunucu buyuyunce ac.",
+      "description": "Hile korumasi (anticheat): fly, speed, killaura vb. yakalar. Moderatorler uyarilari gorur.",
       "source": "modrinth",
       "project": "grimac"
+    },
+    {
+      "id": "bluemap",
+      "name": "BlueMap",
+      "enabled": false,
+      "description": "ISTEGE BAGLI: Tarayicidan acilan 3D canli harita (TCP 8100 portu). Ilk acilista plugins/BlueMap/core.conf icinde accept-download: true yapilmali.",
+      "source": "github",
+      "repo": "BlueMap-Minecraft/BlueMap",
+      "asset": "bluemap-{version}-paper.jar"
     },
     {
       "id": "discordsrv",

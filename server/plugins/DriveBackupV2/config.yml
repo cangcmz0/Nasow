@@ -1,0 +1,81 @@
+# DriveBackupV2 - otomatik yedekleme (Sky Survival ayari)
+# delay: kac dakikada bir yedek alinacagi (180 = 3 saatte bir)
+# local-keep-count: server/backups klasorunde tutulacak yedek sayisi (8 x 3 saat = son 24 saat)
+# backups-require-players: true ise sadece o arada oyuncu girdiyse yedek alir
+# Elle yedek almak icin oyunda/konsolda: /drivebackup backup
+# Google Drive, FTP vb. uzak yedek icin: https://github.com/MaxMaeder/DriveBackupV2/wiki
+version: 2
+
+delay: 180
+backup-thread-priority: 1
+keep-count: 8
+local-keep-count: 8
+zip-compression: 1
+backups-require-players: true
+disable-saving-during-backups: true
+
+scheduled-backups: false
+backup-schedule-list:
+
+backup-list:
+- glob: "world*"
+  format: "Backup-%NAME-%FORMAT.zip"
+  create: true
+- path: "plugins"
+  format: "Backup-plugins-%FORMAT.zip"
+  create: true
+
+external-backup-list:
+
+local-save-directory: "backups"
+remote-save-directory: "backups"
+
+googledrive:
+  enabled: false
+  shared-drive-id: ""
+onedrive:
+  enabled: false
+dropbox:
+  enabled: false
+webdav:
+  enabled: false
+  hostname: "http://example.com/directory"
+  username: "Username"
+  password: "Password"
+nextcloud:
+  enabled: false
+  hostname: "https://example.com/remote.php/dav/files/user/"
+  username: "Username"
+  password: "Password"
+  chunk-size: 20_000_000
+s3:
+  enabled: false
+  endpoint: "https://s3.us-west-2.amazonaws.com"
+  access-key: "AKIAxxxxxxxxxxxxxxxx"
+  secret-key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  bucket: "bucket"
+ftp:
+  enabled: false
+  hostname: "ftp.example.com"
+  port: 21
+  sftp: false
+  ftps: false
+  username: "Username"
+  password: "Password"
+  sftp-public-key: 
+  sftp-passphrase: 
+  working-dir:
+
+messages:
+  send-in-chat: true
+  prefix: "&6[&4DriveBackupV2&6] "
+  default-color: "&3"
+
+advanced:
+  metrics: true
+  update-check: true
+  suppress-errors: false
+  debug: false
+  date-language: "tr"
+  date-timezone: "+03:00"
+  ftp-file-separator: "/"
