@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,6 +45,7 @@ class FeaturesTest extends TestBase {
     void createWorld() {
         world = server.getWorld("world") != null ? server.getWorld("world") : server.addSimpleWorld("world");
         plugin.getConfig().set("spawn-adasi.konum.y", OY);
+        plugin.getConfig().set("koth-arenasi.konum.y", OY);
     }
 
     /** Adayi blok koymadan "kurulmus" sayar (koruma, kasa ve KOTH testleri icin). */
@@ -110,8 +112,12 @@ class FeaturesTest extends TestBase {
         assertTrue(saw(messages(admin), "kurulum onayla"));
         assertFalse(plugin.spawn().built());
         assertTrue(admin.performCommand("skycore kurulum onayla"));
-        server.getScheduler().performTicks(30);
+        server.getScheduler().performTicks(80);
         assertTrue(plugin.spawn().built(), "kurulum biter");
+        assertTrue(plugin.spawn().arenaBuilt(), "KOTH arenasi da kurulur");
+        assertEquals(Material.WHITE_STAINED_GLASS, world.getBlockAt(0, OY, 220).getType(), "tepenin ortasi");
+        assertEquals(Material.BEACON, world.getBlockAt(0, OY - 25, 220).getType(), "tepenin altindaki fener");
+        assertEquals(new Box(-6, OY, 214, 6, OY + 4, 226), plugin.spawn().kothArea(), "KOTH arenadaki tepede");
         assertTrue(saw(messages(admin), "Spawn adası kuruldu"));
         assertEquals(Material.SEA_LANTERN, world.getBlockAt(0, OY + 5, 0).getType(), "fiskiye tepesi");
         assertEquals(Material.ENDER_CHEST, world.getBlockAt(-28, OY + 2, 0).getType(), "kasa");
@@ -382,6 +388,58 @@ class FeaturesTest extends TestBase {
         assertTrue(plugin.crates().hasType("efsane"), "yeni bolum eklenir");
         String saved = java.nio.file.Files.readString(file.toPath());
         assertTrue(saved.contains("koth:") && saved.contains("sure-saniye: 30"));
+    }
+
+    @Test
+    void arenaLayoutMatchesBlueprint() throws IOException {
+        ArenaLayout layout = ArenaLayout.load(plugin);
+        Blueprint blueprint = Blueprint.load(plugin, "koth/arena.bp.gz");
+        assertEquals(layout.bounds, blueprint.bounds);
+        assertEquals(2, layout.spawns.size());
+        assertEquals(7, layout.heads.size(), "yapimci kafalari");
+        assertTrue(layout.signs.size() >= 5, "yapimci tabelalari");
+        for (IslandLayout.Point p : layout.spawns) {
+            int x = (int) Math.floor(p.x());
+            int y = (int) Math.floor(p.y());
+            int z = (int) Math.floor(p.z());
+            assertNotNull(blueprint.blockAt(x, y - 1, z), "dogus zemini");
+            assertNull(blueprint.blockAt(x, y, z), "dogus ayak");
+        }
+        assertNotNull(blueprint.blockAt((int) Math.floor(layout.lobby.x()), (int) layout.lobby.y() - 1, (int) Math.floor(layout.lobby.z())));
+        assertEquals("minecraft:beacon", blueprint.blockAt(0, -25, 0));
+        for (int y = -24; y <= 0; y++) {
+            String block = blueprint.blockAt(0, y, 0);
+            assertTrue(block == null || block.contains("glass"), "fener isininin yolu acik: " + y + " " + block);
+        }
+        assertTrue(Objects.requireNonNull(plugin.getResource("koth/LICENSE.txt")).readAllBytes().length > 100, "lisans dosyasi");
+    }
+
+    @Test
+    void kothArenaJoinAndProtection() {
+        plugin.data().setOrigin("koth-arenasi", new DataStore.Origin("world", 0, OY, 220));
+        plugin.spawn().stop();
+        plugin.spawn().start();
+        assertTrue(plugin.spawn().arenaBuilt());
+        PlayerMock ali = server.addPlayer("Ali");
+        PlayerMock veli = server.addPlayer("Veli");
+        assertTrue(ali.performCommand("koth katil"));
+        server.getScheduler().performTicks(2);
+        assertTrue(plugin.spawn().inKothArena(ali.getLocation()), "arenaya isinlanir");
+        BlockBreakEvent breakIt = new BlockBreakEvent(world.getBlockAt(0, OY, 220), ali);
+        server.getPluginManager().callEvent(breakIt);
+        assertTrue(breakIt.isCancelled(), "arena korunur");
+        veli.teleport(ali.getLocation());
+        assertFalse(pvp(ali, veli).isCancelled(), "arenada PvP acik");
+
+        // Yapimcilar adasindaki portal arenaya gecirir (savasta olmayan oyuncu)
+        PlayerMock ayse = server.addPlayer("Ayse");
+        Location lobby = new Location(world, -69.5, OY + 9, 220.5);
+        ayse.teleport(lobby);
+        server.getPluginManager().callEvent(new PlayerMoveEvent(ayse, lobby, new Location(world, -73.5, OY + 9, 220.5)));
+        server.getScheduler().performTicks(4);
+        assertTrue(plugin.spawn().inKothArena(ayse.getLocation()));
+        assertEquals(0.5, ayse.getLocation().getX(), 0.001, "bir usse indi");
+        assertTrue(Math.abs(ayse.getLocation().getZ() - 220) > 60, "bir usse indi");
     }
 
     @Test

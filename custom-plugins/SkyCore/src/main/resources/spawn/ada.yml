@@ -53,9 +53,9 @@ hologramlar:
   sky_arena:
     konum: {x: 0.5, y: 4.5, z: 19.5}
     satirlar:
-      - "&c&lARENA"
-      - "&7PvP serbest! Ortadaki altın tepe: &6KOTH"
-      - "&7Etkinlik başlayınca tepeyi tut, ödülü kap!"
+      - "&c&lPVP ARENASI"
+      - "&7Burada PvP serbest!"
+      - "&6♛ KOTH etkinliği: &e/koth katil"
   sky_kasalar:
     konum: {x: -26.5, y: 10.5, z: 0.5}
     satirlar:

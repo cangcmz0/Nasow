@@ -82,18 +82,27 @@ final class DataStore {
     // ---- Spawn adasi (kurulan yer) ----
 
     Origin islandOrigin() {
-        String world = yaml.getString("spawn-adasi.dunya");
-        if (world == null) {
-            return null;
-        }
-        return new Origin(world, yaml.getInt("spawn-adasi.x"), yaml.getInt("spawn-adasi.y"), yaml.getInt("spawn-adasi.z"));
+        return origin("spawn-adasi");
     }
 
     void setIslandOrigin(Origin origin) {
-        set("spawn-adasi.dunya", origin.world());
-        set("spawn-adasi.x", origin.x());
-        set("spawn-adasi.y", origin.y());
-        set("spawn-adasi.z", origin.z());
+        setOrigin("spawn-adasi", origin);
+    }
+
+    /** Kurulan yapinin (spawn-adasi, koth-arenasi) yeri; kurulmadiysa null. */
+    Origin origin(String key) {
+        String world = yaml.getString(key + ".dunya");
+        if (world == null) {
+            return null;
+        }
+        return new Origin(world, yaml.getInt(key + ".x"), yaml.getInt(key + ".y"), yaml.getInt(key + ".z"));
+    }
+
+    void setOrigin(String key, Origin origin) {
+        set(key + ".dunya", origin.world());
+        set(key + ".x", origin.x());
+        set(key + ".y", origin.y());
+        set(key + ".z", origin.z());
     }
 
     // ---- KOTH ----

@@ -177,7 +177,7 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
     /** Alandaki canli, hayatta kalma/macera modundaki oyuncular. */
     private List<Player> playersOnHill(Box hill) {
         List<Player> result = new ArrayList<>();
-        World world = plugin.spawn().world();
+        World world = plugin.spawn().kothWorld();
         if (world == null) {
             return result;
         }
@@ -243,7 +243,7 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
     }
 
     private void outline(Box hill) {
-        World world = plugin.spawn().world();
+        World world = plugin.spawn().kothWorld();
         double y = hill.minY() + 0.1;
         for (int x = hill.minX(); x <= hill.maxX() + 1; x++) {
             world.spawnParticle(Particle.FLAME, x, y, hill.minZ(), 1, 0, 0, 0, 0);
@@ -267,6 +267,10 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Messages messages = plugin.messages();
+        if (args.length > 0 && (args[0].equalsIgnoreCase("katil") || args[0].equalsIgnoreCase("git"))) {
+            join(sender);
+            return true;
+        }
         if (running()) {
             Player current = king == null ? null : plugin.getServer().getPlayer(king);
             messages.sendLines(sender, "koth.mesajlar.durum-suruyor", "oyuncu", current == null ? "-" : current.getName(),
@@ -277,11 +281,36 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
                     "saatler", String.join(", ", plugin.getConfig().getStringList("koth.saatler")),
                     "son", last.isEmpty() ? "-" : last);
         }
+        if (plugin.spawn().arenaBuilt()) {
+            messages.sendLines(sender, "koth.mesajlar.harita");
+        }
         return true;
+    }
+
+    /** /koth katil: arenaya (rastgele bir usse) isinlar. */
+    private void join(CommandSender sender) {
+        Messages messages = plugin.messages();
+        if (!(sender instanceof Player player)) {
+            messages.send(sender, "genel-mesajlar.sadece-oyuncu");
+            return;
+        }
+        if (plugin.combat().isTagged(player)) {
+            messages.send(player, "vahsi-doga.mesajlar.savasta");
+            return;
+        }
+        Location target = plugin.spawn().kothJoinLocation();
+        if (target == null) {
+            messages.send(player, "koth.mesajlar.ada-yok");
+            return;
+        }
+        if (player.teleport(target)) {
+            messages.send(player, running() ? "koth.mesajlar.katildin-etkinlik" : "koth.mesajlar.katildin");
+            Messages.sound(player, "entity.enderman.teleport", 1.0f);
+        }
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return List.of();
+        return args.length == 1 && "katil".startsWith(args[0].toLowerCase(java.util.Locale.ROOT)) ? List.of("katil") : List.of();
     }
 }

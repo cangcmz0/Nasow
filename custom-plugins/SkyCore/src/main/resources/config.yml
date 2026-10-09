@@ -217,27 +217,42 @@ spawn-adasi:
   portal-efekti: true
   mesajlar:
     kurulum-bilgi:
-      - "&b&lSPAWN ADASI KURULUMU"
-      - "&7Ada &f{dunya} &7dünyasında &f{x}, {y}, {z} &7noktasına kurulacak (97x56x96 blok)."
-      - "&7Bu alandaki eski bloklar silinir. Konumu config.yml'den değiştirebilirsin."
-      - "&7Spawn, 5 warp, 10 hologram, 3 kasa ve KOTH alanı otomatik ayarlanır."
-      - "&7Durum: {durum}"
+      - "&b&lSPAWN ADASI + KOTH ARENASI KURULUMU"
+      - "&7Spawn adası: &f{dunya} {x}, {y}, {z} &8(97x56x96) &7- durum: {durum}"
+      - "&7KOTH arenası (The Hill): &f{ax}, {ay}, {az} &8(135x41x141) &7- durum: {arena-durum}"
+      - "&7Bu alanlardaki eski bloklar silinir. Konumları config.yml'den değiştirebilirsin."
+      - "&7Spawn, 6 warp, 11 hologram, 3 kasa ve KOTH tepesi otomatik ayarlanır."
       - "&eBaşlatmak için: &f/skycore kurulum onayla"
     durum-kurulu: "&akurulu &7({x}, {y}, {z})"
     durum-yok: "&ckurulmadı"
     kurulum-basladi: "&eSpawn adası kuruluyor... &7({blok} blok)"
-    kurulum-ilerleme: "&eAda kuruluyor: &f%{yuzde}"
+    kurulum-ilerleme: "&e{yapi} kuruluyor: &f%{yuzde}"
+    yapi-ada: "Spawn adası"
+    yapi-arena: "KOTH arenası"
+    arena-bitti: "&a✔ KOTH arenası kuruldu! &7Warp: &f{warp}&7, yapımcı kafaları: &f{kafa}&7, tabelalar: &f{tabela}"
     kurulum-bitti: "&a✔ Spawn adası kuruldu! &7Spawn: &f{spawn}&7, warp: &f{warp}&7, hologram: &f{hologram}"
     sadece-dunya-spawni: "dünya spawnı (EssentialsX Spawn yok)"
     kurulum-suruyor: "&cKurulum zaten sürüyor, bitmesini bekle."
     dunya-yok: "&c'{dunya}' adında bir dünya yok."
-    yukseklik: "&cAda dünyanın dışına taşıyor! Yüksekliği &f{min} &cile &f{max} &carasında seç."
+    yukseklik: "&c{yapi} dünyanın dışına taşıyor! Yüksekliği &f{min} &cile &f{max} &carasında seç."
     hata: "&cKurulum yapılamadı: &f{hata}"
     korumali: "&cBurası spawn adası, burada bunu yapamazsın."
     pvp-kapali: "&cSpawn'da PvP kapalı! &7Savaşmak için arenaya git: &e/warp arena"
     parasut: "&b☁ Süzülüyorsun... &7(Yere yaklaşınca paraşüt açılır)"
     parasut-acildi: "&b☂ Paraşüt açıldı!"
     inis: "&a✔ Güvenle indin! İyi oyunlar."
+
+# ---------------------------------------------------------------------------
+# KOTH etkinlik arenasi: "The Hill" (Articray, TheZaner, xXFracXx - CC BY-SA 4.0,
+# github.com/OvercastCommunity/PublicMaps). /skycore kurulum ile adayla birlikte
+# gokyuzune kurulur. Oyuncular /warp koth ile yapimcilar adasina, /koth katil ile
+# arenaya gider. Arena korunur (blok kirilmaz) ama PvP ve hasar aciktir.
+# ---------------------------------------------------------------------------
+koth-arenasi:
+  aktif: true
+  dunya: world
+  # Tepenin merkezi. Arena bu noktanin 29 blok altina, 11 blok ustune uzanir.
+  konum: {x: 0, y: 200, z: 220}
 
 # ---------------------------------------------------------------------------
 # Vahsi doga (/vahsi): dunyada rastgele, guvenli bir yere isinlanma.
@@ -462,8 +477,8 @@ koth:
     basladi:
       - ""
       - "&6&l♛ KOTH BAŞLADI! ♛"
-      - "&fArenadaki &6altın tepeyi &e{sure} saniye &ftut, ödülü kap!"
-      - "&7Gitmek için: &e/warp arena"
+      - "&fArenadaki &6tepeyi &e{sure} saniye &ftek başına tut, ödülü kap!"
+      - "&7Gitmek için: &e/koth katil"
       - ""
     bossbar-bos: "&6♛ KOTH &8» &7Tepe boş! Altın platforma çık"
     bossbar-kral: "&6♛ KOTH &8» &e{oyuncu} &ftepeyi tutuyor &7({kalan} sn)"
@@ -478,11 +493,16 @@ koth:
     durum-suruyor:
       - "&6&l♛ KOTH SÜRÜYOR"
       - "&7Tepedeki: &e{oyuncu} &7(&f{kalan} sn &7kaldı)"
-      - "&7Etkinliğin bitmesine: &f{bitis} dk &8| &e/warp arena"
+      - "&7Etkinliğin bitmesine: &f{bitis} dk &8| &e/koth katil"
     durum-yok:
       - "&6&l♛ KOTH"
       - "&7Her gün: &e{saatler}"
       - "&7Son kazanan: &f{son}"
+      - "&7Arenaya gitmek için: &e/koth katil"
+    harita:
+      - "&8Harita: &7The Hill - Articray, TheZaner, xXFracXx &8(CC BY-SA 4.0)"
+    katildin: "&6♛ &fKOTH arenasına geldin! &7Etkinlik saatleri: &e/koth &8| &7Dönmek için: &e/spawn"
+    katildin-etkinlik: "&6♛ &fKOTH arenasına geldin! &eOrtadaki tepeye çık ve tek başına tut!"
 
 genel-mesajlar:
   yetki-yok: "&cBunun için yetkin yok."

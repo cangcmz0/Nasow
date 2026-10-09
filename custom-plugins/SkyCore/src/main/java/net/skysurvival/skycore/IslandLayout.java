@@ -55,36 +55,45 @@ final class IslandLayout {
         for (String key : keys(section)) {
             crates.put(key, point(section.getConfigurationSection(key)));
         }
-        section = yaml.getConfigurationSection("hologramlar");
-        for (String key : keys(section)) {
-            ConfigurationSection hologram = section.getConfigurationSection(key);
-            holograms.put(key, new Hologram(point(hologram.getConfigurationSection("konum")), hologram.getStringList("satirlar")));
-        }
+        holograms.putAll(holograms(yaml.getConfigurationSection("hologramlar")));
     }
 
     static IslandLayout load(SkyCore plugin) throws IOException {
-        try (InputStream in = plugin.getResource("spawn/ada.yml")) {
+        return new IslandLayout(resource(plugin, "spawn/ada.yml"));
+    }
+
+    static YamlConfiguration resource(SkyCore plugin, String path) throws IOException {
+        try (InputStream in = plugin.getResource(path)) {
             if (in == null) {
-                throw new IOException("spawn/ada.yml jar icinde yok");
+                throw new IOException(path + " jar icinde yok");
             }
             try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-                return new IslandLayout(YamlConfiguration.loadConfiguration(reader));
+                return YamlConfiguration.loadConfiguration(reader);
             }
         }
     }
 
-    private static Iterable<String> keys(ConfigurationSection section) {
+    static Map<String, Hologram> holograms(ConfigurationSection section) {
+        Map<String, Hologram> result = new LinkedHashMap<>();
+        for (String key : keys(section)) {
+            ConfigurationSection hologram = section.getConfigurationSection(key);
+            result.put(key, new Hologram(point(hologram.getConfigurationSection("konum")), hologram.getStringList("satirlar")));
+        }
+        return result;
+    }
+
+    static Iterable<String> keys(ConfigurationSection section) {
         return section == null ? List.of() : section.getKeys(false);
     }
 
-    private static Point point(ConfigurationSection section) {
+    static Point point(ConfigurationSection section) {
         if (section == null) {
             return new Point(0.5, 1, 0.5, 0);
         }
         return new Point(section.getDouble("x"), section.getDouble("y"), section.getDouble("z"), (float) section.getDouble("yaw"));
     }
 
-    private static Box box(ConfigurationSection section) {
+    static Box box(ConfigurationSection section) {
         if (section == null) {
             return new Box(0, 0, 0, 0, 0, 0);
         }

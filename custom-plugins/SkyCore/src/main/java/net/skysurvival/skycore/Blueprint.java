@@ -27,9 +27,13 @@ final class Blueprint {
     }
 
     static Blueprint load(SkyCore plugin) throws IOException {
-        try (InputStream in = plugin.getResource("spawn/ada.bp.gz")) {
+        return load(plugin, "spawn/ada.bp.gz");
+    }
+
+    static Blueprint load(SkyCore plugin, String path) throws IOException {
+        try (InputStream in = plugin.getResource(path)) {
             if (in == null) {
-                throw new IOException("spawn/ada.bp.gz jar icinde yok");
+                throw new IOException(path + " jar icinde yok");
             }
             return read(new BufferedReader(new InputStreamReader(new GZIPInputStream(in), StandardCharsets.UTF_8)));
         }

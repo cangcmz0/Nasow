@@ -1,0 +1,16 @@
+"The Hill" haritasi / map
+Yapimcilar / Authors: Articray, TheZaner (Zan), xXFracXx
+Katkida bulunanlar / Contributors: ItsMiiOlly, ElectroidFilms
+Kaynak / Source: https://github.com/OvercastCommunity/PublicMaps (koth/the_hill), https://mcresourcepile.github.io/
+
+Bu harita ve Sky Survival icin degistirilmis hali Creative Commons Attribution-ShareAlike 4.0 International
+lisansiyla dagitilir: https://creativecommons.org/licenses/by-sa/4.0/
+This map and its modified version are licensed under CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+
+Degisiklikler / Changes: bloklar Minecraft 1.8 kimliklerinden guncel surume cevrildi (tools/import_map.py);
+cit/panel/merdiven baglantilari yeniden hesaplandi; tabelalar ve sandik icerikleri kaldirildi, yapimci tabelalari
+Turkceye cevrildi; tepenin altindaki fenerin isini acilsin diye 3 piston kaldirildi; harita Sky Survival
+sunucusunda gokyuzunde KOTH etkinlik arenasi olarak kurulur.
+Blocks converted from Minecraft 1.8 IDs to the current version; fence/pane/stair connections recomputed; signs and
+chest contents removed, author signs translated to Turkish; 3 pistons removed so the beacon beam shows above the
+hill; used as a floating KOTH event arena on Sky Survival.

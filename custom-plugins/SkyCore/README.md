@@ -15,7 +15,7 @@ ile açılıp kapatılır, `/skycore reload` ile yenilenir).
 | **Meydan** | Merkez | Fıskiye, fenerler, banklar, spawn noktası |
 | **Vahşi Doğa portalı** | Kuzey | İçinden geçen `/vahsi` ile dünyada rastgele güvenli bir yere ışınlanır |
 | **Market** | Doğu | Ahşap market binası; zümrüt zemine basınca `/market` açılır |
-| **Arena + KOTH** | Güney | Adadaki tek PvP alanı; ortasında altın KOTH tepesi |
+| **PvP arenası** | Güney | Adadaki tek PvP alanı (KOTH arenası kurulmazsa ortadaki altın tepe KOTH alanı olur) |
 | **Kasalar** | Batı | Günlük, Nadir ve Efsane kasası (ender sandıkları) |
 | **Atlama noktası** | Kuzeydoğu | İskeleden atla, süzülerek dünyaya in (paraşüt) |
 
@@ -29,6 +29,19 @@ ile açılıp kapatılır, `/skycore reload` ile yenilenir).
 - Önizleme: `branding/spawn-adasi-onizleme.png`, `branding/spawn-adasi-harita.png`.
   WorldEdit ile elle koymak istersen: `branding/SkySpawn.schem`. Tasarımı değiştirmek için `tools/spawn_island.py`.
 
+## KOTH arenası: "The Hill"
+
+Aynı `/skycore kurulum onayla` komutu, adanın 220 blok güneyine (`koth-arenasi.konum`) Overcast Network'ün ünlü KOTH
+haritası **"The Hill"**i de kurar (Articray, TheZaner, xXFracXx; katkı: ItsMiiOlly, ElectroidFilms — **CC BY-SA 4.0**,
+[OvercastCommunity/PublicMaps](https://github.com/OvercastCommunity/PublicMaps)). Harita `tools/import_map.py` ile 1.8
+bloklarından güncel sürüme çevrildi.
+
+- Ortadaki katmanlı tepenin üstü KOTH alanıdır; altındaki fenerin ışını gökyüzüne yükselir.
+- `/warp koth` → yapımcıların kafaları ve Türkçe tabelalarıyla tanıtım adası; ortadaki işarete basan arenaya geçer.
+- `/koth katil` → doğrudan arenadaki iki üsten birine.
+- Arena korunur (blok kırılmaz/konmaz, düşman yaratık doğmaz) ama PvP ve hasar açıktır; arenadan düşen paraşütle iner.
+- `koth-arenasi.aktif: false` yapılırsa arena kurulmaz, KOTH adadaki altın tepede oynanır.
+
 ## Özellikler
 
 | Özellik | Ne yapar | Komut |
@@ -37,7 +50,7 @@ ile açılıp kapatılır, `/skycore reload` ile yenilenir).
 | **Klanlar** | Klan kur (5000₺), davet et, klan evi, ortak klan kasası, klan sohbeti. Klan arkadaşları birbirine vuramaz. Klan etiketi TAB listesinde ve isim üstünde görünür. | `/klan`, `/ks <mesaj>` |
 | **Kasalar** | Spawn'daki kasaya anahtarla sağ tıkla: dönen çark, sonunda ödül (para, eşya, büyülü kitap, efsane kazma/kılıç, başka anahtar...). Sol tık: ödüller ve şansları. Nadir ödüller herkese duyurulur. Anahtar taklit edilemez (gizli veri). | — |
 | **Anahtar kaynakları** | Günlük Kasa: her `/odul`. Nadir Kasa: her aktiflik ödülü. Efsane Kasa: KOTH kazanmak ve 7 günlük seri. | `/skycore anahtar` |
-| **KOTH** (Tepenin Kralı) | Her gün 20:00 ve 22:30'da arenadaki altın tepeyi 120 sn tek başına (ya da klanınla) tutan kazanır: 5000₺ + Efsane anahtarı. Başka klandan biri tepedeyse sayaç durur. Ekranın üstünde ilerleme çubuğu. | `/koth` |
+| **KOTH** (Tepenin Kralı) | Her gün 20:00 ve 22:30'da "The Hill" arenasındaki tepeyi 120 sn tek başına (ya da klanınla) tutan kazanır: 5000₺ + Efsane anahtarı. Başka klandan biri tepedeyse sayaç durur. Ekranın üstünde ilerleme çubuğu. | `/koth`, `/koth katil` |
 | **Vahşi doğa** | Dünyada 500-5000 blok arası rastgele, güvenli (su/lav/kaktüs olmayan) bir yere ışınlar; parçalar arka planda yüklenir, sunucu donmaz. 60 sn bekleme. | `/vahsi` (`/wild`) |
 | **Savaş modu** (combat log) | PvP'ye giren iki oyuncu 15 sn "savaşta" sayılır; ekranda geri sayım çıkar. Bu sürede `/spawn`, `/home`, `/tpa`, `/warp`, `/vahsi`, `/back` gibi kaçış komutları çalışmaz. Savaştayken oyundan çıkan oyuncu ölür ve eşyaları yere düşer. | — |
 | **Sohbet oyunları** | 10 dakikada bir sohbete soru gelir: kelimeyi ilk yazan, işlemi ilk çözen ya da karışık harflerden kelimeyi ilk bulan para kazanır. Türkçe karakter farkı önemsenmez (kılıç = kilic). | `/skycore oyun` |
@@ -61,7 +74,7 @@ ile açılıp kapatılır, `/skycore reload` ile yenilenir).
 
 | Komut | Ne yapar |
 |---|---|
-| `/skycore kurulum [onayla]` | Spawn adasını kurar (önce bilgi gösterir) |
+| `/skycore kurulum [onayla]` | Spawn adasını ve KOTH arenasını kurar (önce bilgi gösterir) |
 | `/skycore anahtar <oyuncu\|herkes> <gunluk\|nadir\|efsane> [adet]` | Kasa anahtarı verir |
 | `/skycore koth <baslat\|bitir>` | KOTH etkinliğini elle başlatır/bitirir |
 | `/skycore oyun` | Hemen bir sohbet oyunu başlatır |
@@ -85,11 +98,13 @@ DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten
 
 ## Geliştiriciler için
 
-Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 29 test).
+Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 31 test).
 
 - Eklenti gerçek **Paper 26.1.2 API** kaynağına karşı derlendi (`--release 21`, uyarısız).
 - MockBukkit henüz 26.x'i desteklemediği için testler **Paper 1.21.11 API**'siyle çalıştırıldı; SkyCore'un kullandığı API iki
-  sürümde aynı. 29 testin hepsi geçti (ada kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, eski ayar dosyasının güncellenmesi dahil).
+  sürümde aynı. 31 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, eski ayar dosyasının
+  güncellenmesi dahil).
 - Spawn adası `tools/spawn_island.py` ile üretilir: `src/main/resources/spawn/ada.bp.gz` (bloklar) ve `spawn/ada.yml`
   (spawn, warp, portal, kasa, KOTH ve hologram noktaları).
+- KOTH arenası `tools/import_map.py` ile üretilir: `src/main/resources/koth/` (CC BY-SA 4.0, `koth/LICENSE.txt`).
 - Kendin derlemek için `gradle build` (JDK 25 gerekir). `build.gradle.kts` kurulum ortamında çalıştırılmadı.

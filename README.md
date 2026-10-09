@@ -1,5 +1,7 @@
 # Sky Survival — Herkese Açık Minecraft Sunucusu
 
+<p align="center"><img src="branding/logo.png" alt="Sky Survival" width="560"></p>
+
 Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Paper).
 
 - **Minecraft Java 26.1.2** — ViaVersion/ViaBackwards/ViaRewind sayesinde **1.8'den 26.x'e** kadar her sürümle girilebilir
@@ -7,10 +9,11 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 - **Bedrock desteği:** telefon, konsol ve Windows Bedrock oyuncuları da girebilir (Geyser + Floodgate)
 - Türkçe mesajlar, ₺ ekonomi, meslekler, yetenekler, rütbeler, arazi koruması, oyuncu marketleri
 - Hile koruması, X-Ray engeli, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
-- **Gökyüzü spawn adası** tek komutla kurulur: vahşi doğa portalı, market, PvP arenası + KOTH, kasalar, atlama noktası, hologramlar
+- **Gökyüzü spawn adası** tek komutla kurulur: vahşi doğa portalı, market, PvP arenası, kasalar, atlama noktası, hologramlar
+- **KOTH etkinlik arenası:** internetten alınıp düzenlenen ünlü **"The Hill"** haritası (CC BY-SA 4.0) gökyüzüne kurulur
 - Sunucuya özel yazılmış **SkyCore** eklentisi: sunucu marketi, klanlar, kasalar, KOTH etkinliği, rastgele ışınlanma, savaş modu,
   sohbet oyunları, banknot, kelle avı, günlük ödül serisi, aktiflik ödülü
-- Hazır **logo, sunucu ikonu, banner'lar ve tanıtım metinleri** ([`branding/`](branding))
+- Hazır **vektör logo (SVG + PNG), sunucu ikonu, banner'lar, tanıtım kartı ve metinleri** ([`branding/`](branding))
 
 ---
 
@@ -30,7 +33,7 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Ev ve ışınlanma | `/sethome`, `/home`, `/tpa`, `/spawn`, `/warp`, `/vahsi` (rastgele yere git) |
 | Klan kurma, klan evi, klan kasası, klan sohbeti | `/klan`, `/ks <mesaj>` |
 | Kasa açma (anahtarla) | `/warp kasalar` → kasaya sağ tık (sol tık: ödüller) |
-| Tepenin Kralı etkinliği (her akşam) | `/koth`, `/warp arena` |
+| Tepenin Kralı etkinliği (her akşam) | `/koth`, `/koth katil` (arenaya git) |
 | Günlük ödül (seri yaptıkça artar) ve günlük kit | `/odul`, `/kit gunluk` |
 | Parayı kağıda çevirip takas etme | `/banknot <miktar>`, kağıda sağ tık = para |
 | Birinin kellesine ödül koyma | `/kelle koy <oyuncu> <miktar>`, `/kelle liste` |
@@ -45,8 +48,19 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 
 Yeni oyuncular gökyüzündeki adada başlar. Kuzeydeki **Vahşi Doğa portalından** geçen dünyada rastgele bir yere ışınlanır;
 kuzeydoğudaki **atlama iskelesinden** atlayan süzülerek (paraşütle, hasar almadan) dünyaya iner. Doğuda **market**, güneyde
-**PvP arenası ve KOTH tepesi**, batıda **kasalar** var. Ada korumalıdır; adada hasar, açlık ve düşman yaratık yoktur.
+**PvP arenası**, batıda **kasalar** var. Ada korumalıdır; adada hasar, açlık ve düşman yaratık yoktur.
 Kurulum: oyunda admin olarak `/skycore kurulum onayla` (ayrıntı: [SkyCore README](custom-plugins/SkyCore/README.md)).
+
+### KOTH arenası: "The Hill"
+
+![KOTH arenası](branding/koth-arena-onizleme.png)
+
+Her akşam yapılan **Tepenin Kralı** etkinliği, Overcast Network'ün ünlü KOTH haritası **"The Hill"** üzerinde oynanır
+(yapımcılar: Articray, TheZaner, xXFracXx; katkı: ItsMiiOlly, ElectroidFilms; lisans: CC BY-SA 4.0). Harita
+[OvercastCommunity/PublicMaps](https://github.com/OvercastCommunity/PublicMaps) deposundan alındı, 1.8 bloklarından güncel
+sürüme çevrildi ve spawn adasının güneyine gökyüzüne kurulur. Ortadaki katmanlı tepenin üstünden fener ışını yükselir;
+iki uçta üsler, batıda yapımcıların kafaları ve tabelalarıyla küçük bir tanıtım adası var.
+`/warp koth` tanıtım adasına, `/koth katil` doğrudan arenaya götürür. Arena korunur ama PvP açıktır; düşen oyuncu paraşütle iner.
 
 ---
 
@@ -73,8 +87,8 @@ Kurulum: oyunda admin olarak `/skycore kurulum onayla` (ayrıntı: [SkyCore READ
    **hemen `/register <şifre> <şifre>` ile kaydol** (crack sunucuda adını başkası alamasın diye).
 5. [`server/setup/ilk-kurulum-komutlari.txt`](server/setup/ilk-kurulum-komutlari.txt) içindeki komutları konsola yapıştır
    (rütbeler, yetkiler, kendini admin yapma, dünya ön-oluşturma). Sonra `stop` yaz; sunucu kendiliğinden yeniden açılır ve X-Ray koruması devreye girer.
-6. Oyuna admin olarak gir ve **`/skycore kurulum onayla`** yaz: gökyüzü spawn adası; spawn noktası, warplar, hologramlar,
-   kasalar ve KOTH alanıyla birlikte birkaç saniyede kurulur.
+6. Oyuna admin olarak gir ve **`/skycore kurulum onayla`** yaz: gökyüzü spawn adası ve "The Hill" KOTH arenası; spawn noktası,
+   warplar, hologramlar, kasalar ve KOTH tepesiyle birlikte birkaç saniyede kurulur.
 
 RAM miktarını `start.bat` içindeki `set RAM=4G` satırından değiştirebilirsin (Linux'ta `RAM=8G ./start.sh`).
 
@@ -134,11 +148,11 @@ Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp t
 
 | Özellik | Ne yapar |
 |---|---|
-| **Spawn adası** | `/skycore kurulum onayla` → gökyüzüne hazır ada; spawn, 5 warp, 10 hologram, 3 kasa, KOTH alanı otomatik. Ada korumalı, paraşütle iniş |
+| **Spawn adası + KOTH arenası** | `/skycore kurulum onayla` → gökyüzüne hazır ada ve "The Hill" arenası; spawn, 6 warp, 11 hologram, 3 kasa, KOTH tepesi otomatik. Korumalı, paraşütle iniş |
 | **Sunucu marketi** | `/market` → 8 kategori, 190+ eşya, sol tık al / sağ tık sat; `/sat hepsi`. Fiyatlar `market.yml`'de |
 | **Klanlar** | `/klan kur <isim>` → davet, klan evi, ortak kasa, `/ks` klan sohbeti; klan arkadaşları birbirine vuramaz; etiket TAB'da görünür |
 | **Kasalar** | Günlük / Nadir / Efsane kasa; anahtarla sağ tık → dönen çark → ödül. Anahtarlar: `/odul`, aktiflik ödülü, KOTH, 7 günlük seri |
-| **KOTH** | Her gün 20:00 ve 22:30'da arenadaki altın tepeyi 2 dk tutan kazanır (5000₺ + Efsane anahtarı) |
+| **KOTH** | Her gün 20:00 ve 22:30'da "The Hill" arenasındaki tepeyi 2 dk tutan kazanır (5000₺ + Efsane anahtarı); `/koth katil` |
 | **Vahşi doğa** | `/vahsi` → 500-5000 blok arası rastgele güvenli yere ışınlanma (portal da bunu kullanır) |
 | **Savaş modu** | PvP'ye giren 15 sn `/spawn` `/home` `/tpa` gibi kaçış komutlarını kullanamaz; savaştayken oyundan çıkan ölür, eşyaları düşer |
 | **Sohbet oyunları** | 10 dk'da bir sohbete soru: ilk yazan / işlemi çözen / karışık kelimeyi bulan para kazanır |
@@ -250,8 +264,8 @@ server/
     ├── Setup.java             → indirme/güncelleme aracı
     └── ilk-kurulum-komutlari.txt → ilk açılışta konsola yapıştırılacak komutlar
 custom-plugins/SkyCore/          → SkyCore'un kaynak kodu ve testleri
-branding/                        → logo, sunucu ikonu, banner'lar, spawn adası önizlemesi, SkySpawn.schem, tanıtım metinleri
-tools/                           → logo ve spawn adasını üreten Python betikleri
+branding/                        → logo (SVG/PNG), sunucu ikonu, banner'lar, önizlemeler, .schem dosyaları, tanıtım metinleri, LISANSLAR.md
+tools/                           → logo (tools/logo), spawn adası ve KOTH haritası dönüştürücüsü (import_map.py)
 ```
 
 ## Sonraki adımlar için fikirler
@@ -261,3 +275,12 @@ tools/                           → logo ve spawn adasını üreten Python beti
 - **BlueMap** ile web'den canlı harita
 - Sezonluk etkinlikler (kasaya özel ödüller, bayram etkinlikleri)
 - SkyCore'a mezar (ölünce eşyaların sandığa girmesi), klan savaşları, görevler eklemek
+
+## Lisanslar ve teşekkür
+
+- **"The Hill" KOTH haritası:** Articray, TheZaner, xXFracXx (katkı: ItsMiiOlly, ElectroidFilms) —
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Kaynak: [OvercastCommunity/PublicMaps](https://github.com/OvercastCommunity/PublicMaps).
+  Değiştirilmiş hâli (`custom-plugins/SkyCore/src/main/resources/koth/`, `branding/KothArena-TheHill.schem`) de aynı lisansla dağıtılır.
+  Oyunda yapımcıların adı tanıtım adasında, KOTH hologramında ve `/koth` komutunda yazar; bunları kaldırma.
+- **Nunito yazı tipi** (logo): SIL Open Font License 1.1 (`tools/logo/fonts/OFL.txt`).
+- Ayrıntı: [`branding/LISANSLAR.md`](branding/LISANSLAR.md).

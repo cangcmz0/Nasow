@@ -42,3 +42,6 @@ Thumbs.db
 # --- SkyCore gelistirme ciktilari ---
 custom-plugins/**/build/
 custom-plugins/**/.gradle/
+
+# --- Python ara dosyalari ---
+__pycache__/

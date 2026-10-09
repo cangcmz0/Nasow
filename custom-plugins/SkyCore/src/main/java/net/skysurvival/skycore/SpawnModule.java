@@ -1,8 +1,12 @@
 package net.skysurvival.skycore;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +19,11 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.block.Skull;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -56,7 +64,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 /**
- * Gokyuzundeki spawn adasi: /skycore kurulum ile kurulur; spawn, warp ve hologramlari ayarlar.
+ * Gokyuzundeki spawn adasi ve KOTH etkinlik arenasi ("The Hill", CC BY-SA 4.0): /skycore kurulum ile kurulur;
+ * spawn, warp ve hologramlari ayarlar.
  * Adayi korur (yalnizca yetkililer degistirebilir, arena disinda hasar/aclik yok), portallari calistirir
  * ve adadan atlayan oyuncuyu yere yaklasinca yavaslatip dusme hasarindan korur.
  */
@@ -73,7 +82,7 @@ final class SpawnModule implements Module {
             "REINFORCEMENTS", "TRAP", "VILLAGE_INVASION", "SILVERFISH_BLOCK", "ENDER_PEARL", "LIGHTNING", "NETHER_PORTAL");
     private static final Set<String> ALWAYS_DAMAGE = Set.of("VOID", "KILL", "SUICIDE", "WORLD_BORDER");
 
-    record AbsPortal(String name, Box area, String command) {}
+    record AbsPortal(String name, World world, Box area, String command) {}
 
     private final SkyCore plugin;
     private IslandLayout layout;
@@ -88,6 +97,16 @@ final class SpawnModule implements Module {
     private Box arena;
     private Box koth;
     private final Map<String, AbsPortal> portals = new LinkedHashMap<>();
+
+    // KOTH arenasi (kurulmadiysa arenaWorld == null)
+    private ArenaLayout arenaLayout;
+    private World arenaWorld;
+    private int ax;
+    private int ay;
+    private int az;
+    private Box arenaArea;
+    private Box arenaZone;
+    private Box arenaHill;
 
     private boolean protect;
     private boolean noDamage;
@@ -120,6 +139,13 @@ final class SpawnModule implements Module {
                 layout = IslandLayout.load(plugin);
             } catch (IOException | RuntimeException e) {
                 plugin.getLogger().severe("Spawn adasi bilgileri okunamadi: " + e.getMessage());
+            }
+        }
+        if (arenaLayout == null) {
+            try {
+                arenaLayout = ArenaLayout.load(plugin);
+            } catch (IOException | RuntimeException e) {
+                plugin.getLogger().severe("KOTH arenasi bilgileri okunamadi: " + e.getMessage());
             }
         }
         protect = plugin.getConfig().getBoolean("spawn-adasi.koruma.aktif", true);
@@ -158,6 +184,7 @@ final class SpawnModule implements Module {
     private void loadOrigin() {
         world = null;
         portals.clear();
+        loadArenaOrigin();
         DataStore.Origin origin = plugin.data().islandOrigin();
         if (origin == null || layout == null) {
             return;
@@ -177,11 +204,60 @@ final class SpawnModule implements Module {
         koth = layout.koth.shift(ox, oy, oz);
         for (Map.Entry<String, IslandLayout.Portal> entry : layout.portals.entrySet()) {
             IslandLayout.Portal portal = entry.getValue();
-            portals.put(entry.getKey(), new AbsPortal(entry.getKey(), portal.area().shift(ox, oy, oz), portal.command()));
+            portals.put(entry.getKey(), new AbsPortal(entry.getKey(), world, portal.area().shift(ox, oy, oz), portal.command()));
         }
     }
 
+    private void loadArenaOrigin() {
+        arenaWorld = null;
+        DataStore.Origin origin = plugin.data().origin("koth-arenasi");
+        if (origin == null || arenaLayout == null) {
+            return;
+        }
+        arenaWorld = plugin.getServer().getWorld(origin.world());
+        if (arenaWorld == null) {
+            plugin.getLogger().warning("KOTH arenasinin kuruldugu dunya bulunamadi: " + origin.world());
+            return;
+        }
+        ax = origin.x();
+        ay = origin.y();
+        az = origin.z();
+        arenaArea = arenaLayout.bounds.shift(ax, ay, az).grow(3, 3);
+        arenaZone = new Box(arenaArea.minX() - 8, arenaArea.minY() - 8, arenaArea.minZ() - 8,
+                arenaArea.maxX() + 8, arenaArea.maxY() + 64, arenaArea.maxZ() + 8);
+        arenaHill = arenaLayout.hill.shift(ax, ay, az);
+        portals.put("koth-arenasi", new AbsPortal("koth-arenasi", arenaWorld, arenaLayout.portal.shift(ax, ay, az), "koth katil"));
+    }
+
     // ---- Diger modullerin kullandigi bilgiler ----
+
+    boolean arenaBuilt() {
+        return arenaWorld != null;
+    }
+
+    /** Ada ya da KOTH arenasi icinde mi (koruma, parasut ve portallar icin). */
+    boolean inZone(Location location) {
+        return onIsland(location) || inKothArena(location);
+    }
+
+    boolean inKothArena(Location location) {
+        return arenaWorld != null && location.getWorld() == arenaWorld && arenaArea.contains(location);
+    }
+
+    /** KOTH etkinliginin yapildigi dunya (arena varsa arena, yoksa ada). */
+    World kothWorld() {
+        return arenaWorld != null ? arenaWorld : world;
+    }
+
+    /** /koth katil: arenada rastgele bir us; arena yoksa adadaki arena; hicbiri yoksa null. */
+    Location kothJoinLocation() {
+        if (arenaWorld != null && !arenaLayout.spawns.isEmpty()) {
+            IslandLayout.Point point = arenaLayout.spawns.get(ThreadLocalRandom.current().nextInt(arenaLayout.spawns.size()));
+            return point.toLocation(arenaWorld, ax, ay, az);
+        }
+        IslandLayout.Point warp = world == null ? null : layout.warps.get("arena");
+        return warp == null ? null : warp.toLocation(world, ox, oy, oz);
+    }
 
     boolean built() {
         return world != null;
@@ -199,8 +275,11 @@ final class SpawnModule implements Module {
         return world != null && location.getWorld() == world && arena.contains(location);
     }
 
-    /** KOTH alani (gercek koordinat); ada kurulmadiysa null. */
+    /** KOTH alani (gercek koordinat): arenadaki tepe, arena yoksa adadaki altin platform; hicbiri yoksa null. */
     Box kothArea() {
+        if (arenaWorld != null) {
+            return arenaHill;
+        }
         return world == null ? null : koth;
     }
 
@@ -226,7 +305,46 @@ final class SpawnModule implements Module {
                 "y", plugin.getConfig().getInt("spawn-adasi.konum.y", 200),
                 "z", plugin.getConfig().getInt("spawn-adasi.konum.z", 0),
                 "durum", built() ? plugin.messages().raw("spawn-adasi.mesajlar.durum-kurulu", "x", ox, "y", oy, "z", oz)
+                        : plugin.messages().raw("spawn-adasi.mesajlar.durum-yok"),
+                "ax", plugin.getConfig().getInt("koth-arenasi.konum.x", 0),
+                "ay", plugin.getConfig().getInt("koth-arenasi.konum.y", 200),
+                "az", plugin.getConfig().getInt("koth-arenasi.konum.z", 220),
+                "arena-durum", arenaBuilt() ? plugin.messages().raw("spawn-adasi.mesajlar.durum-kurulu", "x", ax, "y", ay, "z", az)
                         : plugin.messages().raw("spawn-adasi.mesajlar.durum-yok"));
+    }
+
+    /** Kurulacak yapi: blueprint, dunya ve merkez noktasi. */
+    private record Job(String name, Blueprint blueprint, World world, int x, int y, int z) {
+        DataStore.Origin origin() {
+            return new DataStore.Origin(world.getName(), x, y, z);
+        }
+    }
+
+    /** Ayardaki yapiyi hazirlar; sorun varsa gonderene yazar ve null dondurur. */
+    private Job prepare(CommandSender sender, String section, String resource, String name, int defaultZ) {
+        Messages messages = plugin.messages();
+        String worldName = plugin.getConfig().getString(section + ".dunya", "world");
+        World target = plugin.getServer().getWorld(worldName);
+        if (target == null) {
+            messages.send(sender, "spawn-adasi.mesajlar.dunya-yok", "dunya", worldName);
+            return null;
+        }
+        Blueprint blueprint;
+        try {
+            blueprint = Blueprint.load(plugin, resource);
+        } catch (IOException | RuntimeException e) {
+            messages.send(sender, "spawn-adasi.mesajlar.hata", "hata", e.getMessage());
+            return null;
+        }
+        int x0 = plugin.getConfig().getInt(section + ".konum.x", 0);
+        int y0 = plugin.getConfig().getInt(section + ".konum.y", 200);
+        int z0 = plugin.getConfig().getInt(section + ".konum.z", defaultZ);
+        if (y0 + blueprint.bounds.minY() <= target.getMinHeight() || y0 + blueprint.bounds.maxY() >= target.getMaxHeight()) {
+            messages.send(sender, "spawn-adasi.mesajlar.yukseklik", "yapi", name,
+                    "min", target.getMinHeight() - blueprint.bounds.minY() + 1, "max", target.getMaxHeight() - blueprint.bounds.maxY() - 1);
+            return null;
+        }
+        return new Job(name, blueprint, target, x0, y0, z0);
     }
 
     void install(CommandSender sender) {
@@ -235,31 +353,41 @@ final class SpawnModule implements Module {
             messages.send(sender, "spawn-adasi.mesajlar.kurulum-suruyor");
             return;
         }
-        String worldName = plugin.getConfig().getString("spawn-adasi.dunya", "world");
-        World target = plugin.getServer().getWorld(worldName);
-        if (target == null) {
-            messages.send(sender, "spawn-adasi.mesajlar.dunya-yok", "dunya", worldName);
-            return;
-        }
         if (layout == null) {
             messages.send(sender, "spawn-adasi.mesajlar.hata", "hata", "spawn/ada.yml okunamadi");
             return;
         }
-        Blueprint blueprint;
-        try {
-            blueprint = Blueprint.load(plugin);
-        } catch (IOException | RuntimeException e) {
-            messages.send(sender, "spawn-adasi.mesajlar.hata", "hata", e.getMessage());
+        Job island = prepare(sender, "spawn-adasi", "spawn/ada.bp.gz", messages.raw("spawn-adasi.mesajlar.yapi-ada"), 0);
+        if (island == null) {
             return;
         }
-        int x0 = plugin.getConfig().getInt("spawn-adasi.konum.x", 0);
-        int y0 = plugin.getConfig().getInt("spawn-adasi.konum.y", 200);
-        int z0 = plugin.getConfig().getInt("spawn-adasi.konum.z", 0);
-        if (y0 + blueprint.bounds.minY() <= target.getMinHeight() || y0 + blueprint.bounds.maxY() >= target.getMaxHeight()) {
-            messages.send(sender, "spawn-adasi.mesajlar.yukseklik", "min", target.getMinHeight() - blueprint.bounds.minY() + 1,
-                    "max", target.getMaxHeight() - blueprint.bounds.maxY() - 1);
+        Job arena = null;
+        if (arenaLayout != null && plugin.getConfig().getBoolean("koth-arenasi.aktif", true)) {
+            arena = prepare(sender, "koth-arenasi", "koth/arena.bp.gz", messages.raw("spawn-adasi.mesajlar.yapi-arena"), 220);
+            if (arena == null) {
+                return;
+            }
+        }
+        List<Job> jobs = new ArrayList<>();
+        jobs.add(island);
+        if (arena != null) {
+            jobs.add(arena);
+        }
+        int blocks = jobs.stream().mapToInt(job -> job.blueprint().solidCount()).sum();
+        messages.send(sender, "spawn-adasi.mesajlar.kurulum-basladi", "blok", blocks);
+        Job arenaJob = arena;
+        build(sender, jobs, 0, () -> finishInstall(sender, island.origin(), arenaJob == null ? null : arenaJob.origin()));
+    }
+
+    /** Yapilari sirayla, her tick'te belli sayida blok koyarak kurar. */
+    private void build(CommandSender sender, List<Job> jobs, int index, Runnable done) {
+        if (index >= jobs.size()) {
+            done.run();
             return;
         }
+        Job job = jobs.get(index);
+        Blueprint blueprint = job.blueprint();
+        Messages messages = plugin.messages();
         BlockData[] palette = new BlockData[blueprint.palette.length];
         for (int i = 0; i < palette.length; i++) {
             palette[i] = parseBlock(blueprint.palette[i]);
@@ -267,7 +395,6 @@ final class SpawnModule implements Module {
         BlockData air = Material.AIR.createBlockData();
         int perTick = Math.max(1000, plugin.getConfig().getInt("spawn-adasi.tick-basina-blok", 40000));
         int total = blueprint.size();
-        messages.send(sender, "spawn-adasi.mesajlar.kurulum-basladi", "blok", blueprint.solidCount());
         int[] cursor = {0};
         int[] lastPercent = {-1};
         buildTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
@@ -275,7 +402,7 @@ final class SpawnModule implements Module {
             for (int i = cursor[0]; i < end; i++) {
                 int cell = blueprint.cell(i);
                 BlockData data = cell < 0 ? air : palette[cell];
-                Block block = target.getBlockAt(x0 + blueprint.x(i), y0 + blueprint.y(i), z0 + blueprint.z(i));
+                Block block = job.world().getBlockAt(job.x() + blueprint.x(i), job.y() + blueprint.y(i), job.z() + blueprint.z(i));
                 if (!block.getBlockData().equals(data)) {
                     block.setBlockData(data, false);
                 }
@@ -284,12 +411,12 @@ final class SpawnModule implements Module {
             int percent = (int) (100L * end / total);
             if (sender instanceof Player player && player.isOnline() && percent / 5 != lastPercent[0] / 5) {
                 lastPercent[0] = percent;
-                messages.actionBar(player, "spawn-adasi.mesajlar.kurulum-ilerleme", "yuzde", percent);
+                messages.actionBar(player, "spawn-adasi.mesajlar.kurulum-ilerleme", "yapi", job.name(), "yuzde", percent);
             }
             if (end >= total) {
                 buildTask.cancel();
                 buildTask = null;
-                finishInstall(sender, new DataStore.Origin(target.getName(), x0, y0, z0));
+                build(sender, jobs, index + 1, done);
             }
         }, 1L, 1L);
     }
@@ -312,8 +439,11 @@ final class SpawnModule implements Module {
         }
     }
 
-    private void finishInstall(CommandSender sender, DataStore.Origin origin) {
+    private void finishInstall(CommandSender sender, DataStore.Origin origin, DataStore.Origin arenaOrigin) {
         plugin.data().setIslandOrigin(origin);
+        if (arenaOrigin != null) {
+            plugin.data().setOrigin("koth-arenasi", arenaOrigin);
+        }
         plugin.data().save();
         loadOrigin();
         Integrations integrations = plugin.integrations();
@@ -337,21 +467,79 @@ final class SpawnModule implements Module {
         messages.send(sender, "spawn-adasi.mesajlar.kurulum-bitti", "warp", warps + "/" + layout.warps.size(),
                 "hologram", holograms + "/" + layout.holograms.size(),
                 "spawn", essentialsSpawn ? "EssentialsX" : messages.raw("spawn-adasi.mesajlar.sadece-dunya-spawni"));
+        if (arenaOrigin != null && arenaWorld != null) {
+            finishArena(sender);
+        }
         if (sender instanceof Player player && player.isOnline()) {
             player.teleport(spawn);
             Messages.sound(player, "ui.toast.challenge_complete", 1.0f);
         }
-        plugin.getLogger().info("Spawn adasi kuruldu: " + origin);
+        plugin.getLogger().info("Spawn adasi kuruldu: " + origin + (arenaOrigin != null ? ", KOTH arenasi: " + arenaOrigin : ""));
+    }
+
+    /** Arenanin warp'i, hologrami, yapimci kafalari ve tabelalari. */
+    private void finishArena(CommandSender sender) {
+        Integrations integrations = plugin.integrations();
+        boolean warp = integrations.setWarp("koth", arenaLayout.lobby.toLocation(arenaWorld, ax, ay, az));
+        int holograms = 0;
+        for (Map.Entry<String, IslandLayout.Hologram> hologram : arenaLayout.holograms.entrySet()) {
+            if (integrations.createHologram(hologram.getKey(), hologram.getValue().position().toLocation(arenaWorld, ax, ay, az),
+                    hologram.getValue().lines())) {
+                holograms++;
+            }
+        }
+        int heads = 0;
+        for (ArenaLayout.Head head : arenaLayout.heads) {
+            try {
+                if (arenaWorld.getBlockAt(ax + head.x(), ay + head.y(), az + head.z()).getState() instanceof Skull skull) {
+                    skull.setProfile(ResolvableProfile.resolvableProfile()
+                            .uuid(java.util.UUID.fromString(head.uuid()))
+                            .name(head.name())
+                            .addProperty(new ProfileProperty("textures", head.texture(), head.signature().isEmpty() ? null : head.signature()))
+                            .build());
+                    skull.update(true, false);
+                    heads++;
+                }
+            } catch (RuntimeException e) {
+                plugin.getLogger().warning("Yapimci kafasi konamadi (" + head.name() + "): " + e);
+            }
+        }
+        int signs = 0;
+        for (ArenaLayout.SignText text : arenaLayout.signs) {
+            try {
+                Block block = arenaWorld.getBlockAt(ax + text.x(), ay + text.y(), az + text.z());
+                block.setBlockData(parseBlock(text.block()), false);
+                if (block.getState() instanceof Sign sign) {
+                    SignSide side = sign.getSide(Side.FRONT);
+                    for (int i = 0; i < 4 && i < text.lines().size(); i++) {
+                        side.line(i, Messages.color(text.lines().get(i)));
+                    }
+                    sign.setWaxed(true);
+                    sign.update(true, false);
+                    signs++;
+                }
+            } catch (RuntimeException e) {
+                plugin.getLogger().warning("Tabela yazilamadi: " + e);
+            }
+        }
+        plugin.messages().send(sender, "spawn-adasi.mesajlar.arena-bitti", "warp", warp ? "/warp koth" : "-",
+                "hologram", holograms, "kafa", heads + "/" + arenaLayout.heads.size(), "tabela", signs + "/" + arenaLayout.signs.size());
     }
 
     // ---- Koruma ----
 
     private boolean guarded(Location location) {
-        return protect && onIsland(location);
+        return protect && inZone(location);
     }
 
     private boolean guarded(Block block) {
-        return protect && world != null && block.getWorld() == world && area.contains(block.getX(), block.getY(), block.getZ());
+        if (!protect) {
+            return false;
+        }
+        if (world != null && block.getWorld() == world && area.contains(block.getX(), block.getY(), block.getZ())) {
+            return true;
+        }
+        return arenaWorld != null && block.getWorld() == arenaWorld && arenaArea.contains(block.getX(), block.getY(), block.getZ());
     }
 
     private boolean deny(Player player, Location location) {
@@ -524,10 +712,13 @@ final class SpawnModule implements Module {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (!noMobs || world == null || event.getLocation().getWorld() != world) {
+        Location location = event.getLocation();
+        if (!noMobs || !HOSTILE_SPAWNS.contains(event.getSpawnReason().name())) {
             return;
         }
-        if (spawnZone.contains(event.getLocation()) && HOSTILE_SPAWNS.contains(event.getSpawnReason().name())) {
+        boolean nearIsland = world != null && location.getWorld() == world && spawnZone.contains(location);
+        boolean nearArena = arenaWorld != null && location.getWorld() == arenaWorld && arenaZone.contains(location);
+        if (nearIsland || nearArena) {
             event.setCancelled(true);
         }
     }
@@ -586,16 +777,16 @@ final class SpawnModule implements Module {
     public void onMove(PlayerMoveEvent event) {
         Location to = event.getTo();
         Location from = event.getFrom();
-        if (world == null || portals.isEmpty() || (from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY()
+        if (portals.isEmpty() || (from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY()
                 && from.getBlockZ() == to.getBlockZ())) {
             return;
         }
         Player player = event.getPlayer();
         UUID id = player.getUniqueId();
         AbsPortal portal = null;
-        if (to.getWorld() == world && area.contains(to)) {
+        if (inZone(to)) {
             for (AbsPortal candidate : portals.values()) {
-                if (candidate.area().contains(to)) {
+                if (candidate.world() == to.getWorld() && candidate.area().contains(to)) {
                     portal = candidate;
                     break;
                 }
@@ -637,26 +828,27 @@ final class SpawnModule implements Module {
     }
 
     private void particles() {
-        if (!portalEffects || world == null) {
+        if (!portalEffects) {
             return;
         }
         ThreadLocalRandom random = ThreadLocalRandom.current();
         for (AbsPortal portal : portals.values()) {
             Box box = portal.area();
-            Location center = box.center(world);
-            if (world.getNearbyPlayers(center, 40).isEmpty()) {
+            World portalWorld = portal.world();
+            Location center = box.center(portalWorld);
+            if (portalWorld.getNearbyPlayers(center, 40).isEmpty()) {
                 continue;
             }
-            boolean wild = "vahsi".equals(portal.command());
+            boolean wild = !"market".equals(portal.command());
             int count = wild ? 30 : 6;
             for (int i = 0; i < count; i++) {
                 double x = box.minX() + random.nextDouble() * box.sizeX();
                 double y = box.minY() + random.nextDouble() * (wild ? box.sizeY() : 0.4);
                 double z = box.minZ() + random.nextDouble() * box.sizeZ();
-                world.spawnParticle(wild ? Particle.PORTAL : Particle.HAPPY_VILLAGER, x, y, z, 1, 0, 0, 0, 0);
+                portalWorld.spawnParticle(wild ? Particle.PORTAL : Particle.HAPPY_VILLAGER, x, y, z, 1, 0, 0, 0, 0);
             }
             if (wild) {
-                world.spawnParticle(Particle.END_ROD, center, 2, box.sizeX() / 3.0, box.sizeY() / 3.0, 0.2, 0.01);
+                portalWorld.spawnParticle(Particle.END_ROD, center, 2, box.sizeX() / 3.0, box.sizeY() / 3.0, 0.2, 0.01);
             }
         }
     }
@@ -664,28 +856,31 @@ final class SpawnModule implements Module {
     // ---- Parasut: adadan atlayanlar ----
 
     private void tick() {
-        if (!parachute || world == null) {
+        if (!parachute || (world == null && arenaWorld == null)) {
             falling.clear();
             return;
         }
         long now = System.currentTimeMillis();
-        for (Player player : world.getPlayers()) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             UUID id = player.getUniqueId();
             Location at = player.getLocation();
+            World here = at.getWorld();
+            if (here != world && here != arenaWorld) {
+                continue;
+            }
             if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR
                     || player.isFlying() || player.isGliding()) {
                 stopFalling(player);
                 continue;
             }
-            if (area.contains(at)) {
+            if (inZone(at)) {
                 lastOnIsland.put(id, now);
             }
             Long since = falling.get(id);
             if (since == null) {
-                // Adadan yeni ayrilmis (son 5 sn), adanin disinda ve dusuyor
+                // Adadan ya da arenadan yeni ayrilmis (son 5 sn), disarida ve dusuyor
                 Long seen = lastOnIsland.get(id);
-                if (seen != null && now - seen < 5000 && !area.contains(at) && at.getY() < oy
-                        && player.getFallDistance() > 2 && !standing(player)) {
+                if (seen != null && now - seen < 5000 && !inZone(at) && player.getFallDistance() > 2 && !standing(player)) {
                     falling.put(id, now);
                     plugin.messages().actionBar(player, "spawn-adasi.mesajlar.parasut");
                     Messages.sound(player, "entity.phantom.flap", 1.2f);
@@ -698,8 +893,8 @@ final class SpawnModule implements Module {
                 }
                 continue;
             }
-            world.spawnParticle(Particle.CLOUD, at.clone().add(0, 0.2, 0), 3, 0.3, 0.1, 0.3, 0.01);
-            int ground = world.getHighestBlockYAt(at.getBlockX(), at.getBlockZ(), HeightMap.MOTION_BLOCKING);
+            here.spawnParticle(Particle.CLOUD, at.clone().add(0, 0.2, 0), 3, 0.3, 0.1, 0.3, 0.01);
+            int ground = here.getHighestBlockYAt(at.getBlockX(), at.getBlockZ(), HeightMap.MOTION_BLOCKING);
             if (!slowed.contains(id) && at.getY() - ground <= parachuteHeight) {
                 slowed.add(id);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20 * 20, 0, true, false, true));

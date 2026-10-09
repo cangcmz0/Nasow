@@ -1,0 +1,63 @@
+# Sky Survival KOTH arenasi: "The Hill" (Articray, TheZaner, xXFracXx; ItsMiiOlly, ElectroidFilms)
+# Lisans: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
+# Kaynak: https://github.com/OvercastCommunity/PublicMaps (koth/the_hill) - tools/import_map.py ile cevrildi.
+# Koordinatlar tepenin merkezine gore.
+boyut: {min: [-84, -29, -70], max: [50, 11, 70]}
+
+# Tepe (KOTH alani): orijinalde 6.5 yaricapli silindir
+tepe: {min: [-6, 0, -6], max: [6, 4, 6]}
+
+# Oyuncularin indigi yerler (iki uctaki ussler); /koth katil rastgele birini secer
+dogus-noktalari:
+  - {x: 0.5, y: -20, z: -65.5, yaw: 0}
+  - {x: 0.5, y: -20, z: 66.5, yaw: 180}
+
+# Yapimcilar adasi (haritanin sahiplerinin kafalari ve tabelalari burada): /warp koth buraya gelir.
+# Ortadaki isaretin ustune basan arenaya (rastgele bir usse) gecer.
+tanitim: {x: -69.5, y: 9, z: 0.5, yaw: 90}
+portal: {min: [-75, 9, -1], max: [-73, 11, 1]}
+
+# Orijinal yapimci kafalari (Paper API ile kaplamalari geri yuklenir)
+kafalar:
+  - {x: -82, y: 10, z: 2, isim: "Frac", uuid: "06078e7e-6a7b-4d31-8f74-853072b182bb",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MDk4MDkzMDYsInByb2ZpbGVJZCI6IjA2MDc4ZTdlNmE3YjRkMzE4Zjc0ODUzMDcyYjE4MmJiIiwicHJvZmlsZU5hbWUiOiJGcmFjIiwiaXNQdWJsaWMiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS80YTY0NjEyMTdkNjUzYjk3Y2ZjNmRhN2ZmYWM4OTlkOTVmNjYzODJjNjgwZDdmMDU1NmIxNmNiN2MzMGUwIn19fQ==",
+     imza: "qKILJyblOkGClxkG9Sp7gtkSSN7hvk/8ZDjQR3KSVdO0xhvN+bhRfK8iTJd1O/TMwR61mJKDqQa6Ud4598q0QEXQJUOEl+HcIlg2/Ld36aUCBY0N/kCuu6jYUtgpfVjmdFHl9So5rwZNB1mDn3NdG4zUX/u3S+kYs8AY/EjHe3fXlHl8HtjogWVWX2+RKd67zAwRd2eKdGOR7Zw3dcaB3rhPJF9V5L+c78sPdSYAZ7OuMZxR2zJYuvj1qGXZXcaPGULZLZf64VWlxxEvW67PvUnHliQ7LsNbFTVsAYdVzcw0JJ9qyEFvMGEBKMpk+NaBjdNU32GbPEX6m+QjZnqtwRbmFo0NUScPWO+0eFZIzpYEV0jsIg56CBgHf2vmZYuF85x3sP3QNWIbySFeH6m86j9D5yrFKEZ8aLT2bo9DtFbtiS+ztEviKGeDDE71IMs1Vw6jWFc1dBXP+en6U/81Oe9IVt6u+/3AhEfnArm4ZtzhFPfvcu/q4t45h1kxgf7ic/ZY3NpKl2w8sGO5dgjZaD6SbT2jHXTDC4rlOft1rKux+jL9CfgLXdJCNjk6hy3va6UoGKFk177U+7sc5jwIwWJjFDZrZNE6ocY8M2pQkzKLk9FAwrLQ+WYFNfkIzQs++gu2KXhzxR+MPIyMpQeES+IWO80/rj/7u5KD/HcvPO8="}
+  - {x: -81, y: 10, z: 4, isim: "Electric", uuid: "dad8b95c-cf6a-44df-982e-8c8dd70201e0",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MDk4MTM2MTUsInByb2ZpbGVJZCI6ImRhZDhiOTVjY2Y2YTQ0ZGY5ODJlOGM4ZGQ3MDIwMWUwIiwicHJvZmlsZU5hbWUiOiJFbGVjdHJpYyIsImlzUHVibGljIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjY2NDk2NTJiMjc2YWUxMzhmYmRlZGNkZjljMTM1MzRmYWM5N2IyMzc5YzQ3ZTkzNTdmZmZkZWY0ZTE4ZGEifX19",
+     imza: "TiJkQ4/vEEnzxb2RZha7gbtQHw/b6OtVAaDDv+kyH6iZnyBiSmA1vl5yOZwjqG1NrkNnWjZz2z2tJXz61D3gqy7C2pLV2vDOAwpj8cCyQVN5pfwObfK4dtR66Oqcage4hu9cti/PjI4ewdhjv8Caaa7bgJANVEYsTr7r7JtHO/87/TMTde6WfWqzaOFstRdZ99WHgDJPHxIvg7y97SmuZFDKYkzUB/wj/te/0cnWtl+XlOHUh5F/+0+TKARKAFX0ngpTxQ29S7qrDczXDuX6mPQ+muPKipd9/eCzUYpcKAg2NeqhkZxqxxoM59TtMm2/jplOwZzC9haZd3U7cogtDzIBfBuWVQC9dbhchgqjl0gWO+ThrxdmlAtIB6EHcFGknySxBt58oNSMHzjrwjNoF1nU8qpwqvRytlLg8scKJHCq93G1+mVpR4iETgJhj2oZZCx7Vf7KvSWc1Vhpe63qC2ArJNqmkIdV7i2WpwQQI1b22SlZSTUUw2YlesIgv2f7kz/r/Ihzc+IXUlOq7NhV/8xndzBeLJD9OIOvaeS4Pbra4oe36Vm24EHQWeJ//9CgUM3AOEz1X2s9gc8Qv3Z9X3X049nK5FKgXHW8S9JzBit2tH8M/wn6MblXH/9DKcBVsgeE7gghGvHO7+R+EsAsK/eMNyquikOVnW/ZaCEcDGA="}
+  - {x: -81, y: 10, z: -4, isim: "ollyj", uuid: "ba4a93aa-4935-4a71-bab2-a58f9a124e7b",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MDk4MDc4MzMsInByb2ZpbGVJZCI6ImJhNGE5M2FhNDkzNTRhNzFiYWIyYTU4ZjlhMTI0ZTdiIiwicHJvZmlsZU5hbWUiOiJvbGx5aiIsImlzUHVibGljIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2Y5MGJhMjM5YWYzMWYzMThjMTlhN2QzYjI1YzRjZjhmOTE4ZTJmYTJjZjQyNTE5ZjQ3NWJhMjQwYjNlIn19fQ==",
+     imza: "XZqDBaXhwnpZ72Gy52SKTKDVk9MrSe0vn3VoDEabv6c1dcvxruNMvQF/l56cx6wyNsIhW+fkJKRW4knSP2Y0Tny5ADMdNsk5EiziMFkAPoPUXnhP+BbFeTaksrUssT+Q7nzYz1UrmTtQS+wLoemy4XGMdBh/5dPqAKP5iTV1QoxvMSrZ+dLliPp1QoSVWneLmlWgsj18ge0GMg4lwnEl6Kt0VrCrn20kyyWkTIdysyhOr9OEPohshVJyhw38zU4tk2/ie88oyjYZJgOY/mz9ppGXi5BeAcbjJmvsDpSiLYUbSLm+RseCxVMvB0ecddjI8kjkhAdyEoas4InOEynEUVZsE7O07dpzR8yBlEqjGMp6pKJ8mBw5UsjP/BGqbCndGyrQ9PagtFf+R5zZ9qNk1beByzOVo8+gV8c+9LEZMMvscv2Eq1PETWk7BaqTKlGgJkE8f0SVVeJqDvH0GjH6pwjMBYmGESqUB5sc2WhmcDp2xXNDxCWsWYGGGGflqe9KEWR18/PWCg+WjITMzb8quXwEUmWvD4cEcpF2MlFGGE6f1b9b45RIYLBv2x647cmpQFDrLPRCPTIhRPJvhczL4k6mcQ4o7+PaNUWhx6mcN0D92toHSTYKA3+m+YJWUNV/HVhPYC7WRVH3464OsU894IOdfnrer1W1M8oRl/aYxWM="}
+  - {x: -82, y: 10, z: -2, isim: "Zan", uuid: "9bfbc560-244a-4e28-ab70-185f39740ec1",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MTAyODM2NTcsInByb2ZpbGVJZCI6IjliZmJjNTYwMjQ0YTRlMjhhYjcwMTg1ZjM5NzQwZWMxIiwicHJvZmlsZU5hbWUiOiJaYW4iLCJpc1B1YmxpYyI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2VkNWU4ZTExYTdkNTNhN2UyNDEzMjE4MjllNjBlM2U4ZGM1ZGZhZWE3MDRlOGU1YWJhMTA1ZWYxZTYyOSJ9fX0=",
+     imza: "kWiG84TEDqDKNnpHElf+CV6BHt1rntLPwjZ1dspfkFmKkaU1w0CEUaytZC32QQh9gXvE1d+ask88ag9BSzDhm9ADY94+stWdiFPNyTlUJaWUNIrD9VSlglrOg3BRDiZUyPm9FUXzCMNk3AbWmV2yObUozcBq6lMJbD5+jeENCLh0CbQKRgGFmnP6+iVEbM7uwTUIiN9MKt+CYcqUJkz/q1+fc5X3eE0WuExFrPi6YldzDZuxQmN7BJT0PGIQof7bIktg2honYTb7flU+ztUSeLh3P01aaQbrGNdRvXB707t1y2DC5v3bJU2lzcALqedRShOyPkbuXNvPBtQmnMyjeAiDU6jDmO6eGvplcUlx7QS6fvMRLBkpIEOnSKQz8COBsbyTWGd7c1WdFVM77ztaiPQypg5IGWwm3mWEigmWJmNKhsMLX8dB+CYOuuN1IrwV4OV+3/E3NeQbzs0ATK4Hod6/7zOYSf2ceOZKUg9LUEFZgJFciA8d2DWUChleJYKhkKuhPZnRNv4rNBj/XAPevmudXwu7gt7e17Bfv1vwj1TnWIF7WesUu7MbNTSXq9fv8fdP0R+ANcQxXUD03Johh2h6nqJDhO8GXreerXKxES5tmI3W7q33ZtOnoK1J9/W4uO5imd6h+lNbDqz8XkgdrH0tltAhLkzI2zDa+PVkNes="}
+  - {x: -82, y: 10, z: 0, isim: "Articray", uuid: "374988d6-4569-444e-885a-409c2f55e310",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MTAyODQzNTksInByb2ZpbGVJZCI6IjM3NDk4OGQ2NDU2OTQ0NGU4ODVhNDA5YzJmNTVlMzEwIiwicHJvZmlsZU5hbWUiOiJBcnRpY3JheSIsImlzUHVibGljIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWFkMTA1OWM4NjVhNjIyZGVhYWExZjk3YmQ2NDUyN2Y2OWYxYmI0MmEzYmYxODEyN2FmNTUxYmY3MDJlMTMifX19",
+     imza: "PLuF+qgbXWc5gfb44WBkLC0TCIyjKGyZeiCJg5kU++x1sSgaYjDcfki1llhGlOTTHTRZXSTkjASGhOJnDYxSzGADMiAYE9C5Ot0Inhq2xt35DG+kgMUDfVEMfebzZS8wd4iHlZWFWoQ6PF5XKeHMkYnah8Xu0EjU178FzOOLEOouQX5jECi3jqznvakNbqDbPpiB4bvNEY3uxrecoxrWafb4qsvUN/RFG+CjY+TNcJvAhpsvEWWbxnrlJMhSdFtZGRbBB9mq9vtiwUsa1xw1WS7z5ydiMHass2+M20Dfe883oDGgBqI7S8W4Qee37+HytJSN1jMSVe90mIVvO7TH1Z2/xTJ8nFMTnZtV85chaTmj7ocOCwj/DmQgMC5dGbNIjacspuAKBjmhkXo1zzm1cCXKwH50QrBKmVXNA4kBk5WpBlBFLb7EdtYJ/U+oSXIQqOteJkJe7vOKG7vpIiqzs+jOHK64MmFabWcFqtnj5PzfdlkdMvWxEgzrLpHeBLvddsHyw1TWKt4T+11+jVRsgF57ra2TGryHCE7xudvf5ht1bvICEJ6wxao4AM+S0W4uIUjvSuIA//vi5enF/ah9tMibsUqUcsdYhQ9/pMemnH9rJNLCIBhzU8ernI/+26tB4tEPP24u8hoR0z30GGkWCzMjGXd/iqrbpLeiB/d8Ipo="}
+  - {x: -1, y: -25, z: -1, isim: "Zan", uuid: "9bfbc560-244a-4e28-ab70-185f39740ec1",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MTAyODM2NTcsInByb2ZpbGVJZCI6IjliZmJjNTYwMjQ0YTRlMjhhYjcwMTg1ZjM5NzQwZWMxIiwicHJvZmlsZU5hbWUiOiJaYW4iLCJpc1B1YmxpYyI6dHJ1ZSwidGV4dHVyZXMiOnsiU0tJTiI6eyJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2VkNWU4ZTExYTdkNTNhN2UyNDEzMjE4MjllNjBlM2U4ZGM1ZGZhZWE3MDRlOGU1YWJhMTA1ZWYxZTYyOSJ9fX0=",
+     imza: "kWiG84TEDqDKNnpHElf+CV6BHt1rntLPwjZ1dspfkFmKkaU1w0CEUaytZC32QQh9gXvE1d+ask88ag9BSzDhm9ADY94+stWdiFPNyTlUJaWUNIrD9VSlglrOg3BRDiZUyPm9FUXzCMNk3AbWmV2yObUozcBq6lMJbD5+jeENCLh0CbQKRgGFmnP6+iVEbM7uwTUIiN9MKt+CYcqUJkz/q1+fc5X3eE0WuExFrPi6YldzDZuxQmN7BJT0PGIQof7bIktg2honYTb7flU+ztUSeLh3P01aaQbrGNdRvXB707t1y2DC5v3bJU2lzcALqedRShOyPkbuXNvPBtQmnMyjeAiDU6jDmO6eGvplcUlx7QS6fvMRLBkpIEOnSKQz8COBsbyTWGd7c1WdFVM77ztaiPQypg5IGWwm3mWEigmWJmNKhsMLX8dB+CYOuuN1IrwV4OV+3/E3NeQbzs0ATK4Hod6/7zOYSf2ceOZKUg9LUEFZgJFciA8d2DWUChleJYKhkKuhPZnRNv4rNBj/XAPevmudXwu7gt7e17Bfv1vwj1TnWIF7WesUu7MbNTSXq9fv8fdP0R+ANcQxXUD03Johh2h6nqJDhO8GXreerXKxES5tmI3W7q33ZtOnoK1J9/W4uO5imd6h+lNbDqz8XkgdrH0tltAhLkzI2zDa+PVkNes="}
+  - {x: 0, y: -25, z: 1, isim: "Articray", uuid: "374988d6-4569-444e-885a-409c2f55e310",
+     doku: "eyJ0aW1lc3RhbXAiOjE0MjM5MTAyODQzNTksInByb2ZpbGVJZCI6IjM3NDk4OGQ2NDU2OTQ0NGU4ODVhNDA5YzJmNTVlMzEwIiwicHJvZmlsZU5hbWUiOiJBcnRpY3JheSIsImlzUHVibGljIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWFkMTA1OWM4NjVhNjIyZGVhYWExZjk3YmQ2NDUyN2Y2OWYxYmI0MmEzYmYxODEyN2FmNTUxYmY3MDJlMTMifX19",
+     imza: "PLuF+qgbXWc5gfb44WBkLC0TCIyjKGyZeiCJg5kU++x1sSgaYjDcfki1llhGlOTTHTRZXSTkjASGhOJnDYxSzGADMiAYE9C5Ot0Inhq2xt35DG+kgMUDfVEMfebzZS8wd4iHlZWFWoQ6PF5XKeHMkYnah8Xu0EjU178FzOOLEOouQX5jECi3jqznvakNbqDbPpiB4bvNEY3uxrecoxrWafb4qsvUN/RFG+CjY+TNcJvAhpsvEWWbxnrlJMhSdFtZGRbBB9mq9vtiwUsa1xw1WS7z5ydiMHass2+M20Dfe883oDGgBqI7S8W4Qee37+HytJSN1jMSVe90mIVvO7TH1Z2/xTJ8nFMTnZtV85chaTmj7ocOCwj/DmQgMC5dGbNIjacspuAKBjmhkXo1zzm1cCXKwH50QrBKmVXNA4kBk5WpBlBFLb7EdtYJ/U+oSXIQqOteJkJe7vOKG7vpIiqzs+jOHK64MmFabWcFqtnj5PzfdlkdMvWxEgzrLpHeBLvddsHyw1TWKt4T+11+jVRsgF57ra2TGryHCE7xudvf5ht1bvICEJ6wxao4AM+S0W4uIUjvSuIA//vi5enF/ah9tMibsUqUcsdYhQ9/pMemnH9rJNLCIBhzU8ernI/+26tB4tEPP24u8hoR0z30GGkWCzMjGXd/iqrbpLeiB/d8Ipo="}
+
+# Tabelalar (orijinal yerlerinde, Turkce)
+tabelalar:
+  - {x: -81, y: 11, z: 2, blok: "minecraft:oak_wall_sign[facing=east]", satirlar: ["", "&2&lxXFracXx", "&aYapımcı", "İnşa ve plan"]}
+  - {x: -80, y: 11, z: 4, blok: "minecraft:oak_wall_sign[facing=east]", satirlar: ["&2&lElectroid", "&2&lFilms", "&aKatkı", "İnşa ve fikir"]}
+  - {x: -80, y: 11, z: -4, blok: "minecraft:oak_wall_sign[facing=east]", satirlar: ["", "&2&lItsMiiOlly", "&aKatkı", "MCEdit / görüş"]}
+  - {x: -81, y: 11, z: -2, blok: "minecraft:oak_wall_sign[facing=east]", satirlar: ["", "&2&lTheZaner", "&aYapımcı", "XML ve plan"]}
+  - {x: -81, y: 11, z: 0, blok: "minecraft:oak_wall_sign[facing=east]", satirlar: ["", "&2&lArticray", "&aYapımcı", "Harita sahibi"]}
+  - {x: -74, y: 11, z: 8, blok: "minecraft:oak_wall_sign[facing=north]", satirlar: ["Hoş geldin!", "&2&lThe Hill", "Articray ve", "arkadaşları"]}
+  - {x: -74, y: 10, z: 8, blok: "minecraft:oak_wall_sign[facing=north]", satirlar: ["&2Tepenin Kralı", "Tepeyi tek", "başına tut,", "ödülü kap!"]}
+  - {x: -75, y: 10, z: 8, blok: "minecraft:oak_wall_sign[facing=north]", satirlar: ["Lisans:", "CC BY-SA 4.0", "Overcast", "Community"]}
+  - {x: -73, y: 10, z: 8, blok: "minecraft:oak_wall_sign[facing=north]", satirlar: ["Arenaya git:", "&2/koth katil", "", "İyi şanslar!"]}
+
+# Hologramlar (DecentHolograms)
+hologramlar:
+  sky_koth_arena:
+    konum: {x: 0.5, y: 9.5, z: 0.5}
+    satirlar:
+      - "&6&l♛ TEPENİN KRALI ♛"
+      - "&7Etkinlikte tepeyi tek başına tut, ödülü kap!"
+      - "&7Harita: &fThe Hill &7- Articray, TheZaner, xXFracXx &8(CC BY-SA 4.0)"

@@ -144,13 +144,14 @@ rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, bur
 # ============================================================================
 #  OYUN ICINDEN yapilacaklar (admin olarak girip, basinda / ile):
 # ============================================================================
-#  1) GOKYUZU SPAWN ADASINI KUR (tek komut, ~2 saniye):
-#     /skycore kurulum                -> nereye kurulacagini gosterir (varsayilan: world 0, 200, 0)
-#     /skycore kurulum onayla         -> adayi kurar ve sunlari OTOMATIK ayarlar:
+#  1) GOKYUZU SPAWN ADASINI VE KOTH ARENASINI KUR (tek komut, birkac saniye):
+#     /skycore kurulum                -> nereye kurulacagini gosterir (ada: world 0,200,0 / arena: 0,200,220)
+#     /skycore kurulum onayla         -> ikisini kurar ve sunlari OTOMATIK ayarlar:
 #        - spawn noktasi (yeni oyuncular ve olenler adaya gelir)
-#        - warplar: /warp market, arena, kasalar, portal, atla
-#        - 10 hologram (DecentHolograms; /dh ile duzenlenebilir)
-#        - 3 kasa (gunluk, nadir, efsane) ve arenadaki KOTH tepesi
+#        - warplar: /warp market, arena, kasalar, portal, atla, koth
+#        - 11 hologram (DecentHolograms; /dh ile duzenlenebilir)
+#        - 3 kasa (gunluk, nadir, efsane)
+#        - "The Hill" KOTH arenasi (CC BY-SA 4.0 harita; yapimci kafalari ve tabelalari dahil)
 #     Ada kendiliginden korunur (blok kirma/koyma, PvP, hasar, aclik, yaratik yok).
 #     Adayi degistirmek icin skycore.spawn.duzenle yetkisi gerekir (OP ve admin grubunda var).
 #     Spawn 0,0 civarinda cok yuksek dag varsa config.yml'de spawn-adasi.konum'u degistir.
@@ -159,6 +160,7 @@ rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, bur
 #     Mesafe ayari: plugins/SkyCore/config.yml -> vahsi-doga (varsayilan 500-5000 blok)
 #
 #  3) KOTH her gun 20:00 ve 22:30'da kendiliginden baslar (config.yml -> koth.saatler).
+#     Oyuncular arenaya /koth katil ile gider.
 #     Elle: /skycore koth baslat | /skycore koth bitir
 #
 #  4) Etkinlik/ozel gun icin herkese anahtar: /skycore anahtar herkes efsane 1
