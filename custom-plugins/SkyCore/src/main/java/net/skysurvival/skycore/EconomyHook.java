@@ -27,6 +27,11 @@ final class EconomyHook {
         return economy != null ? economy.format(amount) : String.format("%,.0f", amount);
     }
 
+    double balance(OfflinePlayer player) {
+        Economy economy = economy();
+        return economy == null ? 0 : economy.getBalance(player);
+    }
+
     boolean has(OfflinePlayer player, double amount) {
         Economy economy = economy();
         return economy != null && economy.has(player, amount);

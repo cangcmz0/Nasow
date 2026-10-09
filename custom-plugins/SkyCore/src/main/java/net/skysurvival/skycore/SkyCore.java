@@ -21,6 +21,7 @@ public class SkyCore extends JavaPlugin implements Listener {
     private EconomyHook economy;
     private DataStore data;
     private AuthHook auth;
+    private Integrations integrations;
 
     private CombatModule combat;
     private ChatGameModule chatGames;
@@ -31,6 +32,12 @@ public class SkyCore extends JavaPlugin implements Listener {
     private AnnouncerModule announcer;
     private DeathModule deaths;
     private WelcomeModule welcome;
+    private SpawnModule spawn;
+    private WildModule wild;
+    private CrateModule crates;
+    private KothModule koth;
+    private ClanModule clans;
+    private MarketModule market;
     private List<Module> modules;
 
     /** AuthMe girisi tamamlanmis ve "hos geldin" islemleri yapilmis oyuncular. */
@@ -39,11 +46,13 @@ public class SkyCore extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        addMissingSettings();
         messages = new Messages(this);
         economy = new EconomyHook(this);
         data = new DataStore(this);
         data.load();
         auth = AuthHook.create(this);
+        integrations = new Integrations(this);
 
         combat = new CombatModule(this);
         chatGames = new ChatGameModule(this);
@@ -54,7 +63,14 @@ public class SkyCore extends JavaPlugin implements Listener {
         announcer = new AnnouncerModule(this);
         deaths = new DeathModule(this);
         welcome = new WelcomeModule(this);
-        modules = List.of(combat, chatGames, banknotes, bounties, dailyRewards, playtime, announcer, deaths, welcome);
+        spawn = new SpawnModule(this);
+        wild = new WildModule(this);
+        crates = new CrateModule(this);
+        koth = new KothModule(this);
+        clans = new ClanModule(this);
+        market = new MarketModule(this);
+        modules = List.of(combat, chatGames, banknotes, bounties, dailyRewards, playtime, announcer, deaths, welcome,
+                spawn, wild, crates, koth, clans, market);
 
         for (Module module : modules) {
             getServer().getPluginManager().registerEvents(module, this);
@@ -71,8 +87,17 @@ public class SkyCore extends JavaPlugin implements Listener {
         InfoCommand info = new InfoCommand(this);
         command("discord", info);
         command("site", info);
+        command("vahsi", wild);
+        command("market", market);
+        command("sat", market);
+        command("klan", clans);
+        command("klansohbet", clans);
+        command("koth", koth);
 
         modules.forEach(Module::start);
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            SkyPlaceholders.register(this);
+        }
         // Veriler dakikada bir (degistiyse) diske yazilir.
         getServer().getScheduler().runTaskTimer(this, data::saveIfDirty, 20L * 60, 20L * 60);
 
@@ -89,6 +114,7 @@ public class SkyCore extends JavaPlugin implements Listener {
     public void onDisable() {
         if (modules != null) {
             modules.forEach(Module::stop);
+            spawn.shutdown();
         }
         if (data != null) {
             data.save();
@@ -97,9 +123,29 @@ public class SkyCore extends JavaPlugin implements Listener {
 
     public void reload() {
         reloadConfig();
+        addMissingSettings();
         messages.reload();
         modules.forEach(Module::stop);
         modules.forEach(Module::start);
+    }
+
+    /**
+     * Eski surumden kalan config.yml'de olmayan yeni ayarlari (ornegin yeni ozelliklerin bolumleri) ekler;
+     * oyuncunun degistirdigi degerlere dokunmaz.
+     */
+    private void addMissingSettings() {
+        org.bukkit.configuration.Configuration defaults = getConfig().getDefaults();
+        if (defaults == null) {
+            return;
+        }
+        for (String key : defaults.getKeys(true)) {
+            if (!getConfig().isSet(key)) {
+                getConfig().options().copyDefaults(true);
+                saveConfig();
+                getLogger().info("config.yml'e yeni surumun ayarlari eklendi.");
+                return;
+            }
+        }
     }
 
     private void command(String name, Object executor) {
@@ -144,6 +190,7 @@ public class SkyCore extends JavaPlugin implements Listener {
         }
         welcome.greet(player);
         dailyRewards.remind(player);
+        koth.showTo(player);
     }
 
     // ---- Diger siniflarin kullandigi ortak parcalar ----
@@ -170,5 +217,33 @@ public class SkyCore extends JavaPlugin implements Listener {
 
     AnnouncerModule announcer() {
         return announcer;
+    }
+
+    Integrations integrations() {
+        return integrations;
+    }
+
+    CombatModule combat() {
+        return combat;
+    }
+
+    SpawnModule spawn() {
+        return spawn;
+    }
+
+    CrateModule crates() {
+        return crates;
+    }
+
+    KothModule koth() {
+        return koth;
+    }
+
+    ClanModule clans() {
+        return clans;
+    }
+
+    MarketModule market() {
+        return market;
     }
 }

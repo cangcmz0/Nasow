@@ -2,10 +2,10 @@ name: SkyCore
 version: '${version}'
 main: net.skysurvival.skycore.SkyCore
 api-version: '1.21'
-description: Sky Survival'a ozel ozellikler (savas modu, sohbet oyunlari, banknot, kelle avi, gunluk odul...)
+description: Sky Survival'a ozel ozellikler (spawn adasi, market, klan, kasa, KOTH, savas modu, sohbet oyunlari, banknot, kelle avi...)
 authors: [Sky Survival]
 depend: [Vault]
-softdepend: [Essentials, AuthMe]
+softdepend: [Essentials, EssentialsSpawn, AuthMe, PlaceholderAPI, DecentHolograms]
 
 commands:
   skycore:
@@ -31,6 +31,32 @@ commands:
   site:
     description: Web sitemiz
     aliases: [web]
+  vahsi:
+    description: Dunyada rastgele guvenli bir yere isinlanma
+    aliases: [wild]
+    permission: skycore.vahsi
+  market:
+    description: Sunucu marketi
+    usage: /market [kategori]
+    aliases: [magaza]
+    permission: skycore.market
+  sat:
+    description: Elindekini ya da satilabilen her seyi markete sat
+    usage: /sat [hepsi]
+    permission: skycore.market
+  klan:
+    description: Klan komutlari
+    usage: /klan [kur|davet|kabul|ayril|bilgi|liste|ev|banka|...]
+    aliases: [clan]
+    permission: skycore.klan
+  klansohbet:
+    description: Klan sohbeti
+    usage: /ks <mesaj>
+    aliases: [ks, kc]
+    permission: skycore.klan
+  koth:
+    description: Tepenin Krali etkinligi bilgisi
+    permission: skycore.koth
 
 permissions:
   skycore.admin:
@@ -42,6 +68,20 @@ permissions:
     default: true
   skycore.odul:
     default: true
+  skycore.vahsi:
+    default: true
+  skycore.vahsi.bekleme-yok:
+    description: /vahsi beklemesi olmadan kullanir
+    default: op
+  skycore.market:
+    default: true
+  skycore.klan:
+    default: true
+  skycore.koth:
+    default: true
+  skycore.spawn.duzenle:
+    description: Korumali spawn adasinda blok kirip koyabilir
+    default: op
   skycore.savas.bypass:
     description: Savas moduna girmez (yetkililer icin)
     default: false

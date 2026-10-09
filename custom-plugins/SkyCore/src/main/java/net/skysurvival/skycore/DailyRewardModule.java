@@ -92,6 +92,11 @@ final class DailyRewardModule implements Module, CommandExecutor, TabCompleter {
         }
         plugin.data().setDaily(id, player.getName(), today.toString(), streak);
         messages.send(player, "gunluk-odul.mesajlar.alindi", "miktar", plugin.economy().format(reward), "seri", streak);
+        plugin.crates().giveKey(player, plugin.getConfig().getString("gunluk-odul.anahtar", ""), 1);
+        int every = plugin.getConfig().getInt("gunluk-odul.seri-bonus-gun", 7);
+        if (every > 0 && streak % every == 0) {
+            plugin.crates().giveKey(player, plugin.getConfig().getString("gunluk-odul.seri-bonus-anahtar", ""), 1);
+        }
         return true;
     }
 

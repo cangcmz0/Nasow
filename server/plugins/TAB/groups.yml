@@ -1,8 +1,8 @@
-# Rutbe onekleri LuckPerms'ten otomatik gelir.
+# Rutbe onekleri LuckPerms'ten, klan etiketi SkyCore'dan (%skycore_klan_etiket%) otomatik gelir.
 # Onek degistirmek icin: /lp group <grup> meta setprefix <oncelik> "<onek>"
 _DEFAULT_:
-  tabprefix: "%luckperms-prefix%"
-  tagprefix: "%luckperms-prefix%"
+  tabprefix: "%skycore_klan_etiket%%luckperms-prefix%"
+  tagprefix: "%skycore_klan_etiket%%luckperms-prefix%"
   customtabname: "%player%"
   tabsuffix: "%luckperms-suffix%"
   tagsuffix: "%luckperms-suffix%"

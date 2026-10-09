@@ -7,7 +7,10 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 - **Bedrock desteği:** telefon, konsol ve Windows Bedrock oyuncuları da girebilir (Geyser + Floodgate)
 - Türkçe mesajlar, ₺ ekonomi, meslekler, yetenekler, rütbeler, arazi koruması, oyuncu marketleri
 - Hile koruması, X-Ray engeli, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
-- Sunucuya özel yazılmış **SkyCore** eklentisi: savaş modu, sohbet oyunları, banknot, kelle avı, günlük ödül serisi, aktiflik ödülü
+- **Gökyüzü spawn adası** tek komutla kurulur: vahşi doğa portalı, market, PvP arenası + KOTH, kasalar, atlama noktası, hologramlar
+- Sunucuya özel yazılmış **SkyCore** eklentisi: sunucu marketi, klanlar, kasalar, KOTH etkinliği, rastgele ışınlanma, savaş modu,
+  sohbet oyunları, banknot, kelle avı, günlük ödül serisi, aktiflik ödülü
+- Hazır **logo, sunucu ikonu, banner'lar ve tanıtım metinleri** ([`branding/`](branding))
 
 ---
 
@@ -22,8 +25,12 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Yetenek kasma (madencilik, savaş, tarım...) ve güçlenme | `/skills` |
 | Arazi koruma, arkadaş ekleme | Altın kürekle köşeleri işaretle, `/trust <oyuncu>` |
 | Sandıkla market kurma, başkasının marketinden alışveriş | Sandığa eşya koy, sandığa vurup fiyat yaz |
-| Para işlemleri | `/bal`, `/pay`, `/baltop`, `/sell` (eldeki eşyayı sunucuya sat) |
-| Ev ve ışınlanma | `/sethome`, `/home`, `/tpa`, `/spawn`, `/warp`, `/tpr` (rastgele yere git) |
+| Para işlemleri | `/bal`, `/pay`, `/baltop` |
+| Sunucu marketi (al / sat) | `/market`, `/sat` (elindekini sat), `/sat hepsi` |
+| Ev ve ışınlanma | `/sethome`, `/home`, `/tpa`, `/spawn`, `/warp`, `/vahsi` (rastgele yere git) |
+| Klan kurma, klan evi, klan kasası, klan sohbeti | `/klan`, `/ks <mesaj>` |
+| Kasa açma (anahtarla) | `/warp kasalar` → kasaya sağ tık (sol tık: ödüller) |
+| Tepenin Kralı etkinliği (her akşam) | `/koth`, `/warp arena` |
 | Günlük ödül (seri yaptıkça artar) ve günlük kit | `/odul`, `/kit gunluk` |
 | Parayı kağıda çevirip takas etme | `/banknot <miktar>`, kağıda sağ tık = para |
 | Birinin kellesine ödül koyma | `/kelle koy <oyuncu> <miktar>`, `/kelle liste` |
@@ -31,6 +38,15 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Oturma / uzanma | `/sit`, `/lay`, `/crawl`, merdivene sağ tık |
 
 Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
+
+### Spawn adası
+
+![Spawn adası](branding/spawn-adasi-onizleme.png)
+
+Yeni oyuncular gökyüzündeki adada başlar. Kuzeydeki **Vahşi Doğa portalından** geçen dünyada rastgele bir yere ışınlanır;
+kuzeydoğudaki **atlama iskelesinden** atlayan süzülerek (paraşütle, hasar almadan) dünyaya iner. Doğuda **market**, güneyde
+**PvP arenası ve KOTH tepesi**, batıda **kasalar** var. Ada korumalıdır; adada hasar, açlık ve düşman yaratık yoktur.
+Kurulum: oyunda admin olarak `/skycore kurulum onayla` (ayrıntı: [SkyCore README](custom-plugins/SkyCore/README.md)).
 
 ---
 
@@ -57,6 +73,8 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
    **hemen `/register <şifre> <şifre>` ile kaydol** (crack sunucuda adını başkası alamasın diye).
 5. [`server/setup/ilk-kurulum-komutlari.txt`](server/setup/ilk-kurulum-komutlari.txt) içindeki komutları konsola yapıştır
    (rütbeler, yetkiler, kendini admin yapma, dünya ön-oluşturma). Sonra `stop` yaz; sunucu kendiliğinden yeniden açılır ve X-Ray koruması devreye girer.
+6. Oyuna admin olarak gir ve **`/skycore kurulum onayla`** yaz: gökyüzü spawn adası; spawn noktası, warplar, hologramlar,
+   kasalar ve KOTH alanıyla birlikte birkaç saniyede kurulur.
 
 RAM miktarını `start.bat` içindeki `set RAM=4G` satırından değiştirebilirsin (Linux'ta `RAM=8G ./start.sh`).
 
@@ -91,11 +109,11 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` 
 | **AuthMe** | Crack oyuncular için kayıt/giriş, premium oyunculara şifresiz giriş, bot ve şifre deneme koruması — Türkçe |
 | **PacketEvents** | AuthMe'nin premium hesapları doğrulaması için gerekli kütüphane |
 | **SkinsRestorer** | Crack oyunculara skin (`/skin <ad>`) |
-| **EssentialsX** (+ Chat, Spawn) | `/home` `/tpa` `/spawn` `/warp` `/kit` `/msg` `/pay` `/bal` `/sell` `/tpr`, ban/mute ve ekonomi |
+| **EssentialsX** (+ Chat, Spawn) | `/home` `/tpa` `/spawn` `/warp` `/kit` `/msg` `/pay` `/bal`, ban/mute ve ekonomi |
 | **VaultUnlocked** | Ekonomi köprüsü (Vault'un güncel hâli) |
 | **Jobs Reborn** (+ CMILib) | Meslekler, çalıştıkça para kazanma (`/jobs`) — Türkçe |
 | **AuraSkills** | mcMMO tarzı yetenek ve seviye sistemi (`/skills`) — Türkçe |
-| **WorldEdit** + **WorldGuard** | Spawn'ı düzenleme ve koruma |
+| **WorldEdit** + **WorldGuard** | Harita düzenleme ve bölge koruma |
 | **CoreProtect** | Blok/sandık kayıtları, grief geri alma: `/co inspect`, `/co rollback` |
 | **HuskClaims** | Altın kürekle arazi koruma, `/trust <oyuncu>` ile arkadaş ekleme |
 | **GrimAC** | Hile koruması (fly, speed, killaura...). Moderatörler uyarıları görür |
@@ -106,16 +124,22 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` 
 | **TAB** | Tab listesi başlığı, rütbe önekleri, yan skor tablosu (`/sb` ile gizlenir) |
 | **QuickShop-Hikari** | Sandığa eşya koyup market kurma |
 | **GSit** | `/sit` `/lay` `/crawl`, merdivene sağ tıklayıp oturma |
-| **DecentHolograms** | Spawn'a yüzen yazılar (`/dh create ...`) |
+| **DecentHolograms** | Yüzen yazılar (spawn adasındakiler otomatik kurulur) |
 | **Chunky** | Dünyayı önceden oluşturur, gezerken lag olmaz |
 
 ### Sunucuya özel eklenti: SkyCore
 
 Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp tek bir Türkçe eklentide yazdık:
-`server/plugins/SkyCore-1.0.0.jar` (kaynak kodu: [`custom-plugins/SkyCore`](custom-plugins/SkyCore)).
+`server/plugins/SkyCore-1.1.0.jar` (kaynak kodu: [`custom-plugins/SkyCore`](custom-plugins/SkyCore)).
 
 | Özellik | Ne yapar |
 |---|---|
+| **Spawn adası** | `/skycore kurulum onayla` → gökyüzüne hazır ada; spawn, 5 warp, 10 hologram, 3 kasa, KOTH alanı otomatik. Ada korumalı, paraşütle iniş |
+| **Sunucu marketi** | `/market` → 8 kategori, 190+ eşya, sol tık al / sağ tık sat; `/sat hepsi`. Fiyatlar `market.yml`'de |
+| **Klanlar** | `/klan kur <isim>` → davet, klan evi, ortak kasa, `/ks` klan sohbeti; klan arkadaşları birbirine vuramaz; etiket TAB'da görünür |
+| **Kasalar** | Günlük / Nadir / Efsane kasa; anahtarla sağ tık → dönen çark → ödül. Anahtarlar: `/odul`, aktiflik ödülü, KOTH, 7 günlük seri |
+| **KOTH** | Her gün 20:00 ve 22:30'da arenadaki altın tepeyi 2 dk tutan kazanır (5000₺ + Efsane anahtarı) |
+| **Vahşi doğa** | `/vahsi` → 500-5000 blok arası rastgele güvenli yere ışınlanma (portal da bunu kullanır) |
 | **Savaş modu** | PvP'ye giren 15 sn `/spawn` `/home` `/tpa` gibi kaçış komutlarını kullanamaz; savaştayken oyundan çıkan ölür, eşyaları düşer |
 | **Sohbet oyunları** | 10 dk'da bir sohbete soru: ilk yazan / işlemi çözen / karışık kelimeyi bulan para kazanır |
 | **Banknot** | `/banknot 1000` → para kağıda döner, sağ tıkla geri yatar (takas için) |
@@ -186,12 +210,12 @@ Minecraft'ın kendi yazıları (ölüm mesajları, başarımlar, menüler) ise h
 
 | Dosya | Ne ayarlandı |
 |---|---|
-| `server/server.properties` | Crack açık (`online-mode=false`), MOTD, 100 oyuncu, görüş mesafesi 8 / simülasyon 6 (performans), normal zorluk, spawn koruması WorldGuard'da |
+| `server/server.properties` | Crack açık (`online-mode=false`), MOTD, 100 oyuncu, görüş mesafesi 8 / simülasyon 6 (performans), normal zorluk, spawn koruması SkyCore'da (gökyüzü adası) |
 | `server/plugins/AuthMe/config.yml` | Türkçe, premium şifresiz giriş açık, IP başına en fazla 3 hesap, en az 6 karakter şifre, yanlış şifrede captcha + geçici ban, anti-bot |
 | `server/plugins/Essentials/config.yml` | Dil **Türkçe**, para birimi **₺**, başlangıç parası **100₺**, ışınlanmada 3 sn bekleme (savaştan kaçış olmasın), sohbet `[Rütbe] İsim » mesaj` |
 | `server/plugins/Essentials/kits.yml` | `baslangic` (ilk girişte otomatik, arazi küreği dahil), `gunluk` |
 | `server/plugins/Essentials/motd.txt`, `rules.txt` | Türkçe giriş mesajı ve kurallar |
-| `server/plugins/TAB/config.yml` | "SKY SURVIVAL" tab başlığı, yan skor tablosu (rütbe, para, ping), isim altında can |
+| `server/plugins/TAB/config.yml` | "SKY SURVIVAL" tab başlığı, yan skor tablosu (rütbe, para, klan, günlük seri, ping), isim altında can, klan etiketi |
 | `server/plugins/Jobs/`, `AuraSkills/`, `GSit/` | Türkçe dil |
 | `server/plugins/DriveBackupV2/config.yml` | 3 saatte bir yedek, son 8 yedek, Türkiye saati |
 
@@ -218,7 +242,7 @@ server/
 ├── start.bat / start.sh       → sunucuyu başlatır (önce eksikleri indirir, kapanınca yeniden açar)
 ├── update.bat / update.sh     → Paper ve eklentileri günceller
 ├── server.properties          → temel sunucu ayarları
-├── plugins/                   → eklentiler ve ayarları (SkyCore-1.0.0.jar bizim eklentimiz)
+├── plugins/                   → eklentiler ve ayarları (SkyCore-1.1.0.jar bizim eklentimiz)
 ├── backups/                   → otomatik yedekler (ilk yedekten sonra oluşur)
 └── setup/
     ├── plugins.json           → eklenti listesi (aç/kapat buradan)
@@ -226,6 +250,8 @@ server/
     ├── Setup.java             → indirme/güncelleme aracı
     └── ilk-kurulum-komutlari.txt → ilk açılışta konsola yapıştırılacak komutlar
 custom-plugins/SkyCore/          → SkyCore'un kaynak kodu ve testleri
+branding/                        → logo, sunucu ikonu, banner'lar, spawn adası önizlemesi, SkySpawn.schem, tanıtım metinleri
+tools/                           → logo ve spawn adasını üreten Python betikleri
 ```
 
 ## Sonraki adımlar için fikirler
@@ -233,6 +259,5 @@ custom-plugins/SkyCore/          → SkyCore'un kaynak kodu ve testleri
 - **Discord sunucusu** + DiscordSRV ile sohbet köprüsü
 - Sunucu listesi sitelerine kayıt + **oy verme ödülleri** (NuVotifier + oy eklentisi)
 - **BlueMap** ile web'den canlı harita
-- Spawn yapısı, warp noktaları (`/setwarp maden`, `/setwarp market`)
-- Sandık kasaları (crates), sezonluk etkinlikler
-- SkyCore'a klan sistemi, KOTH etkinliği, mezar (ölünce eşyaların sandığa girmesi) eklemek
+- Sezonluk etkinlikler (kasaya özel ödüller, bayram etkinlikleri)
+- SkyCore'a mezar (ölünce eşyaların sandığa girmesi), klan savaşları, görevler eklemek

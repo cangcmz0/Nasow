@@ -103,7 +103,7 @@ final class CombatModule implements Module {
     }
 
     /** Hasari veren oyuncuyu bulur: dogrudan vurus, ok/trident, TNT veya evcil hayvan. */
-    private static Player attacker(Entity damager) {
+    static Player attacker(Entity damager) {
         if (damager instanceof Player player) {
             return player;
         }

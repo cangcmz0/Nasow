@@ -6,19 +6,22 @@ plugins {
 }
 
 group = "net.skysurvival"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io") // VaultAPI
     maven("https://repo.codemc.io/repository/maven-public/") // AuthMe
+    maven("https://repo.extendedclip.com/releases/") // PlaceholderAPI
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") { isTransitive = false }
     compileOnly("fr.xephi:authme:5.6.0-SNAPSHOT") { isTransitive = false }
+    compileOnly("me.clip:placeholderapi:2.11.6") { isTransitive = false }
+    // EssentialsX ve DecentHolograms'a yansima (reflection) ile baglanilir, derleme icin gerekmez.
 
     // MockBukkit henuz 26.x'i desteklemiyor; testler Paper 1.21.11 API'siyle calisir
     // (SkyCore'un kullandigi API iki surumde de ayni).

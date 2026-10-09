@@ -19,7 +19,7 @@ savas:
   sure-saniye: 15
   # Savastayken oyundan cikan oyuncu olur ve esyalari yere duser.
   kacana-ceza: true
-  yasakli-komutlar: [spawn, home, homes, tpa, tpahere, tpaccept, tpyes, warp, warps, tpr, rtp, back, ec, enderchest, echest, sethome, afk, fly, tptoggle, kit]
+  yasakli-komutlar: [spawn, home, homes, tpa, tpahere, tpaccept, tpyes, warp, warps, tpr, rtp, vahsi, wild, back, ec, enderchest, echest, sethome, afk, fly, tptoggle, kit]
   mesajlar:
     basladi: "&c⚔ Savaşa girdin! &7{sure} saniye boyunca oyundan çıkma."
     actionbar: "&c⚔ Savaştasın: &f{kalan} sn"
@@ -108,6 +108,11 @@ gunluk-odul:
   seri-artis: 50
   max: 1000
   saat-dilimi: Europe/Istanbul
+  # Her odulle verilen kasa anahtari (bos birakilirsa verilmez)
+  anahtar: gunluk
+  # Her 7. gunde (7, 14, 21...) ek olarak bu anahtar verilir
+  seri-bonus-gun: 7
+  seri-bonus-anahtar: efsane
   mesajlar:
     alindi: "&a&lGÜNLÜK ÖDÜL &8» &a+{miktar} &8| &fSeri: &e{seri}. gün"
     zaten: "&cBugünkü ödülünü zaten aldın! &7Yarın tekrar gel."
@@ -122,6 +127,7 @@ aktiflik-odulu:
   aktif: true
   dakika: 60
   odul: 500
+  anahtar: nadir
   mesajlar:
     verildi: "&a&lAKTİFLİK ÖDÜLÜ &8» &f{dakika} dakika aktif oynadın: &a+{odul}"
 
@@ -140,6 +146,11 @@ duyurular:
     - "&b&lİPUCU &8» &e/skills &file yeteneklerini gör, seviye atla."
     - "&b&lİPUCU &8» &fSohbet oyunlarında ilk bilen para kazanır, sohbeti takip et!"
     - "&b&lİPUCU &8» &fDiscord sunucumuza katıl: &e/discord"
+    - "&b&lİPUCU &8» &e/market &file eşya al, topladıklarını sat. Hepsini satmak için: &e/sat hepsi"
+    - "&b&lİPUCU &8» &e/klan kur <isim> &file klanını kur, arkadaşlarınla birlikte oyna!"
+    - "&b&lİPUCU &8» &e/vahsi &file dünyada rastgele bir yere ışınlan."
+    - "&b&lİPUCU &8» &fSpawn'daki &dkasalarda &fanahtarlarını aç. Anahtarlar: &e/odul&f, aktiflik ödülü, KOTH."
+    - "&b&lİPUCU &8» &fHer akşam arenada &6KOTH &fvar! Tepeyi tut, efsane anahtarı kazan: &e/koth"
 
 # ---------------------------------------------------------------------------
 # PvP'de olen oyuncunun kafasi duser
@@ -178,6 +189,301 @@ bilgi:
   site:
     - "&b&lSİTE &8» &fwww.BURAYA-SITENI-YAZ.com"
 
+# ---------------------------------------------------------------------------
+# Gokyuzu spawn adasi. Oyunda (yetkili) once /skycore kurulum yaz, sonra
+# /skycore kurulum onayla. Ada asagidaki konuma kurulur; spawn noktasi,
+# warplar (market, arena, kasalar, portal, atla), hologramlar, kasalar ve
+# KOTH alani otomatik ayarlanir. Ada korunur; degistirmek icin
+# skycore.spawn.duzenle yetkisi gerekir (OP'lerde var).
+# ---------------------------------------------------------------------------
+spawn-adasi:
+  dunya: world
+  # Adanin merkezi (fiskiye). Ada bu noktanin 45 blok altina, 10 blok ustune uzanir.
+  konum: {x: 0, y: 200, z: 0}
+  # Kurulumda her tick islenen blok sayisi (sunucu takilirsa azalt)
+  tick-basina-blok: 40000
+  koruma:
+    aktif: true
+    # Adada (arena disinda) hasar ve aclik yok
+    hasar-yok: true
+    aclik-yok: true
+    # Adada dusman yaratik dogmaz (phantom dahil)
+    yaratik-dogmasin: true
+  # Adadan atlayan oyuncu yere yaklasinca yavaslar ve dusme hasari almaz
+  parasut:
+    aktif: true
+    yerden-yukseklik: 25
+  # Portallarin icinde parcacik efekti
+  portal-efekti: true
+  mesajlar:
+    kurulum-bilgi:
+      - "&b&lSPAWN ADASI KURULUMU"
+      - "&7Ada &f{dunya} &7dünyasında &f{x}, {y}, {z} &7noktasına kurulacak (97x56x96 blok)."
+      - "&7Bu alandaki eski bloklar silinir. Konumu config.yml'den değiştirebilirsin."
+      - "&7Spawn, 5 warp, 10 hologram, 3 kasa ve KOTH alanı otomatik ayarlanır."
+      - "&7Durum: {durum}"
+      - "&eBaşlatmak için: &f/skycore kurulum onayla"
+    durum-kurulu: "&akurulu &7({x}, {y}, {z})"
+    durum-yok: "&ckurulmadı"
+    kurulum-basladi: "&eSpawn adası kuruluyor... &7({blok} blok)"
+    kurulum-ilerleme: "&eAda kuruluyor: &f%{yuzde}"
+    kurulum-bitti: "&a✔ Spawn adası kuruldu! &7Spawn: &f{spawn}&7, warp: &f{warp}&7, hologram: &f{hologram}"
+    sadece-dunya-spawni: "dünya spawnı (EssentialsX Spawn yok)"
+    kurulum-suruyor: "&cKurulum zaten sürüyor, bitmesini bekle."
+    dunya-yok: "&c'{dunya}' adında bir dünya yok."
+    yukseklik: "&cAda dünyanın dışına taşıyor! Yüksekliği &f{min} &cile &f{max} &carasında seç."
+    hata: "&cKurulum yapılamadı: &f{hata}"
+    korumali: "&cBurası spawn adası, burada bunu yapamazsın."
+    pvp-kapali: "&cSpawn'da PvP kapalı! &7Savaşmak için arenaya git: &e/warp arena"
+    parasut: "&b☁ Süzülüyorsun... &7(Yere yaklaşınca paraşüt açılır)"
+    parasut-acildi: "&b☂ Paraşüt açıldı!"
+    inis: "&a✔ Güvenle indin! İyi oyunlar."
+
+# ---------------------------------------------------------------------------
+# Vahsi doga (/vahsi): dunyada rastgele, guvenli bir yere isinlanma.
+# Spawn adasindaki "Vahsi Doga" portali da bunu kullanir.
+# ---------------------------------------------------------------------------
+vahsi-doga:
+  aktif: true
+  dunya: world
+  merkez: {x: 0, z: 0}
+  # Merkeze en az / en cok bu kadar blok uzaga isinlar
+  min-mesafe: 500
+  max-mesafe: 5000
+  # Iki kullanim arasi bekleme (skycore.vahsi.bekleme-yok yetkisi olan beklemez)
+  bekleme-saniye: 60
+  # Guvenli yer bulmak icin en fazla deneme
+  deneme: 15
+  mesajlar:
+    araniyor: "&7Güvenli bir yer aranıyor..."
+    isinlandi: "&a✔ Vahşi doğaya ışınlandın! &7({x}, {y}, {z}) &8| &7Evini kurmayı unutma: &e/sethome"
+    bekle: "&cTekrar kullanmak için &f{kalan} sn &cbekle."
+    bulunamadi: "&cGüvenli bir yer bulunamadı, birazdan tekrar dene."
+    savasta: "&cSavaştayken ışınlanamazsın!"
+    baslik: "&a&lVAHŞİ DOĞA"
+    alt-baslik: "&7İyi şanslar, maceracı!"
+
+# ---------------------------------------------------------------------------
+# Sunucu marketi (/market, /sat). Esyalar ve fiyatlar: market.yml
+# ---------------------------------------------------------------------------
+market:
+  aktif: true
+  mesajlar:
+    ana-baslik: "&8&lSUNUCU MARKETİ"
+    kategori-baslik: "&8Market » {kategori} &8({sayfa}/{toplam})"
+    kategori-aciklama:
+      - "&7{adet} çeşit eşya"
+      - ""
+      - "&eTıkla ve göz at"
+    bakiye: "&eBakiyen: &a{bakiye}"
+    geri: "&c« Geri"
+    onceki: "&e« Önceki sayfa"
+    sonraki: "&eSonraki sayfa »"
+    kapat: "&cKapat"
+    aciklama-al: "&7Alış: &a{fiyat} &8(1)  &7Yığın: &a{fiyat-yigin} &8({yigin})"
+    aciklama-alinamaz: "&7Alış: &cyok"
+    aciklama-sat: "&7Satış: &e{fiyat} &8(1)"
+    aciklama-satilamaz: "&7Satış: &cyok"
+    aciklama-tiklar:
+      - ""
+      - "&eSol tık: &f1 al &8| &eShift+Sol: &f{yigin} al"
+      - "&eSağ tık: &f1 sat &8| &eShift+Sağ: &ftümünü sat"
+    aldin: "&a✔ &f{adet}x {esya} &faldın &8» &c-{fiyat}"
+    sattin: "&a✔ &f{adet}x {esya} &fsattın &8» &a+{fiyat}"
+    yer-yok: "&cEnvanterinde yer yok!"
+    para-yok: "&cYeterli paran yok! &7(Gerekli: {fiyat})"
+    esya-yok: "&cEnvanterinde satacak {esya} &cyok."
+    alinamaz: "&cBu eşya marketten alınamaz."
+    satilamaz: "&cBu eşya markete satılamaz (isimli, büyülü ya da hasarlı eşyalar da satılamaz)."
+    sat-kullanim: "&cKullanım: &f/sat &7(elindekini sat) &8| &f/sat hepsi &7(satılabilen her şeyi sat)"
+    sat-hepsi: "&a✔ &f{adet} eşya sattın &8» &a+{fiyat}"
+    sat-hicbiri: "&cEnvanterinde markete satılabilecek eşya yok."
+
+# ---------------------------------------------------------------------------
+# Klanlar (/klan). Klan arkadaslari birbirine vuramaz. Klan etiketi TAB'da
+# (%skycore_klan_etiket%) gorunur.
+# ---------------------------------------------------------------------------
+klan:
+  aktif: true
+  kurma-ucreti: 5000
+  max-uye: 10
+  isim-min: 3
+  isim-max: 12
+  # true yapilirsa klan arkadaslari birbirine vurabilir
+  dost-atesi: false
+  ev-bekleme-saniye: 3
+  etiket: "&8[&b{klan}&8] "
+  yok-yazisi: "&7Yok"
+  rutbe-lider: "Lider"
+  rutbe-uye: "Üye"
+  mesajlar:
+    yardim:
+      - "&b&lKLAN KOMUTLARI"
+      - "&e/klan kur <isim> &7- klan kur (ücretli)"
+      - "&e/klan davet <oyuncu> &7- oyuncuyu davet et"
+      - "&e/klan kabul [klan] &8| &e/klan reddet &7- daveti yanıtla"
+      - "&e/klan bilgi [klan] &8| &e/klan liste &7- klan bilgisi, sıralama"
+      - "&e/klan ev &8| &e/klan evayarla &7- klan evi"
+      - "&e/klan banka [yatir|cek <miktar>] &7- klan kasası"
+      - "&e/ks <mesaj> &7- klan sohbeti"
+      - "&e/klan ayril &8| &e/klan at <oyuncu> &8| &e/klan devret <oyuncu> &8| &e/klan sil"
+    kur-kullanim: "&cKullanım: &f/klan kur <isim>"
+    isim-gecersiz: "&cKlan adı {min}-{max} karakter olmalı ve sadece harf/rakam içermeli."
+    isim-alinmis: "&cBu isimde bir klan zaten var."
+    para-yetersiz: "&cKlan kurmak için &f{ucret} &cgerekli."
+    kuruldu: "&b&lKLAN &8» &e{oyuncu}&f, &b{klan} &fklanını kurdu!"
+    zaten-klanda: "&cZaten bir klandasın. Önce &f/klan ayril"
+    klanin-yok: "&cBir klanda değilsin. Kurmak için: &f/klan kur <isim>"
+    lider-degil: "&cBunu sadece klan lideri yapabilir."
+    oyuncu-yok: "&cOyuncu bulunamadı (çevrimiçi olmalı)."
+    hedef-klanda: "&c{oyuncu} zaten bir klanda."
+    klan-dolu: "&cKlan dolu."
+    davet-gonderildi: "&a{oyuncu} &fklana davet edildi. &7(2 dakika geçerli)"
+    davet-geldi: "&b&lKLAN &8» &e{oyuncu} &fseni &b{klan} &fklanına davet etti! &a/klan kabul &7ya da &c/klan reddet"
+    davet-yok: "&cGeçerli bir klan davetin yok."
+    reddedildi: "&7Klan davetleri reddedildi."
+    katildi: "&b&lKLAN &8» &a{oyuncu} &fklana katıldı!"
+    ayrildin: "&7{klan} klanından ayrıldın."
+    ayrildi: "&b&lKLAN &8» &e{oyuncu} &fklandan ayrıldı."
+    lider-ayrilamaz: "&cLider klandan ayrılamaz. Önce &f/klan devret <oyuncu> &cya da &f/klan sil"
+    uye-yok: "&cKlanda bu isimde bir üye yok."
+    atildi: "&b&lKLAN &8» &e{oyuncu} &fklandan atıldı."
+    atildin: "&c{klan} klanından atıldın."
+    devredildi: "&b&lKLAN &8» &fYeni lider: &e{oyuncu}"
+    sil-onay: "&cKlanı silmek için: &f/klan sil onayla &7(Klan kasasındaki {banka} sana geri verilir)"
+    silindi: "&b&lKLAN &8» &c{klan} klanı dağıtıldı."
+    klan-yok: "&cBöyle bir klan yok."
+    bilgi:
+      - "&b&l{klan} &7(kuruluş: {kurulus})"
+      - "&7Lider: &e{lider}"
+      - "&7Üyeler ({uye}/{max}): {uyeler}"
+      - "&7Klan kasası: &a{banka}"
+    liste-baslik:
+      - "&b&lEN BÜYÜK KLANLAR"
+    liste-satir: "&e{sira}. &b{klan} &8- &f{uye} üye &8- &a{banka}"
+    liste-bos: "&7Henüz hiç klan yok. İlk klanı sen kur: &e/klan kur <isim>"
+    ev-yok: "&cKlan evi ayarlanmamış. Lider &f/klan evayarla &cile ayarlayabilir."
+    ev-ayarlandi: "&b&lKLAN &8» &e{oyuncu} &fklan evini ayarladı."
+    ev-bekle: "&7{sure} saniye içinde ışınlanacaksın, kıpırdama..."
+    ev-iptal: "&cHareket ettiğin için ışınlanma iptal edildi."
+    ev-isinlandi: "&a✔ Klan evine ışınlandın."
+    banka: "&7Klan kasası: &a{banka} &8| &e/klan banka yatir <miktar>"
+    banka-kullanim: "&cKullanım: &f/klan banka <yatir|cek> <miktar>"
+    banka-yetersiz: "&cKlan kasasında o kadar para yok."
+    banka-yatirdi: "&b&lKLAN &8» &e{oyuncu} &fkasaya &a{miktar} &fyatırdı. &7(Kasa: {banka})"
+    banka-cekti: "&b&lKLAN &8» &e{oyuncu} &fkasadan &c{miktar} &fçekti. &7(Kasa: {banka})"
+    sohbet: "&8[&bKlan&8] &f{oyuncu}&7: "
+    sohbet-kullanim: "&cKullanım: &f/ks <mesaj>"
+    dost-atesi: "&cKlan arkadaşına vuramazsın!"
+
+# ---------------------------------------------------------------------------
+# Kasalar: spawn adasindaki kasalara anahtarla sag tikla (sol tik: oduller).
+# Odul satirlari: {para: miktar} | {esya: ad, adet: n, buyu: "ad:seviye,...", isim: "&6Ad"}
+#                 | {anahtar: kasa-turu, adet: n}   +   sans: agirlik (oranla hesaplanir)
+# ---------------------------------------------------------------------------
+kasalar:
+  aktif: true
+  # Sansi bu yuzdeden dusuk oduller herkese duyurulur
+  duyuru-sans: 5
+  anahtar-aciklama:
+    - "&7{kasa} &7kasasını açar."
+    - "&7Spawn'daki kasalar bölümünde"
+    - "&7kasaya &esağ tıkla&7."
+  turler:
+    gunluk:
+      isim: "&a&lGünlük Kasa"
+      anahtar: "&aGünlük Kasa Anahtarı"
+      oduller:
+        - {para: 250, sans: 25}
+        - {para: 750, sans: 10}
+        - {esya: iron_ingot, adet: 16, sans: 16}
+        - {esya: gold_ingot, adet: 8, sans: 10}
+        - {esya: cooked_beef, adet: 32, sans: 12}
+        - {esya: experience_bottle, adet: 16, sans: 8}
+        - {esya: oak_log, adet: 64, sans: 8}
+        - {esya: diamond, adet: 2, sans: 6}
+        - {esya: golden_apple, adet: 2, sans: 3}
+        - {anahtar: nadir, adet: 1, sans: 2}
+    nadir:
+      isim: "&b&lNadir Kasa"
+      anahtar: "&bNadir Kasa Anahtarı"
+      oduller:
+        - {para: 2000, sans: 20}
+        - {esya: diamond, adet: 6, sans: 14}
+        - {esya: golden_apple, adet: 6, sans: 12}
+        - {esya: emerald, adet: 16, sans: 10}
+        - {esya: experience_bottle, adet: 48, sans: 10}
+        - {esya: enchanted_book, buyu: "unbreaking:3", sans: 8}
+        - {esya: enchanted_book, buyu: "efficiency:4", sans: 8}
+        - {esya: name_tag, adet: 2, sans: 6}
+        - {esya: saddle, sans: 5}
+        - {esya: enchanted_book, buyu: "mending:1", sans: 3}
+        - {anahtar: efsane, adet: 1, sans: 4}
+    efsane:
+      isim: "&6&lEfsane Kasa"
+      anahtar: "&6Efsane Kasa Anahtarı"
+      oduller:
+        - {para: 10000, sans: 18}
+        - {esya: diamond_block, adet: 3, sans: 14}
+        - {esya: enchanted_book, buyu: "mending:1", sans: 12}
+        - {esya: totem_of_undying, sans: 10}
+        - {esya: shulker_box, sans: 10}
+        - {esya: enchanted_golden_apple, sans: 8}
+        - {esya: diamond_pickaxe, buyu: "efficiency:5,unbreaking:3,fortune:3", isim: "&6&lEfsane Kazma", sans: 8}
+        - {esya: diamond_sword, buyu: "sharpness:5,unbreaking:3,looting:3", isim: "&6&lEfsane Kılıç", sans: 8}
+        - {esya: netherite_ingot, sans: 6}
+        - {esya: elytra, sans: 2}
+        - {para: 50000, sans: 1}
+  mesajlar:
+    anahtar-aldin: "&d&lKASA &8» &f{adet}x {kasa} &fanahtarı aldın! &7Spawn'daki kasada aç: &e/warp kasalar"
+    anahtar-yok: "&cBu kasayı açmak için {kasa} &canahtarı gerekli! &7(Sol tıkla ödüllere bak)"
+    kapali: "&cBu kasa şu an kapalı."
+    acilis-baslik: "&8{kasa} &8açılıyor..."
+    onizleme-baslik: "&8{kasa} &8ödülleri"
+    sans-satiri: "&7Şans: &e%{sans}"
+    kazandin: "&d&lKASA &8» &f{kasa} &fkasasından &e{odul} &fkazandın!"
+    duyuru: "&d&lKASA &8» &e{oyuncu}&f, {kasa} &fkasasından &6{odul} &fkazandı! &7(%{sans} şans)"
+
+# ---------------------------------------------------------------------------
+# KOTH (Tepenin Krali): arenadaki altin platformu tek basina (ya da klaninla)
+# belirtilen sure tutan kazanir. Platformda baska klandan biri varsa sayac durur.
+# ---------------------------------------------------------------------------
+koth:
+  aktif: true
+  # Her gun bu saatlerde (Turkiye saati) kendiliginden baslar
+  saatler: ["20:00", "22:30"]
+  min-oyuncu: 3
+  tutma-saniye: 120
+  max-dakika: 15
+  odul-para: 5000
+  odul-anahtar: efsane
+  odul-anahtar-adet: 1
+  mesajlar:
+    basladi:
+      - ""
+      - "&6&l♛ KOTH BAŞLADI! ♛"
+      - "&fArenadaki &6altın tepeyi &e{sure} saniye &ftut, ödülü kap!"
+      - "&7Gitmek için: &e/warp arena"
+      - ""
+    bossbar-bos: "&6♛ KOTH &8» &7Tepe boş! Altın platforma çık"
+    bossbar-kral: "&6♛ KOTH &8» &e{oyuncu} &ftepeyi tutuyor &7({kalan} sn)"
+    bossbar-cekisme: "&6♛ KOTH &8» &cTepe çekişmeli! &7({oyuncular} kişi)"
+    kral-degisti: "&6♛ KOTH &8» &e{oyuncu} &ftepeyi ele geçirdi!"
+    kazandi: "&6&l♛ KOTH &8» &e{oyuncu} &ftepeyi {sure} saniye tuttu ve kazandı! &a+{para} &f+ {anahtar}"
+    kazanan-yok: "&6♛ KOTH &8» &7Etkinlik bitti, kazanan çıkmadı."
+    az-oyuncu: "&6♛ KOTH &8» &7Etkinlik için en az {min} oyuncu gerekli, bu seferlik atlandı."
+    ada-yok: "&cÖnce spawn adası kurulmalı: /skycore kurulum"
+    zaten: "&cKOTH zaten sürüyor."
+    yok: "&cŞu an KOTH yok."
+    durum-suruyor:
+      - "&6&l♛ KOTH SÜRÜYOR"
+      - "&7Tepedeki: &e{oyuncu} &7(&f{kalan} sn &7kaldı)"
+      - "&7Etkinliğin bitmesine: &f{bitis} dk &8| &e/warp arena"
+    durum-yok:
+      - "&6&l♛ KOTH"
+      - "&7Her gün: &e{saatler}"
+      - "&7Son kazanan: &f{son}"
+
 genel-mesajlar:
   yetki-yok: "&cBunun için yetkin yok."
   sadece-oyuncu: "&cBu komut sadece oyunda kullanılabilir."
@@ -188,3 +494,6 @@ genel-mesajlar:
     - "&e/skycore reload &7- ayarları yeniden yükle"
     - "&e/skycore oyun &7- hemen bir sohbet oyunu başlat"
     - "&e/skycore duyuru &7- sıradaki duyuruyu gönder"
+    - "&e/skycore kurulum &7- gökyüzü spawn adasını kur (warp + hologram + kasa)"
+    - "&e/skycore anahtar <oyuncu|herkes> <tür> [adet] &7- kasa anahtarı ver"
+    - "&e/skycore koth <baslat|bitir> &7- KOTH etkinliğini yönet"

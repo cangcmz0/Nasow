@@ -13,6 +13,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 final class DataStore {
     record Bounty(UUID id, String name, double amount) {}
 
+    record Origin(String world, int x, int y, int z) {}
+
     private final SkyCore plugin;
     private final File file;
     private YamlConfiguration yaml = new YamlConfiguration();
@@ -75,6 +77,42 @@ final class DataStore {
 
     void setActiveMinutes(UUID id, int minutes) {
         set(player(id, "aktif-dakika"), minutes);
+    }
+
+    // ---- Spawn adasi (kurulan yer) ----
+
+    Origin islandOrigin() {
+        String world = yaml.getString("spawn-adasi.dunya");
+        if (world == null) {
+            return null;
+        }
+        return new Origin(world, yaml.getInt("spawn-adasi.x"), yaml.getInt("spawn-adasi.y"), yaml.getInt("spawn-adasi.z"));
+    }
+
+    void setIslandOrigin(Origin origin) {
+        set("spawn-adasi.dunya", origin.world());
+        set("spawn-adasi.x", origin.x());
+        set("spawn-adasi.y", origin.y());
+        set("spawn-adasi.z", origin.z());
+    }
+
+    // ---- KOTH ----
+
+    int kothWins(UUID id) {
+        return yaml.getInt(player(id, "koth-galibiyet"), 0);
+    }
+
+    void addKothWin(UUID id, String name) {
+        set(player(id, "isim"), name);
+        set(player(id, "koth-galibiyet"), kothWins(id) + 1);
+    }
+
+    String lastKothWinner() {
+        return yaml.getString("koth.son-kazanan", "");
+    }
+
+    void setLastKothWinner(String name) {
+        set("koth.son-kazanan", name);
     }
 
     // ---- Kelle avi ----

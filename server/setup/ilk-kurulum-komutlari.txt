@@ -49,7 +49,6 @@ lp group default permission set essentials.tpahere true
 lp group default permission set essentials.tpaccept true
 lp group default permission set essentials.tpdeny true
 lp group default permission set essentials.tpacancel true
-lp group default permission set essentials.tpr true
 lp group default permission set essentials.back true
 lp group default permission set essentials.warp true
 lp group default permission set essentials.warp.list true
@@ -64,8 +63,6 @@ lp group default permission set essentials.afk true
 lp group default permission set essentials.balance true
 lp group default permission set essentials.balancetop true
 lp group default permission set essentials.pay true
-lp group default permission set essentials.sell true
-lp group default permission set essentials.worth true
 lp group default permission set essentials.list true
 lp group default permission set essentials.motd true
 lp group default permission set essentials.rules true
@@ -147,29 +144,26 @@ rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, bur
 # ============================================================================
 #  OYUN ICINDEN yapilacaklar (admin olarak girip, basinda / ile):
 # ============================================================================
-#  /setspawn                         -> durdugun yeri spawn yapar
-#  /settpr world center              -> rastgele isinlanma (/tpr) merkezi = durdugun yer
-#  /settpr world minrange 300
-#  /settpr world maxrange 5000
-#  /setwarp <isim>                   -> herkesin gidebilecegi warp noktasi
+#  1) GOKYUZU SPAWN ADASINI KUR (tek komut, ~2 saniye):
+#     /skycore kurulum                -> nereye kurulacagini gosterir (varsayilan: world 0, 200, 0)
+#     /skycore kurulum onayla         -> adayi kurar ve sunlari OTOMATIK ayarlar:
+#        - spawn noktasi (yeni oyuncular ve olenler adaya gelir)
+#        - warplar: /warp market, arena, kasalar, portal, atla
+#        - 10 hologram (DecentHolograms; /dh ile duzenlenebilir)
+#        - 3 kasa (gunluk, nadir, efsane) ve arenadaki KOTH tepesi
+#     Ada kendiliginden korunur (blok kirma/koyma, PvP, hasar, aclik, yaratik yok).
+#     Adayi degistirmek icin skycore.spawn.duzenle yetkisi gerekir (OP ve admin grubunda var).
+#     Spawn 0,0 civarinda cok yuksek dag varsa config.yml'de spawn-adasi.konum'u degistir.
 #
-#  Spawn'i korumak (WorldGuard):
-#  //wand                            -> tahta balta ile iki kosesini sec (sol tik / sag tik)
-#  //expand vert                     -> secimi yerden gokyuzune kadar uzat
-#  /rg define spawn
-#  /rg flag spawn pvp deny
-#  /rg flag spawn mob-spawning deny
-#  /rg flag spawn creeper-explosion deny
-#  /rg flag spawn tnt deny
-#  /rg flag spawn greeting &bSpawn'a hos geldin!
+#  2) Rastgele isinlanma: /vahsi (adadaki portal da bunu calistirir).
+#     Mesafe ayari: plugins/SkyCore/config.yml -> vahsi-doga (varsayilan 500-5000 blok)
 #
-#  Spawn'a hologram (DecentHolograms):
-#  /dh create hosgeldin &b&lSKY SURVIVAL
-#  /dh line add hosgeldin &7Arazini korumak icin altin kurek kullan!
-#  /dh line add hosgeldin &e/jobs &7ile meslek sec, calistikca para kazan
-#  /dh line add hosgeldin &e/skills &7ile yeteneklerini gor
-#  /dh line add hosgeldin &e/odul &7her gun odul, &e/kelle &7kelle avi, &e/banknot &7para cek
+#  3) KOTH her gun 20:00 ve 22:30'da kendiliginden baslar (config.yml -> koth.saatler).
+#     Elle: /skycore koth baslat | /skycore koth bitir
+#
+#  4) Etkinlik/ozel gun icin herkese anahtar: /skycore anahtar herkes efsane 1
 #
 #  SkyCore (sunucuya ozel eklenti) ayarlari: plugins/SkyCore/config.yml
-#  /discord ve /site adreslerini oradaki "bilgi" bolumune yaz, sonra: /skycore reload
+#  Market fiyatlari: plugins/SkyCore/market.yml
+#  /discord ve /site adreslerini config.yml'deki "bilgi" bolumune yaz, sonra: /skycore reload
 # ============================================================================

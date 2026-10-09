@@ -85,6 +85,8 @@ scoreboard:
         - ""
         - "&fRütbe: %luckperms-prefix%"
         - "&fPara: &a%vault_eco_balance_formatted%"
+        - "&fKlan: &b%skycore_klan%"
+        - "&fGünlük seri: &e%skycore_gunluk_seri% gün"
         - ""
         - "&fÇevrimiçi: &a%online%"
         - "&fPing: &a%ping%ms"

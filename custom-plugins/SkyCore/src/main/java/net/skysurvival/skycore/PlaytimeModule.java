@@ -69,6 +69,7 @@ final class PlaytimeModule implements Module {
                 minutes = 0;
                 plugin.messages().send(player, "aktiflik-odulu.mesajlar.verildi", "dakika", target,
                         "odul", plugin.economy().format(reward));
+                plugin.crates().giveKey(player, plugin.getConfig().getString("aktiflik-odulu.anahtar", ""), 1);
             }
             plugin.data().setActiveMinutes(id, minutes);
         }
