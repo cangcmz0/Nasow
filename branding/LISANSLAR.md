@@ -17,6 +17,11 @@
 
 - Logo yazısı: **Nunito** (The Nunito Project Authors) — SIL Open Font License 1.1, `tools/logo/fonts/OFL.txt`
 
+## Jobs meslek dosyaları
+
+- `server/plugins/Jobs/jobs/*.yml`: **Jobs Reborn** (Zrips) eklentisinin varsayılan meslek dosyalarından uyarlandı
+  (Türkçe isim/açıklama, oyuncu öldürme ödülü ve slime bloğu döngüsü kaldırıldı). Jobs Reborn'un kendi lisansı geçerlidir.
+
 ## Geri kalan her şey
 
 Logo, amblem, banner'lar, spawn adası ve SkyCore eklentisi bu proje için sıfırdan hazırlandı.
