@@ -120,11 +120,17 @@ final class BanknoteModule implements Module, CommandExecutor, TabCompleter {
         return item;
     }
 
+    /** Banknotun degeri; banknot degilse ya da deger gecersizse (NaN, sonsuz, eksi, sinirin ustu) null. */
     Double noteValue(ItemStack item) {
         if (item == null || item.getType() != Material.PAPER || !item.hasItemMeta()) {
             return null;
         }
-        return item.getItemMeta().getPersistentDataContainer().get(valueKey, PersistentDataType.DOUBLE);
+        Double value = item.getItemMeta().getPersistentDataContainer().get(valueKey, PersistentDataType.DOUBLE);
+        double max = plugin.getConfig().getDouble("banknot.max-miktar", 10_000_000);
+        if (value == null || !Double.isFinite(value) || value <= 0 || value > max) {
+            return null;
+        }
+        return value;
     }
 
     private static void give(Player player, ItemStack item) {

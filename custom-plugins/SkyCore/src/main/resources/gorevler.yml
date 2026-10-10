@@ -123,7 +123,8 @@ gorevler:
   asci:
     isim: "Aşçı"
     tur: pisir
-    hedef: [cooked_beef, cooked_porkchop, cooked_chicken, cooked_mutton, cooked_cod, cooked_salmon, baked_potato]
+    # Marketten alinabilen cig yiyecekler (patates) yok: alip pisirerek gorev yapilmasin
+    hedef: [cooked_beef, cooked_porkchop, cooked_chicken, cooked_mutton, cooked_cod, cooked_salmon]
     adet: 32
     odul: 250
   demirci:

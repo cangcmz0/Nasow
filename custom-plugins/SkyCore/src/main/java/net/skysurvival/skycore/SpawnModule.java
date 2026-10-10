@@ -19,9 +19,11 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.command.CommandSender;
@@ -33,12 +35,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
@@ -748,18 +753,59 @@ final class SpawnModule implements Module {
             return;
         }
         Player attacker = CombatModule.attacker(event.getDamager());
-        if (attacker == null || attacker.equals(victim)) {
-            return;
-        }
-        boolean victimOnIsland = onIsland(victim.getLocation());
-        boolean attackerOnIsland = onIsland(attacker.getLocation());
-        if (!victimOnIsland && !attackerOnIsland) {
-            return;
-        }
-        // Adada PvP sadece arenada ve iki oyuncu da arenadayken
-        if (!inArena(victim.getLocation()) || !inArena(attacker.getLocation())) {
+        if (attacker != null && !attacker.equals(victim) && islandPvpBlocked(attacker, victim)) {
             event.setCancelled(true);
             plugin.messages().actionBar(attacker, "spawn-adasi.mesajlar.pvp-kapali");
+        }
+    }
+
+    /** Adada PvP sadece arenada ve iki oyuncu da arenadayken serbest. */
+    boolean islandPvpBlocked(Player attacker, Player victim) {
+        if (!protect || (!onIsland(victim.getLocation()) && !onIsland(attacker.getLocation()))) {
+            return false;
+        }
+        return !inArena(victim.getLocation()) || !inArena(attacker.getLocation());
+    }
+
+    // ---- Sinirdan iceri piston / dispenser ----
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        if (crossesBorder(event.getBlock(), event.getBlocks(), event.getDirection(), true)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        if (crossesBorder(event.getBlock(), event.getBlocks(), event.getDirection().getOppositeFace(), false)) {
+            event.setCancelled(true);
+        }
+    }
+
+    /** Disaridaki piston adaya blok sokamaz/adadan blok cekemez (ve tersi). */
+    private boolean crossesBorder(Block piston, List<Block> blocks, BlockFace move, boolean extending) {
+        if (!protect) {
+            return false;
+        }
+        boolean inside = guarded(piston);
+        if (extending && guarded(piston.getRelative(move)) != inside) {
+            return true; // piston kafasi sinirdan gecer
+        }
+        for (Block block : blocks) {
+            if (guarded(block) != inside || guarded(block.getRelative(move)) != inside) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onDispense(BlockDispenseEvent event) {
+        Block dispenser = event.getBlock();
+        if (protect && !guarded(dispenser) && dispenser.getBlockData() instanceof Directional directional
+                && guarded(dispenser.getRelative(directional.getFacing()))) {
+            event.setCancelled(true); // disaridan adaya lav/su/ates dokulemez
         }
     }
 

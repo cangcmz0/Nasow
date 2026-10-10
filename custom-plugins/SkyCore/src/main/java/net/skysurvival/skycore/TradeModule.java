@@ -16,9 +16,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -418,6 +421,39 @@ final class TradeModule implements Module, CommandExecutor, TabCompleter {
         backB.forEach(item -> CrateModule.giveItem(trade.b, item));
         plugin.messages().send(trade.a, messagePath);
         plugin.messages().send(trade.b, messagePath);
+    }
+
+    /** Takastayken hasar alan oyuncunun takasi iptal olur (savas sirasinda esya saklanamasin). */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player && active.containsKey(player.getUniqueId())) {
+            cancel(active.get(player.getUniqueId()), "takas.mesajlar.iptal-hasar");
+        }
+    }
+
+    /** Takastayken olen oyuncunun teklifi envanteri gibi yere duser (olum sirasinda esya saklama hilesi). */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        Trade trade = active.get(player.getUniqueId());
+        if (trade == null || trade.done) {
+            return;
+        }
+        List<ItemStack> offer = takeOffer(player.equals(trade.a) ? trade.viewA : trade.viewB);
+        if (event.getKeepInventory()) {
+            offer.forEach(item -> CrateModule.giveItem(player, item));
+        } else {
+            event.getDrops().addAll(offer);
+        }
+        cancel(trade, "takas.mesajlar.iptal");
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onQuit(PlayerQuitEvent event) {
+        Trade trade = active.get(event.getPlayer().getUniqueId());
+        if (trade != null) {
+            cancel(trade, "takas.mesajlar.iptal");
+        }
     }
 
     @EventHandler

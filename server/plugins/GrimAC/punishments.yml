@@ -31,6 +31,8 @@ Punishments:
       - "100:40 [log]"
       - "100:100 [webhook]"
       - "100:100 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "300:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Knockback:
     remove-violations-after: 300
     checks:
@@ -41,6 +43,8 @@ Punishments:
       - "5:5 [log]"
       - "20:20 [webhook]"
       - "20:20 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "30:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Post:
     remove-violations-after: 300
     checks:
@@ -50,6 +54,8 @@ Punishments:
       - "20:20 [log]"
       - "40:40 [webhook]"
       - "40:40 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "60:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   BadPackets:
     remove-violations-after: 300
     checks:
@@ -61,6 +67,8 @@ Punishments:
       - "20:20 [log]"
       - "40:40 [webhook]"
       - "40:40 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "80:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Reach:
     remove-violations-after: 300
     checks:
@@ -70,6 +78,8 @@ Punishments:
       - "1:1 [log]"
       - "1:1 [webhook]"
       - "1:1 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "15:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Hitboxes:
     remove-violations-after: 300
     checks:
@@ -79,6 +89,8 @@ Punishments:
       - "5:3 [log]"
       - "5:3 [webhook]"
       - "5:3 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "25:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Misc:
     remove-violations-after: 300
     checks:
@@ -98,6 +110,8 @@ Punishments:
       - "10:5 [log]"
       - "20:10 [webhook]"
       - "20:10 [proxy]"
+      # Yetkili çevrimdışıyken de hileciyi oyundan atar (ban değil; tekrar girebilir).
+      - "60:0 kick %player% Hile koruması: şüpheli hareket (%check_name%). Hile kullanmıyorsan tekrar girebilirsin."
   Combat:
     remove-violations-after: 300
     checks:

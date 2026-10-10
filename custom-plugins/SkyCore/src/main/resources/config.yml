@@ -113,11 +113,14 @@ gunluk-odul:
   # Her 7. gunde (7, 14, 21...) ek olarak bu anahtar verilir
   seri-bonus-gun: 7
   seri-bonus-anahtar: efsane
+  # Ayni IP adresinden gunde en fazla bu kadar hesap odul alir (alt hesap ciftligine karsi; 0 = sinirsiz)
+  ip-basina-max: 2
   mesajlar:
     alindi: "&a&lGÜNLÜK ÖDÜL &8» &a+{miktar} &8| &fSeri: &e{seri}. gün"
     zaten: "&cBugünkü ödülünü zaten aldın! &7Yarın tekrar gel."
     hatirlatma: "&e&lGÜNLÜK ÖDÜL &8» &fBugünkü ödülünü almadın! &e/odul &7(Seri: {seri} gün)"
     seri-bozuldu: "&7Bir gün kaçırdığın için serin sıfırlandı."
+    ip-siniri: "&cBu internet bağlantısından bugün zaten {max} hesap günlük ödül aldı."
 
 # ---------------------------------------------------------------------------
 # Aktiflik odulu: AFK olmadan oynanan her X dakika icin para.
@@ -128,6 +131,8 @@ aktiflik-odulu:
   dakika: 60
   odul: 500
   anahtar: nadir
+  # Ayni IP adresinden en fazla bu kadar hesap ayni anda aktiflik suresi biriktirir (AFK alt hesaplara karsi; 0 = sinirsiz)
+  ip-basina-max: 2
   mesajlar:
     verildi: "&a&lAKTİFLİK ÖDÜLÜ &8» &f{dakika} dakika aktif oynadın: &a+{odul}"
 
@@ -627,6 +632,7 @@ takas:
     degisti-bekle: "&eTeklif değişti! Kontrol edip tekrar onayla."
     tamamlandi: "&b&lTAKAS &8» &a✔ &e{oyuncu} &file takas tamamlandı!"
     iptal: "&b&lTAKAS &8» &cTakas iptal edildi, eşyaların geri verildi."
+    iptal-hasar: "&b&lTAKAS &8» &cHasar aldığın için takas iptal edildi, eşyaların geri verildi."
 
 genel-mesajlar:
   yetki-yok: "&cBunun için yetkin yok."

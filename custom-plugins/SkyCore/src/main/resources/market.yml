@@ -9,6 +9,10 @@
 #
 #  Satis fiyati alistan dusuk olmali (yoksa al-sat yapip bedava para basilir);
 #  eklenti bunu kontrol eder, hataliysa satis fiyatini alisin yarisina indirir.
+#  Zumrut bilerek satilamaz: koyluler 32 cubuga 1 zumrut verir (indirimle 1 cubuga);
+#  satilabilseydi "odun al -> cubuk -> zumrut -> sat" ile bedava para basilirdi.
+#  Ciftlikle kolayca uretilen esyalarin (shulker kabugu, demir, altin...) satisini
+#  yuksek tutmayin; bir ciftlik saatte binlerce tane uretebilir.
 #  slot: ana menudeki yeri (0-26). simge: ana menude gorunen esya.
 #  Degisiklikten sonra: /skycore reload
 # ============================================================================
@@ -101,7 +105,7 @@ kategoriler:
       - "lapis_lazuli 12 2"
       - "quartz 12 2"
       - "amethyst_shard 15 2.5"
-      - "emerald 300 50"
+      - "emerald 300 0"
       - "diamond 600 110"
       - "netherite_scrap 0 500"
       - "netherite_ingot 12000 2200"
@@ -176,7 +180,7 @@ kategoriler:
       - "ghast_tear 120 20"
       - "phantom_membrane 50 8"
       - "prismarine_shard 15 2.5"
-      - "shulker_shell 1500 250"
+      - "shulker_shell 1500 40"
       - "rabbit_hide 8 1"
       - "turtle_scute 100 15"
       - "breeze_rod 60 10"

@@ -38,7 +38,7 @@ Logoyu değiştirmek için: `python3 tools/logo/make_logo.py` (renkler ve yazıl
 ⚰ **Mezar:** Ölünce eşyaların kaybolmaz, mezarına girer.
 🌲 **Kolaylıklar:** Eğilerek ağaç devirme ve damar kazma, sağ tıkla hasat, güvenli takas (`/takas`), yeni oyuncu koruması.
 👑 **Etkinlikler:** Her akşam ünlü "The Hill" haritasında Tepenin Kralı (KOTH) etkinliği.
-🔒 **Güvenlik:** Hile koruması, X-Ray engeli, grief geri alma, şifreli giriş.
+🔒 **Güvenlik:** Hile koruması, güçlü X-Ray engeli, test edilmiş dupe korumaları, grief geri alma, şifreli giriş.
 📱 **Herkese açık:** Crack & Premium, Java (1.8 – 26.x) & Bedrock (telefon/konsol).
 
 Adres: `SUNUCU-ADRESIN` • Discord: `DISCORD-LINKIN`
@@ -74,7 +74,7 @@ Etiketler: Survival, SMP, Economy, Jobs, Skills, Clans, Crates, KOTH, PvP, Crack
 4. Sunucuyu kasan (lag yapan) dev makineler kurma.
 5. Şifreni kimseyle paylaşma; yetkililer şifreni asla sormaz.
 6. Yetkililere saygılı ol; sorun olursa oyunda `/helpop`, Discord'da destek kanalını kullan.
-7. Hata (bug) bulursan kullanma, yetkililere bildir — ödüllendirilir.
+7. Dupe (eşya/para çoğaltma) ve hataları (bug) kullanmak yasaktır; bulursan yetkililere bildir — ödüllendirilir.
 
 ---
 

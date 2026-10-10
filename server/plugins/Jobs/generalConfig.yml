@@ -1,3 +1,33 @@
 # Jobs Reborn genel ayarlari. Eklenti ilk acilista diger tum ayarlari bu dosyaya kendisi ekler.
 # Dil: plugins/Jobs/locale/messages_tr.yml kullanilir.
 locale-language: tr
+
+# --- Sky Survival: para kasma aciklarina karsi ---
+# Spawner'dan cikan yaratiklari oldurmek para vermez (AFK spawner ogutucusu).
+enable-pay-near-spawner: false
+
+Economy:
+  Limit:
+    Money:
+      # Mesleklerden saatte kazanilabilecek en fazla para. Otomatik tiklayici, koy-kir dongusu,
+      # AFK balik ve benzeri her turlu kasmayi sinirlar. 3 meslek, toplam seviye 300 -> 4000/saat.
+      Use: true
+      MoneyLimit: 1000+1000*(totallevel/100)
+      TimeLimit: 3600
+
+ExploitProtections:
+  General:
+    PlaceAndBreak:
+      # Oyuncunun koydugu blogu tekrar kirmak para vermez (maden koy-kir).
+      Enabled: true
+      # Ipek dokunuslu aletle kirilan korumali bloklar (cevherler) para vermez.
+      SilkTouchProtection: true
+  Spawner:
+    PreventSlimeSplit: true
+    PreventMagmaCubeSplit: true
+  Smelt:
+    # Huniyle doldurulan firinlar para vermez (AFK eritme).
+    PreventHopperFillUps: true
+  Brew:
+    # Huniyle doldurulan simya standlari para vermez (AFK iksir).
+    PreventBrewingStandFillUps: true

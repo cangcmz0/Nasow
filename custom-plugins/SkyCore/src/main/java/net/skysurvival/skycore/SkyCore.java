@@ -209,6 +209,12 @@ public class SkyCore extends JavaPlugin implements Listener {
         koth.showTo(player);
     }
 
+    /** Oyuncunun IP adresi (alt hesap sinirlari icin); bilinmiyorsa null. */
+    static String ipOf(Player player) {
+        java.net.InetSocketAddress address = player.getAddress();
+        return address == null || address.getAddress() == null ? null : address.getAddress().getHostAddress();
+    }
+
     // ---- Diger siniflarin kullandigi ortak parcalar ----
 
     Messages messages() {

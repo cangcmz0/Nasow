@@ -5,3 +5,4 @@
 &e[4] &fSunucuyu kasan (lag yapan) dev makineler kurma.
 &e[5] &fŞifreni kimseyle paylaşma. Yetkililer şifreni asla sormaz.
 &e[6] &fYetkililere saygılı ol. Bir sorun olursa &c/helpop <mesaj>&f yaz.
+&e[7] &fDupe (eşya/para çoğaltma) ve oyun hatalarını kullanmak yasaktır. Bulursan &c/helpop&f ile bildir, ödüllendirilirsin.

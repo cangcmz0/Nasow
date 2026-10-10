@@ -8,7 +8,7 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 - **Crack & Premium:** orijinal hesabı olmayanlar da girebilir (AuthMe ile şifreli kayıt), premium oyuncular `/premium` ile şifresiz girer
 - **Bedrock desteği:** telefon, konsol ve Windows Bedrock oyuncuları da girebilir (Geyser + Floodgate)
 - Türkçe mesajlar, ₺ ekonomi, meslekler, yetenekler, rütbeler, arazi koruması, oyuncu marketleri
-- Hile koruması, X-Ray engeli, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
+- Hile koruması (otomatik atma), güçlü X-Ray engeli, test edilmiş dupe korumaları, grief kaydı, otomatik yedek, çökünce otomatik yeniden başlama
 - **Gökyüzü spawn adası** tek komutla kurulur: vahşi doğa portalı, market, PvP arenası, kasalar, atlama noktası, hologramlar
 - **KOTH etkinlik arenası:** internetten alınıp düzenlenen ünlü **"The Hill"** haritası (CC BY-SA 4.0) gökyüzüne kurulur
 - Sunucuya özel yazılmış **SkyCore** eklentisi: sunucu marketi, klanlar, kasalar, KOTH etkinliği, rastgele ışınlanma, savaş modu,
@@ -121,6 +121,23 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` 
 
 ---
 
+## Dupe ve hile korumaları
+
+Herkese açık ve crack açık bir sunucuda en çok uğraştıran şey dupe (eşya çoğaltma), bedava para açıkları ve hilelerdir. Hepsi test edilip kapatıldı:
+
+| Konu | Ne yapıldı |
+|---|---|
+| **Bilinen Minecraft dupe'ları** | Paper; TNT, ray/halı, piston ile kırılamaz blok kırma, end portalı dupe'larını kendisi kapatır. `config/paper-global.yml` → `unsupported-settings` altındaki ayarları **açma**. |
+| **X-Ray** | Paper Anti-Xray güçlü mod (`engine-mode: 2`): hileci sahte cevher yağmuru görür; elmas, altın, antik kalıntı dahil 19 cevher gizli. |
+| **Fly, speed, killaura, reach...** | GrimAC. Yetkililer uyarı görür; çok yüksek ihlalde oyuncu **otomatik atılır** (ban değil), yetkili yokken de koruma sürer (`plugins/GrimAC/punishments.yml`). |
+| **SkyCore açıkları** | 16 ayrı dupe/hile denemesi otomatik testlerde yapılıp engellendiği doğrulandı: savaştan kaçma, takas/market/kasa menülerinden eşya çalma, ölünce takas eşyasını koruma, sahte banknot, `NaN`/eksi miktarlar, pistonla görev kasma ve adaya blok itme, alt hesapla ödül katlama, iksirle PvP korumasını aşma. Liste: [SkyCore README](custom-plugins/SkyCore/README.md#dupe-ve-hile-korumaları). |
+| **Market ile para basma** | Minecraft'ın bütün tarifleri tarandı: "marketten al → üret/erit/böl → markete sat" ile para kazanılamıyor. Zümrüt satılamaz (köylüler çubuğa zümrüt verdiği için). Fiyatları değiştirirsen: `python3 tools/market_kontrol.py`. |
+| **Meslek (Jobs) para kasma** | Oyuncu öldürmeye para kaldırıldı (alt hesabı öldürüp para kasma), slime bloğu yap-boz döngüsü kaldırıldı, spawner yaratıkları, huniyle doldurulan fırın/simya standı para vermez, koyduğun bloğu kırmak para vermez, mesleklerden saatlik kazanç sınırı var (`plugins/Jobs/generalConfig.yml`). |
+| **Alt hesaplar** | AuthMe IP başına en fazla 3 hesap; günlük ve aktiflik ödülü IP başına 2 hesaba; kelle ödülü aynı IP'den alınamaz. |
+| **Grief ve hırsızlık** | Araziler HuskClaims ile korunur; CoreProtect her bloğu ve sandığı kaydeder (`/co inspect`, `/co rollback`). |
+
+---
+
 ## Eklentiler
 
 `server/setup/plugins.json` listesindeki eklentiler otomatik indirilir ve güncellenir.
@@ -138,7 +155,7 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` 
 | **WorldEdit** + **WorldGuard** | Harita düzenleme ve bölge koruma |
 | **CoreProtect** | Blok/sandık kayıtları, grief geri alma: `/co inspect`, `/co rollback` |
 | **HuskClaims** | Altın kürekle arazi koruma, `/trust <oyuncu>` ile arkadaş ekleme |
-| **GrimAC** | Hile koruması (fly, speed, killaura...). Moderatörler uyarıları görür |
+| **GrimAC** | Hile koruması (fly, speed, killaura...). Moderatörler uyarıları görür, çok yüksek ihlalde otomatik atar |
 | **DriveBackupV2** | 3 saatte bir otomatik yedek (`server/backups/`, son 24 saat saklanır). Elle: `/drivebackup backup` |
 | **ViaVersion** + **ViaBackwards** + **ViaRewind** | 1.8'den en yeni sürüme kadar her Minecraft sürümüyle giriş |
 | **Geyser** + **Floodgate** | Bedrock (telefon/konsol) oyuncular girebilir |
@@ -178,7 +195,8 @@ Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp t
 Tüm mesajlar ve miktarlar `server/plugins/SkyCore/config.yml` içinden değiştirilebilir (ilk açılışta oluşur), sonra `/skycore reload`.
 **`/discord` ve `/site` adreslerini oradaki `bilgi` bölümüne kendi adreslerinle yazmayı unutma.** Ayrıntı: [SkyCore README](custom-plugins/SkyCore/README.md).
 
-**Ek olarak Paper'ın kendi X-Ray koruması** ikinci açılışta otomatik açılır (`config/paper-world-defaults.yml`).
+**Ek olarak Paper'ın kendi X-Ray koruması** ikinci açılışta otomatik ve **güçlü modda** açılır (`config/paper-world-defaults.yml`):
+X-Ray kullanan oyuncu her yerde sahte cevher görür, Nether'daki antik kalıntı (netherite) da gizlenir. Ayrıntı: [Dupe ve hile korumaları](#dupe-ve-hile-korumaları).
 
 **İsteğe bağlı (kapalı, açmak için `"enabled": true` yap):**
 
@@ -243,7 +261,9 @@ Minecraft'ın kendi yazıları (ölüm mesajları, başarımlar, menüler) ise h
 | `server/plugins/Essentials/kits.yml` | `baslangic` (ilk girişte otomatik, arazi küreği dahil), `gunluk` |
 | `server/plugins/Essentials/motd.txt`, `rules.txt` | Türkçe giriş mesajı ve kurallar |
 | `server/plugins/TAB/config.yml` | "SKY SURVIVAL" tab başlığı, yan skor tablosu (rütbe, para, klan, günlük seri, ping), isim altında can, klan etiketi |
-| `server/plugins/Jobs/`, `AuraSkills/`, `GSit/` | Türkçe dil |
+| `server/plugins/Jobs/` | Türkçe dil ve meslekler (Madenci, Oduncu, Çiftçi, Avcı, Balıkçı, İnşaatçı, Kazıcı, Kaşif, Simyacı, Büyücü, Zanaatkâr, Silahçı); para kasma açıkları kapalı, saatlik kazanç sınırı |
+| `server/plugins/AuraSkills/`, `GSit/` | Türkçe dil |
+| `server/plugins/GrimAC/` | Türkçe mesajlar, yüksek ihlalde otomatik atma |
 | `server/plugins/DriveBackupV2/config.yml` | 3 saatte bir yedek, son 8 yedek, Türkiye saati |
 
 `enforce-secure-profile=false`: Bedrock (Geyser) ve farklı sürümlerle giren oyuncuların sohbette atılmaması için kapalı.
@@ -257,7 +277,9 @@ Geyser ilk açılışta `plugins/Geyser-Spigot/config.yml` dosyasını oluşturu
 1. Panelde sunucu türü olarak **Paper 26.1.2**, Java sürümü olarak **Java 25** seç.
 2. Kendi bilgisayarında bir kez `server` klasöründe `java setup/Setup.java` çalıştır (eksik eklentiler insin).
 3. `server` klasörünün **içindekileri** panelin dosya yöneticisine yükle.
-4. Panel kendi başlatma komutunu kullandığı için X-Ray korumasını elle aç: `config/paper-world-defaults.yml` → `anticheat` → `anti-xray` → `enabled: true`.
+4. Panel kendi başlatma komutunu kullandığı için X-Ray korumasını elle aç: sunucu bir kez açılıp kapandıktan sonra kendi bilgisayarında
+   `config/paper-world-defaults.yml` dosyasını indir, `server` klasöründe `java setup/Setup.java` çalıştır (dosyayı güçlü X-Ray ayarlarıyla
+   günceller) ve geri yükle. Ya da elle: `anticheat` → `anti-xray` → `enabled: true`, `engine-mode: 2`.
 5. Panelde Java başlatma ayarlarına (JVM flags / Startup) `-Duser.language=en -Duser.country=US` ekle (Türkçe I hatasına karşı).
 
 ---
@@ -278,7 +300,7 @@ server/
     └── ilk-kurulum-komutlari.txt → ilk açılışta konsola yapıştırılacak komutlar
 custom-plugins/SkyCore/          → SkyCore'un kaynak kodu ve testleri
 branding/                        → logo (SVG/PNG), sunucu ikonu, banner'lar, önizlemeler, .schem dosyaları, tanıtım metinleri, LISANSLAR.md
-tools/                           → logo (tools/logo), spawn adası ve KOTH haritası dönüştürücüsü (import_map.py)
+tools/                           → logo (tools/logo), spawn adası ve KOTH haritası dönüştürücüsü (import_map.py), market açık kontrolü (market_kontrol.py)
 ```
 
 ## Sonraki adımlar için fikirler
@@ -287,7 +309,7 @@ tools/                           → logo (tools/logo), spawn adası ve KOTH har
 - Sunucu listesi sitelerine kayıt + **oy verme ödülleri** (NuVotifier + oy eklentisi)
 - **BlueMap** ile web'den canlı harita
 - Sezonluk etkinlikler (kasaya özel ödüller, bayram etkinlikleri)
-- SkyCore'a mezar (ölünce eşyaların sandığa girmesi), klan savaşları, görevler eklemek
+- Kaynak dünyası (her ay sıfırlanan maden dünyası), sıralama tabloları (en zengin, en çok oynayan), haftalık etkinlikler, klan savaşları
 
 ## Lisanslar ve teşekkür
 

@@ -105,15 +105,37 @@ OP'lerde (ve LuckPerms'te `*` olan admin grubunda): `skycore.admin`, `skycore.sp
 Gerekenler: Vault (VaultUnlocked) + EssentialsX ekonomisi. İsteğe bağlı: EssentialsX Spawn (spawn/warp),
 DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten sonra karşılama).
 
+## Dupe ve hile korumaları
+
+`src/test/java/.../ExploitTest.java` içindeki her test bir açığı **gerçekten dener** ve SkyCore'un engellediğini doğrular:
+
+| Denenen açık | Sonuç |
+|---|---|
+| Savaştayken `/essentials:spawn`, `/ehome`, `/tpaccept` gibi takma adlarla kaçmak | Komut adının bütün takma adları ve `eklenti:` önekleri yakalanır |
+| Savaştayken çıkıp eşyaları mezara saklamak | Savaştan kaçan ve PvP'de ölen için mezar oluşmaz, eşyalar yere düşer |
+| Klan evi / `/vahsi` bekleme süresinde savaşa girip yine de ışınlanmak | Işınlanma anında savaş tekrar kontrol edilir |
+| Takas menüsündeki eşyayla ölüp eşyayı korumak, takası hasarla sürdürmek | Ölünce teklif yere düşer, hasar alınca takas iptal olur |
+| Karşı tarafın takas kutusundan shift, sayı tuşu, sürükleme, çift tık vb. ile eşya çalmak | Sadece kendi kutuna izin var, diğer bütün tıklamalar engellenir |
+| Karşı taraf onaylarken son saniyede teklifi değiştirmek | Değişince iki onay da sıfırlanır, 1 sn onay kabul edilmez |
+| Market / kasa menüsünden eşya almak (shift, sayı tuşu, çift tık, `Q`) | Menüler salt okunur |
+| Kasa anahtarını iki kez kullanmak, mezarı iki kez toplamak | Anahtar bir kez düşer, mezar bir kez açılır |
+| Sahte banknot (NaN, sonsuz, eksi, sınırın üstü) | Geçersiz banknot reddedilir |
+| Klan bankası, banknot ve kellede `-500`, `NaN`, `Infinity`, `1e400` | Hiçbiri para yaratmaz/silmez |
+| Pistonla koyduğun bloğu itip görevde "doğal blok" diye saydırmak | Koyulan blok işareti pistonla birlikte taşınır |
+| Pistonla, dağıtıcıyla spawn adasına/arenaya blok, lav, su sokmak | Dışarıdan korumalı alana itme ve dağıtma engellenir |
+| Alt hesaplarla günlük ödülü ve aktiflik ödülünü katlamak | IP başına en fazla 2 hesap ödül alır (`ip-basina-max`) |
+| Yeni oyuncu korumasını, ada ya da klan PvP yasağını zehir/yavaşlık iksiriyle aşmak | Atılan ve kalıcı kötü iksirler korunan oyuncuyu etkilemez |
+| Marketten al → üret → markete sat ile para basmak | Varsayılan fiyatlarda yok; zümrüt satılamaz (köylü takası). Fiyat değiştirdikten sonra `python3 tools/market_kontrol.py` |
+| Kelleyi alt hesapla toplamak | Aynı IP'den kelle ödülü alınamaz |
+
 ## Geliştiriciler için
 
-Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 40 test).
+Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 56 test).
 
 - Eklenti gerçek **Paper 26.1.2 API** kaynağına karşı derlendi (`--release 21`, uyarısız).
 - MockBukkit henüz 26.x'i desteklemediği için testler **Paper 1.21.11 API**'siyle çalıştırıldı; SkyCore'un kullandığı API iki
-  sürümde aynı. 40 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, mezar, ağaç devirme,
-  hasat, görevler, yeni oyuncu koruması, takas, eski ayar dosyasının
-  güncellenmesi dahil).
+  sürümde aynı. 56 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, mezar, ağaç devirme,
+  hasat, görevler, yeni oyuncu koruması, takas, 16 dupe/hile denemesi, eski ayar dosyasının güncellenmesi dahil).
 - Spawn adası `tools/spawn_island.py` ile üretilir: `src/main/resources/spawn/ada.bp.gz` (bloklar) ve `spawn/ada.yml`
   (spawn, warp, portal, kasa, KOTH ve hologram noktaları).
 - KOTH arenası `tools/import_map.py` ile üretilir: `src/main/resources/koth/` (CC BY-SA 4.0, `koth/LICENSE.txt`).

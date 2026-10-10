@@ -185,8 +185,9 @@ final class GraveModule implements Module, CommandExecutor, TabCompleter {
             return;
         }
         Player killer = player.getKiller();
-        if (!pvpGraves && killer != null && !killer.equals(player)) {
-            return; // PvP: esyalar normal duser
+        boolean pvp = (killer != null && !killer.equals(player)) || plugin.combat().inCombat(player);
+        if (!pvpGraves && pvp) {
+            return; // PvP ya da savastan kacma: esyalar normal duser, mezarla saklanamaz
         }
         Block block = findSpot(player.getLocation());
         if (block == null) {

@@ -115,11 +115,20 @@ final class MarketModule implements Module, CommandExecutor, TabCompleter {
             return null;
         }
         try {
-            double buy = Math.max(0, Double.parseDouble(parts[1]));
-            double sell = Math.max(0, Double.parseDouble(parts[2]));
+            double buy = Double.parseDouble(parts[1]);
+            double sell = Double.parseDouble(parts[2]);
+            if (!Double.isFinite(buy) || !Double.isFinite(sell)) {
+                throw new NumberFormatException("sayi degil");
+            }
+            buy = Math.max(0, buy);
+            sell = Math.max(0, sell);
             if (buy > 0 && sell >= buy) {
                 plugin.getLogger().warning("market.yml: " + parts[0] + " satis fiyati alistan yuksek, yariya indirildi.");
                 sell = buy / 2;
+            }
+            if (material == Material.EMERALD && sell > 0) {
+                plugin.getLogger().warning("market.yml: zumrut satilabiliyor. Koylu takasiyla (cubuk -> zumrut) bedava para"
+                        + " basilabilir; satis fiyatini 0 yapmaniz onerilir.");
             }
             return new Offer(material, buy, sell);
         } catch (NumberFormatException e) {

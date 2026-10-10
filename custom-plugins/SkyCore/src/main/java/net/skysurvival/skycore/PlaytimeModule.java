@@ -51,6 +51,8 @@ final class PlaytimeModule implements Module {
         int target = Math.max(1, plugin.getConfig().getInt("aktiflik-odulu.dakika", 60));
         double reward = plugin.getConfig().getDouble("aktiflik-odulu.odul", 500);
         long now = System.currentTimeMillis();
+        int ipLimit = plugin.getConfig().getInt("aktiflik-odulu.ip-basina-max", 2);
+        Map<String, Integer> activePerIp = new HashMap<>();
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             UUID id = player.getUniqueId();
             if (!plugin.auth().isLoggedIn(player)) {
@@ -63,6 +65,10 @@ final class PlaytimeModule implements Module {
             lastLocation.put(id, location);
             if (now - lastActive.getOrDefault(id, now) > AFK_MILLIS) {
                 continue; // AFK
+            }
+            String ip = SkyCore.ipOf(player);
+            if (ipLimit > 0 && ip != null && activePerIp.merge(ip, 1, Integer::sum) > ipLimit) {
+                continue; // ayni IP'den fazla hesap (AFK alt hesap ciftligi)
             }
             int minutes = plugin.data().activeMinutes(id) + 1;
             if (minutes >= target && plugin.economy().deposit(player, reward)) {

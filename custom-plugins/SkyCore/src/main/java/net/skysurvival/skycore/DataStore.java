@@ -69,6 +69,23 @@ final class DataStore {
         set(player(id, "gunluk-seri"), streak);
     }
 
+    /** Bugun bu IP'den gunluk odul alan hesaplar (alt hesap siniri icin). */
+    List<String> dailyClaimsFromIp(String ip, String date) {
+        return yaml.getStringList("ip-gunluk." + ipKey(ip) + "." + date);
+    }
+
+    void addDailyClaimFromIp(String ip, String date, UUID id) {
+        String key = ipKey(ip);
+        List<String> claims = new ArrayList<>(dailyClaimsFromIp(ip, date));
+        claims.add(id.toString());
+        set("ip-gunluk." + key, null); // eski gunleri temizle
+        set("ip-gunluk." + key + "." + date, claims);
+    }
+
+    private static String ipKey(String ip) {
+        return ip.replace('.', '_').replace(':', '_');
+    }
+
     // ---- Aktiflik ----
 
     int activeMinutes(UUID id) {

@@ -1,0 +1,63 @@
+# Sky Survival: Turkce meslek dosyasi. Jobs Reborn varsayilanindan uyarlandi;
+# oyuncu oldurme odulu ve yap-boz para donguleri (slime blogu) kaldirildi.
+Digger:
+  fullname: Kazici
+  displayName: '&eKazıcı'
+  shortname: D
+  FullDescription:
+  - "&7Toprak, kum ve çakıl kazarak para kazanır."
+  ChatColour: GOLD
+  chat-display: full
+  max-level: 200
+  leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+  rejoinCooldown: 10
+  maxDailyQuests: 1
+  Quests:
+    '1':
+      Name: Köstebek
+      Objectives:
+      - Break;dirt;50
+      - Break;grass_block;50
+      - Break;gravel;50
+      RewardCommands:
+      - eco give [playerName] 100
+      - "msg [playerName] &aMeslek görevi tamamlandı! &e+100 para"
+      RewardDesc:
+      - "Toprak kaz ve para kazan"
+      - "Ödül: 100 para"
+  Gui:
+    ItemStack: wooden_shovel
+  Break:
+    red_sand:
+      income: 1
+      points: 1
+      experience: 1
+    coarse_dirt:
+      income: 1
+      points: 1
+      experience: 1
+    dirt:
+      income: 0.25
+      points: 0.25
+      experience: 0.25
+    grass_block:
+      income: 0.3
+      points: 0.3
+      experience: 0.3
+    gravel:
+      income: 1
+      points: 1
+      experience: 1.0
+    sand:
+      income: 0.4
+      points: 0.4
+      experience: 0.5
+    clay:
+      income: 1
+      points: 1
+      experience: 1.0

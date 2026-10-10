@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import org.bukkit.GameMode;
+import org.bukkit.command.Command;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -31,6 +32,8 @@ final class CombatModule implements Module {
     /** Oyuncu -> savas modunun bitecegi zaman (ms). */
     private final Map<UUID, Long> tagged = new HashMap<>();
     private final Set<UUID> kicked = new HashSet<>();
+    /** Savastan kacip oldurulmekte olan oyuncular (olum olayi sirasinda hala savasta sayilir). */
+    private final Set<UUID> punishing = new HashSet<>();
     private final Set<String> blockedCommands = new HashSet<>();
     private boolean enabled;
     private boolean punishLogout;
@@ -67,6 +70,11 @@ final class CombatModule implements Module {
     boolean isTagged(Player player) {
         Long until = tagged.get(player.getUniqueId());
         return until != null && until > System.currentTimeMillis();
+    }
+
+    /** Savasta mi ya da savastan kactigi icin olduruluyor mu (mezar ve takas icin). */
+    boolean inCombat(Player player) {
+        return isTagged(player) || punishing.contains(player.getUniqueId());
     }
 
     private long secondsLeft(Player player) {
@@ -141,15 +149,32 @@ final class CombatModule implements Module {
         if (!enabled || !isTagged(player)) {
             return;
         }
-        String label = event.getMessage().substring(1).split(" ", 2)[0].toLowerCase(Locale.ROOT);
-        int namespace = label.indexOf(':');
-        if (namespace >= 0) {
-            label = label.substring(namespace + 1); // essentials:spawn -> spawn
-        }
-        if (blockedCommands.contains(label)) {
+        String typed = event.getMessage().substring(1).split(" ", 2)[0].toLowerCase(Locale.ROOT);
+        if (isBlocked(typed)) {
             event.setCancelled(true);
             plugin.messages().send(player, "savas.mesajlar.komut-yasak", "kalan", secondsLeft(player));
         }
+    }
+
+    /** Yazilan komut, takma adi (ehome -> home) ya da eklenti onekiyle (essentials:spawn) yasakli mi. */
+    boolean isBlocked(String typed) {
+        Set<String> names = new HashSet<>();
+        names.add(typed);
+        int namespace = typed.indexOf(':');
+        if (namespace >= 0) {
+            names.add(typed.substring(namespace + 1)); // essentials:spawn -> spawn
+        }
+        Command command = plugin.getServer().getCommandMap().getCommand(typed);
+        if (command != null) {
+            names.add(command.getName().toLowerCase(Locale.ROOT));
+            command.getAliases().forEach(alias -> names.add(alias.toLowerCase(Locale.ROOT)));
+        }
+        for (String name : names) {
+            if (blockedCommands.contains(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -167,7 +192,12 @@ final class CombatModule implements Module {
         if (!enabled || !punishLogout || !inCombat || wasKicked || player.isDead()) {
             return;
         }
-        player.setHealth(0.0); // esyalar yere duser, son vuran "oldurmus" sayilir
+        punishing.add(player.getUniqueId());
+        try {
+            player.setHealth(0.0); // esyalar yere duser, son vuran "oldurmus" sayilir
+        } finally {
+            punishing.remove(player.getUniqueId());
+        }
         plugin.messages().broadcast("savas.mesajlar.kacti", "oyuncu", player.getName());
     }
 

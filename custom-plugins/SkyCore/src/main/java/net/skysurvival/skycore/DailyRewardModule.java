@@ -81,6 +81,15 @@ final class DailyRewardModule implements Module, CommandExecutor, TabCompleter {
             messages.send(player, "genel-mesajlar.ekonomi-yok");
             return true;
         }
+        int ipLimit = plugin.getConfig().getInt("gunluk-odul.ip-basina-max", 2);
+        String ip = SkyCore.ipOf(player);
+        if (ipLimit > 0 && ip != null) {
+            List<String> claims = plugin.data().dailyClaimsFromIp(ip, today.toString());
+            if (claims.size() >= ipLimit && !claims.contains(id.toString())) {
+                messages.send(player, "gunluk-odul.mesajlar.ip-siniri", "max", ipLimit);
+                return true;
+            }
+        }
         int streak = nextStreak(id, today);
         if (streak == 1 && plugin.data().dailyStreak(id) > 1) {
             messages.send(player, "gunluk-odul.mesajlar.seri-bozuldu");
@@ -91,6 +100,9 @@ final class DailyRewardModule implements Module, CommandExecutor, TabCompleter {
             return true;
         }
         plugin.data().setDaily(id, player.getName(), today.toString(), streak);
+        if (ip != null) {
+            plugin.data().addDailyClaimFromIp(ip, today.toString(), id);
+        }
         messages.send(player, "gunluk-odul.mesajlar.alindi", "miktar", plugin.economy().format(reward), "seri", streak);
         plugin.crates().giveKey(player, plugin.getConfig().getString("gunluk-odul.anahtar", ""), 1);
         int every = plugin.getConfig().getInt("gunluk-odul.seri-bonus-gun", 7);

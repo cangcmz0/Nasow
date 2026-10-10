@@ -99,6 +99,11 @@ final class WildModule implements Module, CommandExecutor, TabCompleter {
         }
         int[] point = randomPoint();
         world.getChunkAtAsync(point[0] >> 4, point[1] >> 4).thenAccept(chunk -> {
+            if (plugin.combat().isTagged(player)) {
+                searching.remove(player.getUniqueId());
+                plugin.messages().send(player, "vahsi-doga.mesajlar.savasta"); // ararken savasa girdi
+                return;
+            }
             Location target = safeSpot(world, point[0], point[1]);
             if (target == null) {
                 search(player, world, attemptsLeft - 1);

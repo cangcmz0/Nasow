@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,6 +36,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -303,6 +306,27 @@ final class QuestModule implements Module, CommandExecutor, TabCompleter {
             }
         }
         return false;
+    }
+
+    /** Pistonla itilen/cekilen konmus bloklarin isareti de tasinir (pistonla "dogal blok" yapma hilesi). */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        movePlaced(event.getBlocks(), event.getDirection());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        movePlaced(event.getBlocks(), event.getDirection().getOppositeFace()); // cekilen bloklar pistona dogru gider
+    }
+
+    private void movePlaced(List<Block> blocks, BlockFace direction) {
+        List<Block> moved = new ArrayList<>();
+        for (Block block : blocks) {
+            if (consumePlaced(block)) {
+                moved.add(block.getRelative(direction));
+            }
+        }
+        moved.forEach(this::markPlaced);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

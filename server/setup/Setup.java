@@ -170,59 +170,104 @@ public class Setup {
         }
     }
 
+    /** Gercek cevherlerin yaninda X-Ray kullanana gosterilen sahte cevherler (engine-mode 2). */
+    static final List<String> ANTI_XRAY_FAKE_ORES = List.of(
+            "copper_ore", "deepslate_copper_ore", "raw_copper_block", "iron_ore", "deepslate_iron_ore", "raw_iron_block",
+            "gold_ore", "deepslate_gold_ore", "redstone_ore", "deepslate_redstone_ore", "lapis_ore", "deepslate_lapis_ore",
+            "diamond_ore", "deepslate_diamond_ore", "emerald_ore", "deepslate_emerald_ore",
+            "ancient_debris", "nether_gold_ore", "nether_quartz_ore");
+
+    /** Kapali (gorunmeyen) olduklarinda sahte cevherle karistirilan bloklar. Nether de dahil. */
+    static final List<String> ANTI_XRAY_REPLACED = List.of(
+            "stone", "deepslate", "andesite", "diorite", "granite", "tuff", "calcite", "smooth_basalt", "dirt", "gravel",
+            "coal_ore", "deepslate_coal_ore", "amethyst_block", "budding_amethyst", "chest",
+            "netherrack", "basalt", "blackstone", "soul_sand", "soul_soil", "magma_block");
+
     /**
      * Paper'in ayar dosyalari sunucunun ilk acilisinda olusur. Olustuktan sonraki ilk calistirmada
-     * Paper'in dahili X-Ray korumasini bir kez acar. lock.json'daki "_settings" kaydi sayesinde
-     * admin bu ayari sonradan kapatirsa tekrar acilmaz.
+     * Paper'in dahili X-Ray korumasini bir kez guclu modda acar: engine-mode 2 (X-Ray kullanan her
+     * yerde sahte cevher gorur) ve Nether'daki antik kalinti/altin/kuvars da gizlenir. Paper'in
+     * varsayilani (mode 1) Nether cevherlerini hic gizlemez. lock.json'daki "_settings" kaydi
+     * sayesinde bir kez yapilir; admin korumayi kapattiysa ya da sonradan degistirirse dokunulmaz.
      */
     static void enablePaperAntiXray(Map<String, Object> lock) throws IOException {
         Path file = SERVER_DIR.resolve("config").resolve("paper-world-defaults.yml");
         Map<String, Object> settings = lock.containsKey("_settings") ? obj(lock.get("_settings")) : new LinkedHashMap<>();
-        if (settings.containsKey("anti-xray") || !Files.exists(file)) {
+        if (settings.containsKey("anti-xray-guclu") || !Files.exists(file)) {
             return;
         }
-
+        Object old = settings.get("anti-xray"); // eski surum korumayi daha once acti mi
+        boolean enabledBefore = "acildi".equals(old) || "zaten-acik".equals(old);
         List<String> lines = new ArrayList<>(Files.readAllLines(file));
-        String result = "bulunamadi";
-        for (int block = 0; block < lines.size() && result.equals("bulunamadi"); block++) {
+        String result = applyStrongAntiXray(lines, enabledBefore);
+        if (result.equals("acildi")) {
+            Files.write(file, lines);
+            System.out.println("  [AYAR]  Paper X-Ray korumasi guclu modda acildi (config/paper-world-defaults.yml)");
+        } else if (result.equals("bulunamadi")) {
+            System.out.println("  [UYARI] Paper X-Ray ayari bulunamadi. Elle acmak icin config/paper-world-defaults.yml"
+                    + " icinde anticheat > anti-xray > enabled: true ve engine-mode: 2 yap.");
+        }
+        settings.put("anti-xray", settings.getOrDefault("anti-xray", result));
+        settings.put("anti-xray-guclu", result);
+        lock.put("_settings", settings);
+    }
+
+    /**
+     * anticheat > anti-xray bolumunu guclu ayarlarla degistirir. Sonuc: "acildi", "admin-kapatti"
+     * (onceden acilmis ama admin kapatmis), "ozel-ayar" (admin engine-mode'u degistirmis) ya da
+     * "bulunamadi". Son ikisinde dosyaya dokunulmaz.
+     */
+    static String applyStrongAntiXray(List<String> lines, boolean enabledBefore) {
+        for (int block = 0; block < lines.size(); block++) {
             if (!lines.get(block).trim().equals("anti-xray:")) {
                 continue;
             }
             int blockIndent = indentOf(lines.get(block));
-            int childIndent = -1;
-            for (int i = block + 1; i < lines.size(); i++) {
-                String line = lines.get(i);
+            int end = block + 1;
+            int childIndent = blockIndent + 2;
+            boolean disabled = false;
+            boolean defaultMode = false;
+            for (; end < lines.size(); end++) {
+                String line = lines.get(end);
                 if (line.isBlank()) {
                     continue;
                 }
-                int indent = indentOf(line);
-                if (indent <= blockIndent) {
+                if (indentOf(line) <= blockIndent) {
                     break;
                 }
-                if (childIndent < 0) {
-                    childIndent = indent;
+                if (line.trim().equals("enabled: false")) {
+                    disabled = true;
                 }
-                if (indent == childIndent && line.trim().equals("enabled: false")) {
-                    lines.set(i, line.replace("enabled: false", "enabled: true"));
-                    result = "acildi";
-                    break;
-                }
-                if (indent == childIndent && line.trim().equals("enabled: true")) {
-                    result = "zaten-acik";
-                    break;
+                if (line.trim().equals("engine-mode: 1")) {
+                    defaultMode = true;
                 }
             }
+            while (end > block + 1 && lines.get(end - 1).isBlank()) {
+                end--;
+            }
+            if (enabledBefore && disabled) {
+                return "admin-kapatti";
+            }
+            if (!defaultMode) {
+                return "ozel-ayar";
+            }
+            String pad = " ".repeat(childIndent);
+            List<String> strong = new ArrayList<>();
+            strong.add(pad + "enabled: true");
+            strong.add(pad + "engine-mode: 2");
+            strong.add(pad + "hidden-blocks:");
+            ANTI_XRAY_FAKE_ORES.forEach(b -> strong.add(pad + "- " + b));
+            strong.add(pad + "lava-obscures: false");
+            strong.add(pad + "max-block-height: 64");
+            strong.add(pad + "replacement-blocks:");
+            ANTI_XRAY_REPLACED.forEach(b -> strong.add(pad + "- " + b));
+            strong.add(pad + "update-radius: 2");
+            strong.add(pad + "use-permission: false");
+            lines.subList(block + 1, end).clear();
+            lines.addAll(block + 1, strong);
+            return "acildi";
         }
-
-        if (result.equals("acildi")) {
-            Files.write(file, lines);
-            System.out.println("  [AYAR]  Paper X-Ray korumasi acildi (config/paper-world-defaults.yml)");
-        } else if (result.equals("bulunamadi")) {
-            System.out.println("  [UYARI] Paper X-Ray ayari bulunamadi. Elle acmak icin config/paper-world-defaults.yml"
-                    + " icinde anticheat > anti-xray > enabled: true yap.");
-        }
-        settings.put("anti-xray", result);
-        lock.put("_settings", settings);
+        return "bulunamadi";
     }
 
     /**

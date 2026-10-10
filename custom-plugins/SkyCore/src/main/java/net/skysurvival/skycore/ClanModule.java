@@ -187,10 +187,15 @@ final class ClanModule implements Module, CommandExecutor, TabCompleter {
             return;
         }
         Player attacker = CombatModule.attacker(event.getDamager());
-        if (attacker != null && !attacker.equals(victim) && sameClan(attacker.getUniqueId(), victim.getUniqueId())) {
+        if (attacker != null && !attacker.equals(victim) && friendlyFireBlocked(attacker, victim)) {
             event.setCancelled(true);
             plugin.messages().actionBar(attacker, "klan.mesajlar.dost-atesi");
         }
+    }
+
+    boolean friendlyFireBlocked(Player attacker, Player victim) {
+        return enabled && !plugin.getConfig().getBoolean("klan.dost-atesi", false)
+                && sameClan(attacker.getUniqueId(), victim.getUniqueId());
     }
 
     // ---- Komut ----
@@ -507,10 +512,15 @@ final class ClanModule implements Module, CommandExecutor, TabCompleter {
         }
         homeTeleports.put(player.getUniqueId(), plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             homeTeleports.remove(player.getUniqueId());
-            if (player.isOnline()) {
-                player.teleportAsync(home);
-                messages.send(player, "klan.mesajlar.ev-isinlandi");
+            if (!player.isOnline()) {
+                return;
             }
+            if (plugin.combat().isTagged(player)) {
+                messages.send(player, "vahsi-doga.mesajlar.savasta"); // beklerken savasa girdi
+                return;
+            }
+            player.teleport(home);
+            messages.send(player, "klan.mesajlar.ev-isinlandi");
         }, delay * 20L));
     }
 
