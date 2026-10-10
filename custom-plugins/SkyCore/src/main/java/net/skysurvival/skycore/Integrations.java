@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
 /**
- * EssentialsX (warp, spawn) ve DecentHolograms'a yansima (reflection) ile baglanir; boylece bu eklentiler
+ * EssentialsX (warp, spawn), DecentHolograms ve DiscordSRV'ye yansima (reflection) ile baglanir; boylece bu eklentiler
  * olmadan da SkyCore derlenir ve calisir. Basarisiz islemler false dondurur ve konsola yazilir.
  */
 final class Integrations {
@@ -58,6 +58,35 @@ final class Integrations {
             warn("Essentials spawn'i ayarlanamadi (" + group + ")", e);
             return false;
         }
+    }
+
+    /**
+     * DiscordSRV acik ve bot bagliysa ana sohbet kanalina mesaj yollar (Discord bicimi: **kalin**, :emoji:).
+     * &-renk kodlari silinir. Gonderildiyse true.
+     */
+    boolean sendToDiscord(String text) {
+        Plugin discord = enabled("DiscordSRV");
+        if (discord == null || text == null || text.isBlank()) {
+            return false;
+        }
+        try {
+            Object channel = discord.getClass().getMethod("getMainTextChannel").invoke(discord);
+            if (channel == null) {
+                return false;
+            }
+            Class<?> util = Class.forName("github.scarsz.discordsrv.util.DiscordUtil", true, discord.getClass().getClassLoader());
+            for (Method method : util.getMethods()) {
+                Class<?>[] types = method.getParameterTypes();
+                if (method.getName().equals("sendMessage") && types.length == 2 && types[1] == String.class
+                        && types[0].isInstance(channel)) {
+                    method.invoke(null, channel, text.replaceAll("&[0-9a-fk-orA-FK-OR]", ""));
+                    return true;
+                }
+            }
+        } catch (ReflectiveOperationException | RuntimeException e) {
+            warn("Discord'a mesaj gonderilemedi", e);
+        }
+        return false;
     }
 
     boolean hologramsAvailable() {

@@ -15,7 +15,10 @@ import org.bukkit.entity.Player;
 
 /** config.yml'deki &-renk kodlu mesajlari okur, {yer-tutucu}lari doldurur ve gonderir. */
 final class Messages {
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
+    /** Mesajdaki https://, www. ve discord.gg/ baglantilari tiklanabilir olur (/oy, /discord, /site). */
+    private static final Pattern LINK = Pattern.compile("(?:https?://|www\\.|discord\\.gg/)\\S+");
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character('&').extractUrls(LINK).build();
     /** Yazidaki [[esya:iron_ingot]] oyuncunun kendi dilinde esya adina doner (Turkce istemcide "Demir Kulce"). */
     private static final Pattern ITEM_TOKEN = Pattern.compile("\\[\\[esya:([a-z0-9_]+)]]");
     private static final TextReplacementConfig ITEM_NAMES = TextReplacementConfig.builder().match(ITEM_TOKEN)

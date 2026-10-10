@@ -154,7 +154,8 @@ rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, bur
 #     /skycore kurulum onayla         -> ikisini kurar ve sunlari OTOMATIK ayarlar:
 #        - spawn noktasi (yeni oyuncular ve olenler adaya gelir)
 #        - warplar: /warp market, arena, kasalar, portal, atla, koth
-#        - 11 hologram (DecentHolograms; /dh ile duzenlenebilir)
+#        - 15 hologram (DecentHolograms; /dh ile duzenlenebilir), 4'u siralama tablosu:
+#          en zenginler, bu ayin oyculari, KOTH sampiyonlari, en cok gorev
 #        - 3 kasa (gunluk, nadir, efsane)
 #        - "The Hill" KOTH arenasi (CC BY-SA 4.0 harita; yapimci kafalari ve tabelalari dahil)
 #     Ada kendiliginden korunur (blok kirma/koyma, PvP, hasar, aclik, yaratik yok).
@@ -170,7 +171,20 @@ rg flag -w world_the_end __global__ deny-message &cBurası korumalı bölge, bur
 #
 #  4) Etkinlik/ozel gun icin herkese anahtar: /skycore anahtar herkes efsane 1
 #
+#  5) Siralama tablolari: /siralama (para, sure, gorev, koth, oy). Admin grubu (*) tablolarda
+#     gorunmez (skycore.siralama.gizli). Ada eski surumle kurulduysa tablolari eklemek icin:
+#     /skycore hologramlar
+#
+#  6) OY ODULLERI (NuVotifier): TCP 8192 portunu ac. Oy sitelerine sunucunu ekle; sitede
+#     "Votifier" bolumune IP, port 8192 ve plugins/Votifier/rsa/public.key icerigini yaz.
+#     Site adreslerini plugins/SkyCore/config.yml -> oy.siteler'e ekle (/oy'da tiklanabilir).
+#     Deneme: /testvote OYUNCU_ADIN
+#
+#  7) DISCORD BAGLANTISI (DiscordSRV): plugins/DiscordSRV/config.yml icine BotToken ve
+#     Channels "global" kanal ID'sini yaz, sunucuyu yeniden baslat. Adim adim: README.md
+#
 #  SkyCore (sunucuya ozel eklenti) ayarlari: plugins/SkyCore/config.yml
 #  Market fiyatlari: plugins/SkyCore/market.yml
 #  /discord ve /site adreslerini config.yml'deki "bilgi" bolumune yaz, sonra: /skycore reload
+#  (Discord davet linkini DiscordSRV'nin config.yml'deki DiscordInviteLink'e de yaz.)
 # ============================================================================

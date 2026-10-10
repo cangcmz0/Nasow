@@ -43,6 +43,8 @@ public class SkyCore extends JavaPlugin implements Listener {
     private QuestModule quests;
     private NewbieModule newbies;
     private TradeModule trades;
+    private LeaderboardModule leaderboards;
+    private VoteModule votes;
     private List<Module> modules;
 
     /** AuthMe girisi tamamlanmis ve "hos geldin" islemleri yapilmis oyuncular. */
@@ -79,8 +81,10 @@ public class SkyCore extends JavaPlugin implements Listener {
         quests = new QuestModule(this);
         newbies = new NewbieModule(this);
         trades = new TradeModule(this);
+        leaderboards = new LeaderboardModule(this);
+        votes = new VoteModule(this);
         modules = List.of(combat, chatGames, banknotes, bounties, dailyRewards, playtime, announcer, deaths, welcome,
-                spawn, wild, crates, koth, clans, market, graves, gathering, quests, newbies, trades);
+                spawn, wild, crates, koth, clans, market, graves, gathering, quests, newbies, trades, leaderboards, votes);
 
         for (Module module : modules) {
             getServer().getPluginManager().registerEvents(module, this);
@@ -107,6 +111,8 @@ public class SkyCore extends JavaPlugin implements Listener {
         command("gorev", quests);
         command("koruma", newbies);
         command("takas", trades);
+        command("siralama", leaderboards);
+        command("oy", votes);
 
         modules.forEach(Module::start);
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -207,6 +213,20 @@ public class SkyCore extends JavaPlugin implements Listener {
         quests.remind(player);
         newbies.remind(player);
         koth.showTo(player);
+        votes.deliverPending(player);
+        votes.remind(player);
+    }
+
+    /** config.yml'deki discord-duyurulari.<anahtar> mesajini (aciksa) DiscordSRV kanalina yollar. */
+    void announceToDiscord(String key, Object... pairs) {
+        if (getConfig().getBoolean("discord-duyurulari.aktif", true)) {
+            integrations.sendToDiscord(messages.raw("discord-duyurulari." + key, pairs));
+        }
+    }
+
+    /** AuthMe girisini yapmis (oyunda hareket edebilen) oyuncu mu. */
+    boolean isReady(Player player) {
+        return ready.contains(player.getUniqueId());
     }
 
     /** Oyuncunun IP adresi (alt hesap sinirlari icin); bilinmiyorsa null. */
@@ -283,5 +303,13 @@ public class SkyCore extends JavaPlugin implements Listener {
 
     TradeModule trades() {
         return trades;
+    }
+
+    LeaderboardModule leaderboards() {
+        return leaderboards;
+    }
+
+    VoteModule votes() {
+        return votes;
     }
 }

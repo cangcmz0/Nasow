@@ -122,6 +122,7 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
         for (String line : messages.rawList("koth.mesajlar.basladi", "sure", holdSeconds)) {
             messages.broadcastText(line);
         }
+        plugin.announceToDiscord("koth-basladi", "sure", holdSeconds);
         gameTask = plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, 20L, 20L);
         return true;
     }
@@ -155,6 +156,8 @@ final class KothModule implements Module, CommandExecutor, TabCompleter {
         plugin.data().setLastKothWinner(winner.getName());
         messages.broadcast("koth.mesajlar.kazandi", "oyuncu", winner.getName(), "sure", holdSeconds,
                 "para", plugin.economy().format(money), "anahtar", keys + "x " + plugin.crates().typeName(keyType));
+        plugin.announceToDiscord("koth-kazandi", "oyuncu", winner.getName(), "para", plugin.economy().format(money),
+                "anahtar", keys + "x " + plugin.crates().typeName(keyType));
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             Messages.sound(player, "ui.toast.challenge_complete", 1.0f);
         }

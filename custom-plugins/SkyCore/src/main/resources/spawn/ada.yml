@@ -90,4 +90,65 @@ hologramlar:
       - "&e/klan &7klan • &e/market &7market"
       - "&e/odul &7günlük ödül • &e/kelle &7kelle avı"
       - "&e/gorev &7günlük görev • &e/takas &7güvenli takas"
+      - "&e/oy &7oy ver, ödül al • &e/siralama &7sıralamalar"
       - "&7Arazi koruma: &6altın kürek"
+  sky_siralama_para:
+    konum: {x: -7.5, y: 5.4, z: -13.5}
+    satirlar:
+      - "&6&l✦ EN ZENGİNLER ✦"
+      - "%skycore_top_para_1%"
+      - "%skycore_top_para_2%"
+      - "%skycore_top_para_3%"
+      - "%skycore_top_para_4%"
+      - "%skycore_top_para_5%"
+      - "%skycore_top_para_6%"
+      - "%skycore_top_para_7%"
+      - "%skycore_top_para_8%"
+      - "%skycore_top_para_9%"
+      - "%skycore_top_para_10%"
+      - "&7/siralama para"
+  sky_siralama_oy:
+    konum: {x: -7.5, y: 5.4, z: -19.5}
+    satirlar:
+      - "&a&l✦ BU AYIN OYCULARI ✦"
+      - "%skycore_top_oy_1%"
+      - "%skycore_top_oy_2%"
+      - "%skycore_top_oy_3%"
+      - "%skycore_top_oy_4%"
+      - "%skycore_top_oy_5%"
+      - "%skycore_top_oy_6%"
+      - "%skycore_top_oy_7%"
+      - "%skycore_top_oy_8%"
+      - "%skycore_top_oy_9%"
+      - "%skycore_top_oy_10%"
+      - "&7/siralama oy"
+  sky_siralama_koth:
+    konum: {x: 9.5, y: 5.4, z: -13.5}
+    satirlar:
+      - "&c&l♛ KOTH ŞAMPİYONLARI ♛"
+      - "%skycore_top_koth_1%"
+      - "%skycore_top_koth_2%"
+      - "%skycore_top_koth_3%"
+      - "%skycore_top_koth_4%"
+      - "%skycore_top_koth_5%"
+      - "%skycore_top_koth_6%"
+      - "%skycore_top_koth_7%"
+      - "%skycore_top_koth_8%"
+      - "%skycore_top_koth_9%"
+      - "%skycore_top_koth_10%"
+      - "&7/siralama koth"
+  sky_siralama_gorev:
+    konum: {x: 9.5, y: 5.4, z: -19.5}
+    satirlar:
+      - "&e&l✦ EN ÇOK GÖREV ✦"
+      - "%skycore_top_gorev_1%"
+      - "%skycore_top_gorev_2%"
+      - "%skycore_top_gorev_3%"
+      - "%skycore_top_gorev_4%"
+      - "%skycore_top_gorev_5%"
+      - "%skycore_top_gorev_6%"
+      - "%skycore_top_gorev_7%"
+      - "%skycore_top_gorev_8%"
+      - "%skycore_top_gorev_9%"
+      - "%skycore_top_gorev_10%"
+      - "&7/siralama gorev"

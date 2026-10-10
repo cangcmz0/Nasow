@@ -2,5 +2,6 @@
 &7Komutlar: &e/help &8| &7Kurallar: &e/rules &8| &7Günlük ödül: &e/odul
 &7Market: &e/market &8| &7Klan: &e/klan &8| &7Vahşi doğa: &e/vahsi &8| &7KOTH: &e/koth
 &7Görevler: &e/gorev &8| &7Takas: &e/takas &8| &7Mezarın: &e/mezar
+&7Oy ver, ödül kazan: &e/oy &8| &7Sıralamalar: &e/siralama &8| &7Discord: &e/discord
 &7Arazini korumak için &6altın kürekle&7 sandığının etrafını işaretle.
 &7Çevrimiçi oyuncular: &a{ONLINE}

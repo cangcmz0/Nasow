@@ -9,6 +9,9 @@ import org.bukkit.OfflinePlayer;
  * %skycore_klan%, %skycore_klan_etiket%, %skycore_klan_uye%, %skycore_klan_rutbe%, %skycore_gunluk_seri%,
  * %skycore_kelle%, %skycore_koth_galibiyet%, %skycore_koth_son%, %skycore_gorev% (2/3), %skycore_gorev_toplam%,
  * %skycore_koruma% (yeni oyuncu korumasinin kalan suresi).
+ * Siralama: %skycore_top_<tablo>_<1-10>% (hazir satir), %skycore_top_<tablo>_<sira>_isim%, ..._deger,
+ * %skycore_sira_<tablo>% (oyuncunun sirasi); tablolar: para, sure, gorev, koth, oy.
+ * Oy: %skycore_oy_ay%, %skycore_oy_toplam%, %skycore_oy_parti% (12/30).
  * Bu sinif yalnizca PlaceholderAPI kuruluysa yuklenir.
  */
 final class SkyPlaceholders extends PlaceholderExpansion {
@@ -48,7 +51,9 @@ final class SkyPlaceholders extends PlaceholderExpansion {
     public List<String> getPlaceholders() {
         return List.of("%skycore_klan%", "%skycore_klan_etiket%", "%skycore_klan_uye%", "%skycore_klan_rutbe%",
                 "%skycore_gunluk_seri%", "%skycore_kelle%", "%skycore_koth_galibiyet%", "%skycore_koth_son%",
-                "%skycore_gorev%", "%skycore_gorev_toplam%", "%skycore_koruma%");
+                "%skycore_gorev%", "%skycore_gorev_toplam%", "%skycore_koruma%", "%skycore_top_para_1%",
+                "%skycore_top_para_1_isim%", "%skycore_top_para_1_deger%", "%skycore_sira_para%", "%skycore_oy_ay%",
+                "%skycore_oy_toplam%", "%skycore_oy_parti%");
     }
 
     @Override
@@ -57,6 +62,12 @@ final class SkyPlaceholders extends PlaceholderExpansion {
         if (params.equals("koth_son")) {
             String last = plugin.data().lastKothWinner();
             return last.isEmpty() ? "-" : last;
+        }
+        if (params.equals("oy_parti")) {
+            return plugin.votes().partyProgress();
+        }
+        if (params.startsWith("top_")) {
+            return top(params.substring(4));
         }
         if (player == null) {
             return "";
@@ -74,6 +85,38 @@ final class SkyPlaceholders extends PlaceholderExpansion {
             case "gorev_toplam" -> String.valueOf(plugin.data().questsDone(player.getUniqueId()));
             case "koruma" -> player.getPlayer() == null || !plugin.newbies().isProtected(player.getPlayer()) ? ""
                     : plugin.newbies().minutesLeft(player.getPlayer()) + " dk";
+            case "oy_ay" -> String.valueOf(plugin.data().votes(player.getUniqueId(), plugin.leaderboards().currentMonth()));
+            case "oy_toplam" -> String.valueOf(plugin.data().totalVotes(player.getUniqueId()));
+            default -> params.startsWith("sira_") && LeaderboardModule.isBoard(params.substring(5))
+                    ? rank(plugin.leaderboards().rankOf(player.getUniqueId(), params.substring(5))) : null;
+        };
+    }
+
+    private static String rank(int rank) {
+        return rank > 0 ? "#" + rank : "-";
+    }
+
+    /** para_1 -> hazir satir, para_1_isim -> isim, para_1_deger -> bicimli deger. */
+    private String top(String params) {
+        String[] parts = params.split("_");
+        if (parts.length < 2 || !LeaderboardModule.isBoard(parts[0])) {
+            return null;
+        }
+        int rank;
+        try {
+            rank = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        LeaderboardModule boards = plugin.leaderboards();
+        if (parts.length == 2) {
+            return boards.line(parts[0], rank);
+        }
+        List<DataStore.Score> list = boards.top(parts[0]);
+        boolean exists = rank >= 1 && rank <= list.size();
+        return switch (parts[2]) {
+            case "isim" -> exists ? list.get(rank - 1).name() : "-";
+            case "deger" -> exists ? boards.format(parts[0], list.get(rank - 1).value()) : "";
             default -> null;
         };
     }

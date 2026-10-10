@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import net.kyori.adventure.text.Component;
@@ -80,7 +81,14 @@ class FeaturesTest extends TestBase {
         assertEquals(5, layout.warps.size());
         assertEquals(2, layout.portals.size());
         assertEquals(3, layout.crates.size());
-        assertEquals(10, layout.holograms.size());
+        assertEquals(14, layout.holograms.size());
+        // Siralama tablolari: altin kursunun ustunde, yer tutuculu satirlar
+        for (String board : List.of("para", "oy", "koth", "gorev")) {
+            IslandLayout.Hologram hologram = layout.holograms.get("sky_siralama_" + board);
+            assertEquals("minecraft:gold_block", blueprint.blockAt((int) Math.floor(hologram.position().x()), 0,
+                    (int) Math.floor(hologram.position().z())), board);
+            assertTrue(hologram.lines().contains("%skycore_top_" + board + "_10%"), board);
+        }
         assertEquals("minecraft:sea_lantern", blueprint.blockAt(0, 5, 0));
         for (IslandLayout.Point crate : layout.crates.values()) {
             assertTrue(blueprint.blockAt((int) crate.x(), (int) crate.y(), (int) crate.z()).startsWith("minecraft:ender_chest"));

@@ -482,6 +482,24 @@ final class SpawnModule implements Module {
         plugin.getLogger().info("Spawn adasi kuruldu: " + origin + (arenaOrigin != null ? ", KOTH arenasi: " + arenaOrigin : ""));
     }
 
+    /**
+     * Kurulu adanin hologramlarini ada.yml'den yeniden olusturur (sonradan eklenen siralama tablolari dahil);
+     * bloklara dokunmaz. Ada kurulu degilse ya da DecentHolograms yoksa -1.
+     */
+    int recreateHolograms() {
+        if (world == null || !plugin.integrations().hologramsAvailable()) {
+            return -1;
+        }
+        int holograms = 0;
+        for (Map.Entry<String, IslandLayout.Hologram> hologram : layout.holograms.entrySet()) {
+            if (plugin.integrations().createHologram(hologram.getKey(),
+                    hologram.getValue().position().toLocation(world, ox, oy, oz), hologram.getValue().lines())) {
+                holograms++;
+            }
+        }
+        return holograms;
+    }
+
     /** Arenanin warp'i, hologrami, yapimci kafalari ve tabelalari. */
     private void finishArena(CommandSender sender) {
         Integrations integrations = plugin.integrations();

@@ -5,7 +5,9 @@ api-version: '1.21'
 description: Sky Survival'a ozel ozellikler (spawn adasi, market, klan, kasa, KOTH, mezar, gorevler, takas, agac kesme, savas modu...)
 authors: [Sky Survival]
 depend: [Vault]
-softdepend: [Essentials, EssentialsSpawn, AuthMe, PlaceholderAPI, DecentHolograms]
+softdepend: [Essentials, EssentialsSpawn, AuthMe, PlaceholderAPI, DecentHolograms, Votifier]
+# /discord SkyCore'da kalsin (DiscordSRV token girilmeden kapaninca da calisir); /discord link -> /discordsrv link
+loadbefore: [DiscordSRV]
 
 commands:
   skycore:
@@ -27,7 +29,8 @@ commands:
     aliases: [gunlukodul, daily]
     permission: skycore.odul
   discord:
-    description: Discord adresimiz
+    description: Discord adresimiz (/discord link ile hesap baglama)
+    usage: /discord [link|linked|unlink]
   site:
     description: Web sitemiz
     aliases: [web]
@@ -75,6 +78,16 @@ commands:
     usage: /takas <oyuncu> | kabul | reddet
     aliases: [trade]
     permission: skycore.takas
+  siralama:
+    description: Siralama tablolari (en zenginler, KOTH, gorev, oy...)
+    usage: /siralama <para|sure|gorev|koth|oy>
+    aliases: [sira, top, siralamalar]
+    permission: skycore.siralama
+  oy:
+    description: Oy verme siteleri ve oy odulleri
+    usage: /oy [siralama]
+    aliases: [vote, oyver]
+    permission: skycore.oy
 
 permissions:
   skycore.admin:
@@ -108,6 +121,13 @@ permissions:
     default: true
   skycore.takas:
     default: true
+  skycore.siralama:
+    default: true
+  skycore.oy:
+    default: true
+  skycore.siralama.gizli:
+    description: Siralama tablolarinda gorunmez (yetkililer icin)
+    default: false
   skycore.spawn.duzenle:
     description: Korumali spawn adasinda blok kirip koyabilir
     default: op

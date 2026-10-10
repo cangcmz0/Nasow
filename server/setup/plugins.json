@@ -180,6 +180,15 @@
       "asset": "DecentHolograms-{version}.jar"
     },
     {
+      "id": "nuvotifier",
+      "name": "NuVotifier",
+      "description": "Oy sitelerinden gelen oylari alir (TCP 8192 portu acik olmali). Oy odullerini SkyCore verir: /oy",
+      "source": "github",
+      "repo": "NuVotifier/NuVotifier",
+      "tag": "v2.7.3",
+      "asset": "nuvotifier.jar"
+    },
+    {
       "id": "chunky",
       "name": "Chunky",
       "description": "Dunyayi onceden olusturur, oyuncular gezerken lag olmaz (/chunky radius 5000, /chunky start).",
@@ -237,8 +246,7 @@
     {
       "id": "discordsrv",
       "name": "DiscordSRV",
-      "enabled": false,
-      "description": "ISTEGE BAGLI: Oyun sohbetini Discord kanalina baglar. Discord bot token'i gerekir.",
+      "description": "Oyun sohbetini Discord kanalina baglar (ve tersi), giris/cikis/olum mesajlari, /discord link ile hesap baglama. Ayar: plugins/DiscordSRV/config.yml icine bot token ve kanal ID yaz (README'de adim adim).",
       "source": "github",
       "repo": "DiscordSRV/DiscordSRV",
       "asset": "DiscordSRV-Build-{version}.jar"

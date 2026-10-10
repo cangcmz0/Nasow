@@ -38,12 +38,14 @@ Logoyu değiştirmek için: `python3 tools/logo/make_logo.py` (renkler ve yazıl
 ⚰ **Mezar:** Ölünce eşyaların kaybolmaz, mezarına girer.
 🌲 **Kolaylıklar:** Eğilerek ağaç devirme ve damar kazma, sağ tıkla hasat, güvenli takas (`/takas`), yeni oyuncu koruması.
 👑 **Etkinlikler:** Her akşam ünlü "The Hill" haritasında Tepenin Kralı (KOTH) etkinliği.
+🏆 **Sıralamalar ve oy ödülleri:** Spawn'da en zenginler ve KOTH şampiyonları tablosu; her gün oy ver, ödül kap, oylar birikince herkese oy partisi (`/oy`).
+💬 **Discord:** Oyun sohbeti Discord'a bağlı, hesabını `/discord link` ile bağla.
 🔒 **Güvenlik:** Hile koruması, güçlü X-Ray engeli, test edilmiş dupe korumaları, grief geri alma, şifreli giriş.
 📱 **Herkese açık:** Crack & Premium, Java (1.8 – 26.x) & Bedrock (telefon/konsol).
 
 Adres: `SUNUCU-ADRESIN` • Discord: `DISCORD-LINKIN`
 
-Etiketler: Survival, SMP, Economy, Jobs, Skills, Clans, Crates, KOTH, PvP, Cracked, Bedrock, Turkish, Türk
+Etiketler: Survival, SMP, Economy, Jobs, Skills, Clans, Crates, KOTH, PvP, Vote Rewards, Cracked, Bedrock, Turkish, Türk
 
 ---
 

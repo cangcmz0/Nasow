@@ -192,6 +192,143 @@ final class DataStore {
         set("koth.son-kazanan", name);
     }
 
+    // ---- Siralama ----
+
+    String name(UUID id) {
+        return yaml.getString(player(id, "isim"));
+    }
+
+    /** Sayisal bir oyuncu degeri (skor.para, gorev-toplam, oy.toplam...). */
+    double score(UUID id, String key) {
+        return yaml.getDouble(player(id, key), 0);
+    }
+
+    /** Degisen degeri yazar (her dakika ayni degeri yazip dosyayi kirletmesin). */
+    void setScore(UUID id, String name, String key, double value) {
+        if (!name.equals(name(id))) {
+            set(player(id, "isim"), name);
+        }
+        if (yaml.getDouble(player(id, key), Double.NaN) != value) {
+            set(player(id, key), value);
+        }
+    }
+
+    /** Yetkililer gibi siralamada gorunmeyecek oyuncular. */
+    void setHidden(UUID id, boolean hidden) {
+        if (hidden != yaml.getBoolean(player(id, "siralama-gizli"), false)) {
+            set(player(id, "siralama-gizli"), hidden ? true : null);
+        }
+    }
+
+    /** key degeri en yuksek oyuncular (0 olanlar ve gizliler haric). */
+    List<Score> top(String key, int limit) {
+        List<Score> list = new ArrayList<>();
+        ConfigurationSection players = yaml.getConfigurationSection("oyuncular");
+        if (players != null) {
+            for (String id : players.getKeys(false)) {
+                ConfigurationSection section = players.getConfigurationSection(id);
+                if (section == null || section.getBoolean("siralama-gizli")) {
+                    continue;
+                }
+                double value = section.getDouble(key, 0);
+                if (value > 0) {
+                    try {
+                        list.add(new Score(UUID.fromString(id), section.getString("isim", "?"), value));
+                    } catch (IllegalArgumentException ignored) {
+                        // bozuk kayit
+                    }
+                }
+            }
+        }
+        list.sort(Comparator.comparingDouble(Score::value).reversed().thenComparing(Score::name, String.CASE_INSENSITIVE_ORDER));
+        return list.size() > limit ? new ArrayList<>(list.subList(0, limit)) : list;
+    }
+
+    record Score(UUID id, String name, double value) {}
+
+    /** Ismi (buyuk/kucuk harf fark etmeden) bilinen oyuncu; yoksa null. */
+    UUID findByName(String name) {
+        ConfigurationSection players = yaml.getConfigurationSection("oyuncular");
+        if (players != null) {
+            for (String id : players.getKeys(false)) {
+                if (name.equalsIgnoreCase(players.getString(id + ".isim"))) {
+                    try {
+                        return UUID.fromString(id);
+                    } catch (IllegalArgumentException ignored) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // ---- Oy verme ----
+
+    static String voteMonthKey(String month) {
+        return "oy.ay." + month;
+    }
+
+    private static String siteKey(String site) {
+        return site.toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z0-9]", "_");
+    }
+
+    void addVote(UUID id, String name, String month) {
+        set(player(id, "isim"), name);
+        set(player(id, voteMonthKey(month)), yaml.getInt(player(id, voteMonthKey(month)), 0) + 1);
+        set(player(id, "oy.toplam"), yaml.getInt(player(id, "oy.toplam"), 0) + 1);
+    }
+
+    int votes(UUID id, String month) {
+        return yaml.getInt(player(id, voteMonthKey(month)), 0);
+    }
+
+    int totalVotes(UUID id) {
+        return yaml.getInt(player(id, "oy.toplam"), 0);
+    }
+
+    long lastVote(UUID id, String site) {
+        return yaml.getLong(player(id, "oy.son." + siteKey(site)), 0);
+    }
+
+    long lastVoteAny(UUID id) {
+        return yaml.getLong(player(id, "oy.son-zaman"), 0);
+    }
+
+    void setLastVote(UUID id, String site, long time) {
+        set(player(id, "oy.son." + siteKey(site)), time);
+        set(player(id, "oy.son-zaman"), time);
+    }
+
+    int pendingVotes(UUID id) {
+        return yaml.getInt(player(id, "oy.bekleyen"), 0);
+    }
+
+    void setPendingVotes(UUID id, int count) {
+        set(player(id, "oy.bekleyen"), count > 0 ? count : null);
+    }
+
+    /** Bugun bu IP'den bu sitede oyu odullendirilen hesaplar (alt hesaplara oy verme siniri). */
+    List<String> voteClaimsFromIp(String ip, String site, String date) {
+        return yaml.getStringList("ip-oy." + ipKey(ip) + "." + siteKey(site) + "." + date);
+    }
+
+    void addVoteClaimFromIp(String ip, String site, String date, UUID id) {
+        String key = "ip-oy." + ipKey(ip) + "." + siteKey(site);
+        List<String> claims = new ArrayList<>(voteClaimsFromIp(ip, site, date));
+        claims.add(id.toString());
+        set(key, null); // eski gunleri temizle
+        set(key + "." + date, claims);
+    }
+
+    int votePartyCount() {
+        return yaml.getInt("oy-partisi.sayac", 0);
+    }
+
+    void setVotePartyCount(int count) {
+        set("oy-partisi.sayac", count);
+    }
+
     // ---- Kelle avi ----
 
     double bounty(UUID id) {

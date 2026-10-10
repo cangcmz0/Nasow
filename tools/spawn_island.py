@@ -421,6 +421,33 @@ for (x, z) in list(SURFACE):
     elif r < 0.205:
         setb(x, 1, z, "minecraft:pink_petals[facing=north,flower_amount=3]")
 
+# Siralama tablolari: kuzey yolunun (portala giden yol) iki yaninda altin ortali kursuler; ustlerinde
+# %skycore_top_...% yer tutuculu hologramlar durur. Rastgelelik kullanmaz, adanin geri kalani degismez.
+BOARDS = [("sky_siralama_para", -8, -14, "para", "&6&l✦ EN ZENGİNLER ✦"),
+          ("sky_siralama_oy", -8, -20, "oy", "&a&l✦ BU AYIN OYCULARI ✦"),
+          ("sky_siralama_koth", 9, -14, "koth", "&c&l♛ KOTH ŞAMPİYONLARI ♛"),
+          ("sky_siralama_gorev", 9, -20, "gorev", "&e&l✦ EN ÇOK GÖREV ✦")]
+for (_, bx, bz, _, _) in BOARDS:
+    for x in range(bx - 1, bx + 2):
+        for z in range(bz - 1, bz + 2):
+            ring = abs(x - bx) + abs(z - bz)
+            setb(x, 0, z, "minecraft:gold_block" if ring == 0 else
+                 "minecraft:chiseled_stone_bricks" if ring == 2 else "minecraft:polished_andesite")
+            setb(x, 1, z, None)
+
+
+def board_yaml():
+    out = []
+    for (name, bx, bz, board, title) in BOARDS:
+        out.append(f"  {name}:")
+        out.append(f"    konum: {yaml_point([bx + 0.5, 5.4, bz + 0.5])}")
+        out.append("    satirlar:")
+        out.append(f'      - "{title}"')
+        out += [f'      - "%skycore_top_{board}_{i}%"' for i in range(1, 11)]
+        out.append(f'      - "&7/siralama {board}"')
+    return "\n".join(out)
+
+
 # ---------------------------------------------------------------------------
 # 11) Noktalar: spawn, warp, portal, hologram, kasa, KOTH, koruma
 # ---------------------------------------------------------------------------
@@ -533,7 +560,9 @@ hologramlar:
       - "&e/klan &7klan • &e/market &7market"
       - "&e/odul &7günlük ödül • &e/kelle &7kelle avı"
       - "&e/gorev &7günlük görev • &e/takas &7güvenli takas"
+      - "&e/oy &7oy ver, ödül al • &e/siralama &7sıralamalar"
       - "&7Arazi koruma: &6altın kürek"
+{board_yaml()}
 """
 
 # ---------------------------------------------------------------------------
@@ -670,6 +699,8 @@ def render_map(path, scale=8):
     label("ARENA + KOTH", 0, AZ, (255, 140, 140))
     label("KASALAR", KX, -8, (230, 160, 255))
     label("ATLAMA", JUMP_END[0], JUMP_END[2] + 4, (150, 220, 255))
+    label("SIRALAMA", -20, -17, (255, 215, 90))
+    label("SIRALAMA", 21, -17, (255, 215, 90))
     d.text((10, hei + 8), "Sky Survival spawn adası — üstten görünüm (1 kare = 1 blok)", font=small, fill=(20, 30, 60))
     img.save(path)
 

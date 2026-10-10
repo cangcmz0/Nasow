@@ -88,6 +88,7 @@ scoreboard:
         - "&fKlan: &b%skycore_klan%"
         - "&fGünlük seri: &e%skycore_gunluk_seri% gün"
         - "&fGörevler: &6%skycore_gorev%"
+        - "&fOy partisi: &d%skycore_oy_parti% &7(/oy)"
         - ""
         - "&fÇevrimiçi: &a%online%"
         - "&fPing: &a%ping%ms"

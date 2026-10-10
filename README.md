@@ -47,6 +47,9 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Her gün 3 yeni görev, bitirince para ve kasa anahtarı | `/gorev` |
 | Güvenli takas (dolandırılma yok) | `/takas <oyuncu>`, `/takas kabul` |
 | Yeni oyuncu koruması (ilk 1 saat PvP yok) | `/koruma` |
+| Sıralamalar: en zenginler, en çok oynayanlar, KOTH şampiyonları, görev, oy | `/siralama`, spawn'daki tablolar |
+| Oy ver, para + kasa anahtarı kazan; oylar birikince herkese oy partisi | `/oy` |
+| Discord sunucusu, Minecraft hesabını Discord'a bağlama | `/discord`, `/discord link` |
 
 Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 
@@ -56,7 +59,8 @@ Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 
 Yeni oyuncular gökyüzündeki adada başlar. Kuzeydeki **Vahşi Doğa portalından** geçen dünyada rastgele bir yere ışınlanır;
 kuzeydoğudaki **atlama iskelesinden** atlayan süzülerek (paraşütle, hasar almadan) dünyaya iner. Doğuda **market**, güneyde
-**PvP arenası**, batıda **kasalar** var. Ada korumalıdır; adada hasar, açlık ve düşman yaratık yoktur.
+**PvP arenası**, batıda **kasalar** var. Portala giden yolun iki yanında **sıralama tabloları** durur.
+Ada korumalıdır; adada hasar, açlık ve düşman yaratık yoktur.
 Kurulum: oyunda admin olarak `/skycore kurulum onayla` (ayrıntı: [SkyCore README](custom-plugins/SkyCore/README.md)).
 
 ### KOTH arenası: "The Hill"
@@ -79,6 +83,7 @@ iki uçta üsler, batıda yapımcıların kafaları ve tabelalarıyla küçük b
 - Açılacak portlar:
   - `25565` **TCP** → Java oyuncuları
   - `19132` **UDP** → Bedrock oyuncuları
+  - `8192` **TCP** → oy sitelerinden gelen oylar (NuVotifier)
 
 ## Hızlı başlangıç
 
@@ -121,6 +126,44 @@ Tamamen kapatmak için pencereyi kapat ya da `CTRL+C`. Oyun içinden `/restart` 
 
 ---
 
+## Sıralama tabloları, oy ödülleri ve Discord
+
+### Sıralama tabloları
+Spawn adasında portala giden yolun iki yanında 4 tablo durur: **en zenginler**, **bu ayın oycuları**, **KOTH şampiyonları**,
+**en çok görev bitirenler**. Dakikada bir kendiliğinden güncellenir. Sohbette: `/siralama <para|sure|gorev|koth|oy>`
+(`sure` = en çok oynayanlar). Admin grubu (`*` yetkisi) tablolarda görünmez (`skycore.siralama.gizli`).
+Ada eski sürümle kurulduysa tabloları eklemek için oyunda `/skycore hologramlar` yaz.
+
+### Oy verme ödülleri
+1. `8192` **TCP** portunu aç (evde: modemden; hostingde: paneldeki port ayarı).
+2. Sunucunu oy sitelerine ekle (örnek: minecraft-mp.com, minecraftservers.org, minecraft-server-list.com, topg.org).
+   Sitedeki **Votifier** bölümüne: sunucu IP'n, port `8192` ve `plugins/Votifier/rsa/public.key` dosyasının içeriği.
+3. Oy sayfalarının adreslerini `plugins/SkyCore/config.yml` → `oy.siteler` içine yaz → `/skycore reload`. `/oy` yazan oyuncu
+   tıklanabilir bağlantıları görür.
+4. Dene: konsolda `testvote OYUNCU_ADIN`.
+
+Her oy: **250₺ + Nadir anahtar** (çevrimdışıyken verilen oyun ödülü girişte gelir). Sunucuya toplam **30 oy** gelince
+**oy partisi**: çevrimiçi herkes anahtar kazanır. Hile koruması: sadece sunucuda oynamış oyunculara ödül verilir, aynı siteden
+12 saat içinde ikinci oy sayılmaz, aynı IP'den aynı sitede günde en fazla 2 hesap ödül alır. Hepsi `config.yml` → `oy`.
+
+### Discord bağlantısı (DiscordSRV)
+Oyun sohbeti Discord kanalına, Discord kanalı oyuna akar; giriş/çıkış, ölüm, başarım, sunucu açıldı/kapandı mesajları,
+KOTH kazananı ve oy partisi Discord'a yazılır. Mesajlar Türkçe hazır, sadece botu bağlaman gerekiyor:
+
+1. <https://discord.com/developers/applications> → **New Application** → bir isim ver (ör. "Sky Survival").
+2. Soldan **Bot** → **Reset Token** → çıkan token'ı kopyala. Aynı sayfada **Privileged Gateway Intents** altında
+   **Server Members Intent** ve **Message Content Intent**'i aç, kaydet.
+3. Soldan **OAuth2 → URL Generator**: *Scopes*'ta `bot` ve `applications.commands`, *Bot Permissions*'ta
+   `Administrator` (ya da en az: mesaj gönder/oku, bağlantı göm, mesaj geçmişi) seç; alttaki bağlantıyla botu Discord sunucuna ekle.
+4. Discord'da **Ayarlar → Gelişmiş → Geliştirici Modu**'nu aç; sohbet kanalına sağ tık → **Kimliği Kopyala**.
+5. `server/plugins/DiscordSRV/config.yml`: `BotToken: "token"`, `Channels: {"global": "kanal-id"}`,
+   `DiscordInviteLink: "https://discord.gg/davet-kodun"`. Davet linkini `plugins/SkyCore/config.yml` → `bilgi.discord`'a da yaz.
+6. Sunucuyu yeniden başlat. Oyuncular `/discord link` ile hesaplarını bağlayabilir.
+
+> Bot token'ı bir şifredir; kimseyle paylaşma. Konsol kanalı (Discord'dan komut çalıştırma) güvenlik için kapalı.
+
+---
+
 ## Dupe ve hile korumaları
 
 Herkese açık ve crack açık bir sunucuda en çok uğraştıran şey dupe (eşya çoğaltma), bedava para açıkları ve hilelerdir. Hepsi test edilip kapatıldı:
@@ -133,7 +176,7 @@ Herkese açık ve crack açık bir sunucuda en çok uğraştıran şey dupe (eş
 | **SkyCore açıkları** | 16 ayrı dupe/hile denemesi otomatik testlerde yapılıp engellendiği doğrulandı: savaştan kaçma, takas/market/kasa menülerinden eşya çalma, ölünce takas eşyasını koruma, sahte banknot, `NaN`/eksi miktarlar, pistonla görev kasma ve adaya blok itme, alt hesapla ödül katlama, iksirle PvP korumasını aşma. Liste: [SkyCore README](custom-plugins/SkyCore/README.md#dupe-ve-hile-korumaları). |
 | **Market ile para basma** | Minecraft'ın bütün tarifleri tarandı: "marketten al → üret/erit/böl → markete sat" ile para kazanılamıyor. Zümrüt satılamaz (köylüler çubuğa zümrüt verdiği için). Fiyatları değiştirirsen: `python3 tools/market_kontrol.py`. |
 | **Meslek (Jobs) para kasma** | Oyuncu öldürmeye para kaldırıldı (alt hesabı öldürüp para kasma), slime bloğu yap-boz döngüsü kaldırıldı, spawner yaratıkları, huniyle doldurulan fırın/simya standı para vermez, koyduğun bloğu kırmak para vermez, mesleklerden saatlik kazanç sınırı var (`plugins/Jobs/generalConfig.yml`). |
-| **Alt hesaplar** | AuthMe IP başına en fazla 3 hesap; günlük ve aktiflik ödülü IP başına 2 hesaba; kelle ödülü aynı IP'den alınamaz. |
+| **Alt hesaplar** | AuthMe IP başına en fazla 3 hesap; günlük ve aktiflik ödülü IP başına 2 hesaba; oy ödülü aynı IP'den bir sitede günde 2 hesaba; kelle ödülü aynı IP'den alınamaz. |
 | **Grief ve hırsızlık** | Araziler HuskClaims ile korunur; CoreProtect her bloğu ve sandığı kaydeder (`/co inspect`, `/co rollback`). |
 
 ---
@@ -163,6 +206,8 @@ Herkese açık ve crack açık bir sunucuda en çok uğraştıran şey dupe (eş
 | **TAB** | Tab listesi başlığı, rütbe önekleri, yan skor tablosu (`/sb` ile gizlenir) |
 | **QuickShop-Hikari** | Sandığa eşya koyup market kurma |
 | **GSit** | `/sit` `/lay` `/crawl`, merdivene sağ tıklayıp oturma |
+| **NuVotifier** | Oy sitelerinden gelen oyları alır (TCP `8192`); ödülleri SkyCore verir (`/oy`) |
+| **DiscordSRV** | Oyun sohbeti ↔ Discord kanalı, giriş/çıkış/ölüm mesajları, `/discord link` — Türkçe. Bot token girilene kadar kendini kapatır, sunucu normal çalışır |
 | **DecentHolograms** | Yüzen yazılar (spawn adasındakiler otomatik kurulur) |
 | **Chunky** | Dünyayı önceden oluşturur, gezerken lag olmaz |
 
@@ -173,7 +218,7 @@ Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp t
 
 | Özellik | Ne yapar |
 |---|---|
-| **Spawn adası + KOTH arenası** | `/skycore kurulum onayla` → gökyüzüne hazır ada ve "The Hill" arenası; spawn, 6 warp, 11 hologram, 3 kasa, KOTH tepesi otomatik. Korumalı, paraşütle iniş |
+| **Spawn adası + KOTH arenası** | `/skycore kurulum onayla` → gökyüzüne hazır ada ve "The Hill" arenası; spawn, 6 warp, 15 hologram (4'ü sıralama tablosu), 3 kasa, KOTH tepesi otomatik. Korumalı, paraşütle iniş |
 | **Sunucu marketi** | `/market` → 8 kategori, 190+ eşya, sol tık al / sağ tık sat; `/sat hepsi`. Fiyatlar `market.yml`'de |
 | **Klanlar** | `/klan kur <isim>` → davet, klan evi, ortak kasa, `/ks` klan sohbeti; klan arkadaşları birbirine vuramaz; etiket TAB'da görünür |
 | **Kasalar** | Günlük / Nadir / Efsane kasa; anahtarla sağ tık → dönen çark → ödül. Anahtarlar: `/odul`, aktiflik ödülü, KOTH, 7 günlük seri |
@@ -202,7 +247,6 @@ X-Ray kullanan oyuncu her yerde sahte cevher görür, Nether'daki antik kalınt�
 
 | Eklenti | Ne işe yarar |
 |---|---|
-| DiscordSRV | Oyun sohbetini Discord kanalına bağlar (Discord bot token gerekir) |
 | BlueMap | Tarayıcıdan açılan 3D canlı harita (TCP `8100`) |
 
 > Paper zaten **spark** performans aracını içinde getirir: lag olursa `/spark profiler start`.
@@ -243,6 +287,8 @@ Evet. Oyuncuların gördüğü her şey, oyunlarının dili ne olursa olsun **T�
 | Paper/Spigot ("Böyle bir komut yok", "yetkin yok", "sunucu dolu", yeniden başlatma) | Türkçe (`spigot.yml` + kurulum aracı) |
 | **DriveBackupV2** | Yedek mesajları oyunculara gösterilmiyor |
 | **Geyser/Floodgate**, **LuckPerms** | Bedrock cihazının / oyuncunun diline göre; Türkçe oyuncuya Türkçe |
+| **DiscordSRV** | Türkçesi yoktu; oyuncuya ve Discord kanalına giden bütün mesajları biz çevirdik (`plugins/DiscordSRV/`) |
+| **NuVotifier** | Oyunculara mesaj göstermez (ödül mesajları SkyCore'dan, Türkçe) |
 
 > Not: `start` dosyaları Java'yı bilerek **İngilizce sistem diliyle** açar (`-Duser.language=en`). Türkçe Windows'ta bazı eklentiler
 > "I/İ" harfi yüzünden bozulabiliyor (meşhur "Türkçe I" hatası). Eklentilerin dili bundan etkilenmez, hepsi ayrı ayrı Türkçe ayarlı.
@@ -260,7 +306,8 @@ Minecraft'ın kendi yazıları (ölüm mesajları, başarımlar, menüler) ise h
 | `server/plugins/Essentials/config.yml` | Dil **Türkçe**, para birimi **₺**, başlangıç parası **100₺**, ışınlanmada 3 sn bekleme (savaştan kaçış olmasın), sohbet `[Rütbe] İsim » mesaj` |
 | `server/plugins/Essentials/kits.yml` | `baslangic` (ilk girişte otomatik, arazi küreği dahil), `gunluk` |
 | `server/plugins/Essentials/motd.txt`, `rules.txt` | Türkçe giriş mesajı ve kurallar |
-| `server/plugins/TAB/config.yml` | "SKY SURVIVAL" tab başlığı, yan skor tablosu (rütbe, para, klan, günlük seri, ping), isim altında can, klan etiketi |
+| `server/plugins/TAB/config.yml` | "SKY SURVIVAL" tab başlığı, yan skor tablosu (rütbe, para, klan, günlük seri, görev, oy partisi, ping), isim altında can, klan etiketi |
+| `server/plugins/DiscordSRV/config.yml`, `messages.yml` | Türkçe Discord mesajları, İstanbul saati, konsol kanalı kapalı; sadece bot token ve kanal ID'si girilecek |
 | `server/plugins/Jobs/` | Türkçe dil ve meslekler (Madenci, Oduncu, Çiftçi, Avcı, Balıkçı, İnşaatçı, Kazıcı, Kaşif, Simyacı, Büyücü, Zanaatkâr, Silahçı); para kasma açıkları kapalı, saatlik kazanç sınırı |
 | `server/plugins/AuraSkills/`, `GSit/` | Türkçe dil |
 | `server/plugins/GrimAC/` | Türkçe mesajlar, yüksek ihlalde otomatik atma |
@@ -281,6 +328,7 @@ Geyser ilk açılışta `plugins/Geyser-Spigot/config.yml` dosyasını oluşturu
    `config/paper-world-defaults.yml` dosyasını indir, `server` klasöründe `java setup/Setup.java` çalıştır (dosyayı güçlü X-Ray ayarlarıyla
    günceller) ve geri yükle. Ya da elle: `anticheat` → `anti-xray` → `enabled: true`, `engine-mode: 2`.
 5. Panelde Java başlatma ayarlarına (JVM flags / Startup) `-Duser.language=en -Duser.country=US` ekle (Türkçe I hatasına karşı).
+6. Oy ödülleri için panelden ek bir port al ve `plugins/Votifier/config.yml` → `port:` değerini o port yap (oy sitelerine de onu yaz).
 
 ---
 
@@ -305,11 +353,9 @@ tools/                           → logo (tools/logo), spawn adası ve KOTH har
 
 ## Sonraki adımlar için fikirler
 
-- **Discord sunucusu** + DiscordSRV ile sohbet köprüsü
-- Sunucu listesi sitelerine kayıt + **oy verme ödülleri** (NuVotifier + oy eklentisi)
 - **BlueMap** ile web'den canlı harita
-- Sezonluk etkinlikler (kasaya özel ödüller, bayram etkinlikleri)
-- Kaynak dünyası (her ay sıfırlanan maden dünyası), sıralama tabloları (en zengin, en çok oynayan), haftalık etkinlikler, klan savaşları
+- Kaynak dünyası (her ay sıfırlanan maden dünyası)
+- Haftalık ve sezonluk etkinlikler (hafta sonu çift para, bayram kasaları), klan savaşları
 
 ## Lisanslar ve teşekkür
 

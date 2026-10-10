@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 /** /skycore reload | oyun | duyuru | kurulum [onayla] | anahtar <oyuncu|herkes> <tur> [adet] | koth <baslat|bitir> */
 final class AdminCommand implements CommandExecutor, TabCompleter {
-    private static final List<String> SUBCOMMANDS = List.of("reload", "oyun", "duyuru", "kurulum", "anahtar", "koth");
+    private static final List<String> SUBCOMMANDS = List.of("reload", "oyun", "duyuru", "kurulum", "hologramlar", "anahtar", "koth");
 
     private final SkyCore plugin;
 
@@ -38,6 +38,14 @@ final class AdminCommand implements CommandExecutor, TabCompleter {
                     plugin.spawn().install(sender);
                 } else {
                     plugin.spawn().showInstallInfo(sender);
+                }
+            }
+            case "hologramlar" -> {
+                int count = plugin.spawn().recreateHolograms();
+                if (count < 0) {
+                    plugin.messages().send(sender, "spawn-adasi.mesajlar.hologram-yok");
+                } else {
+                    plugin.messages().send(sender, "spawn-adasi.mesajlar.hologramlar-yenilendi", "adet", count);
                 }
             }
             case "anahtar" -> giveKeys(sender, args);

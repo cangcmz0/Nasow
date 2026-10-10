@@ -158,6 +158,8 @@ duyurular:
     - "&b&lİPUCU &8» &fHer akşam arenada &6KOTH &fvar! Tepeyi tut, efsane anahtarı kazan: &e/koth"
     - "&b&lİPUCU &8» &fÖlünce eşyaların &cmezarına &fgirer, kaybolmaz. Mezarların: &e/mezar"
     - "&b&lİPUCU &8» &fEğilerek baltayla kütük kır: &aağacın tamamı devrilir! &7Kazmayla madende de çalışır."
+    - "&b&lİPUCU &8» &fHer gün &e/oy &fver: para + kasa anahtarı! Oylar birikince herkese &doy partisi&f."
+    - "&b&lİPUCU &8» &fEn zenginler, en çok oynayanlar, KOTH şampiyonları: &e/siralama"
     - "&b&lİPUCU &8» &fOlgun ekine &esağ tıkla&f: hasat edilir ve kendiliğinden yeniden ekilir."
     - "&b&lİPUCU &8» &fHer gün yeni görevler! &e/gorev &file bak, bitir, ödülü al."
     - "&b&lİPUCU &8» &fGüvenli takas için: &e/takas <oyuncu>"
@@ -196,6 +198,10 @@ olum-koordinat:
 bilgi:
   discord:
     - "&9&lDISCORD &8» &fdiscord.gg/BURAYA-DAVET-KODUNU-YAZ"
+  # DiscordSRV acikken /discord altina eklenir
+  discord-hesap-baglama:
+    - "&7Minecraft hesabını Discord'a bağla: &e/discord link"
+  discord-bagli-degil: "&cDiscord bağlantısı henüz ayarlanmadı (yetkili: plugins/DiscordSRV/config.yml)."
   site:
     - "&b&lSİTE &8» &fwww.BURAYA-SITENI-YAZ.com"
 
@@ -231,7 +237,7 @@ spawn-adasi:
       - "&7Spawn adası: &f{dunya} {x}, {y}, {z} &8(97x56x96) &7- durum: {durum}"
       - "&7KOTH arenası (The Hill): &f{ax}, {ay}, {az} &8(135x41x141) &7- durum: {arena-durum}"
       - "&7Bu alanlardaki eski bloklar silinir. Konumları config.yml'den değiştirebilirsin."
-      - "&7Spawn, 6 warp, 11 hologram, 3 kasa ve KOTH tepesi otomatik ayarlanır."
+      - "&7Spawn, 6 warp, 15 hologram (4'ü sıralama tablosu), 3 kasa ve KOTH tepesi otomatik ayarlanır."
       - "&eBaşlatmak için: &f/skycore kurulum onayla"
     durum-kurulu: "&akurulu &7({x}, {y}, {z})"
     durum-yok: "&ckurulmadı"
@@ -243,6 +249,8 @@ spawn-adasi:
     kurulum-bitti: "&a✔ Spawn adası kuruldu! &7Spawn: &f{spawn}&7, warp: &f{warp}&7, hologram: &f{hologram}"
     sadece-dunya-spawni: "dünya spawnı (EssentialsX Spawn yok)"
     kurulum-suruyor: "&cKurulum zaten sürüyor, bitmesini bekle."
+    hologram-yok: "&cAda kurulu değil ya da DecentHolograms yok. Önce &f/skycore kurulum"
+    hologramlar-yenilendi: "&a✔ {adet} hologram yeniden oluşturuldu (sıralama tabloları dahil)."
     dunya-yok: "&c'{dunya}' adında bir dünya yok."
     yukseklik: "&c{yapi} dünyanın dışına taşıyor! Yüksekliği &f{min} &cile &f{max} &carasında seç."
     hata: "&cKurulum yapılamadı: &f{hata}"
@@ -634,6 +642,103 @@ takas:
     iptal: "&b&lTAKAS &8» &cTakas iptal edildi, eşyaların geri verildi."
     iptal-hasar: "&b&lTAKAS &8» &cHasar aldığın için takas iptal edildi, eşyaların geri verildi."
 
+# ---------------------------------------------------------------------------
+# Siralama tablolari: /siralama <para|sure|gorev|koth|oy>. Spawn adasindaki
+# hologramlar %skycore_top_para_1% gibi yer tutucularla otomatik guncellenir.
+# Para ve oynama suresi cevrimici oyunculardan okunur (cevrimdisinin son degeri kalir).
+# ---------------------------------------------------------------------------
+siralama:
+  aktif: true
+  yenileme-saniye: 60
+  # Bu yetkisi olanlar (yetkililer) siralamalarda gorunmez. OP'ler otomatik almaz; LuckPerms ile ver.
+  gizli-yetki: skycore.siralama.gizli
+  basliklar:
+    para: "&6&lEN ZENGİNLER"
+    sure: "&b&lEN ÇOK OYNAYANLAR"
+    gorev: "&e&lEN ÇOK GÖREV BİTİRENLER"
+    koth: "&c&lKOTH ŞAMPİYONLARI"
+    oy: "&a&lBU AYIN OYCULARI"
+  birimler:
+    gorev: "görev"
+    koth: "zafer"
+    oy: "oy"
+  sure-bicim: "{saat} sa {dakika} dk"
+  mesajlar:
+    baslik: "&8&m        &r {tablo} &8&m        "
+    satir: "&e#{sira} &f{oyuncu} &8» &a{deger}"
+    bos-satir: "&8#{sira} -"
+    bos: "&7Henüz kimse yok."
+    sen: "&7Senin sıran: &e#{sira} &8(&a{deger}&8)"
+    sen-yok: "&7Henüz bu sıralamada değilsin."
+    bilinmeyen: "&cBöyle bir sıralama yok. Seçenekler: &e{tablolar}"
+    kullanim:
+      - "&b&lSIRALAMALAR"
+      - "&e/siralama para &7- en zenginler"
+      - "&e/siralama sure &7- en çok oynayanlar"
+      - "&e/siralama gorev &7- en çok görev bitirenler"
+      - "&e/siralama koth &7- KOTH şampiyonları"
+      - "&e/siralama oy &7- bu ayın oycuları"
+
+# ---------------------------------------------------------------------------
+# Oy verme odulleri (NuVotifier). Sunucunu oy sitelerine ekle, sitelere
+# sunucunun IP'sini, Votifier portunu (8192) ve plugins/Votifier/rsa/public.key
+# icerigini yaz. Oy veren oyuncu odul alir; cevrimdisiysa girince verilir.
+# Test: /testvote <oyuncu> (NuVotifier komutu, OP).
+# ---------------------------------------------------------------------------
+oy:
+  aktif: true
+  # /oy listesinde tiklanabilir gorunen siteler. Ornek:
+  #   - isim: "Minecraft-MP"
+  #     adres: "https://minecraft-mp.com/server/123456/vote/"
+  siteler: []
+  odul:
+    para: 250
+    anahtar: nadir
+    anahtar-adet: 1
+    # Ek olarak konsoldan calisacak komutlar ({oyuncu} = oy veren)
+    komutlar: []
+  # Ayni oyuncu ayni siteden bu kadar saat icinde ikinci kez odul alamaz (cift gelen oylara karsi)
+  ayni-site-bekleme-saat: 12
+  # Ayni IP adresinden ayni sitede gunde en fazla bu kadar hesap odul alir (alt hesaplara oy vermeye karsi; 0 = sinirsiz)
+  ip-basina-max: 2
+  # Oy partisi: sunucuya toplam bu kadar oy gelince cevrimici herkes odul alir
+  parti:
+    aktif: true
+    hedef: 30
+    para: 0
+    anahtar: nadir
+    anahtar-adet: 1
+    komutlar: []
+  mesajlar:
+    duyuru: "&a&lOY &8» &e{oyuncu} &f{site} sitesinde oy verdi ve ödül kazandı! &7Sen de: &e/oy"
+    tesekkur: "&a&lOY &8» &fOyun için teşekkürler! &a+{para} &fve kasa anahtarı kazandın."
+    bekleyen: "&a&lOY &8» &fSen yokken verdiğin &e{adet} &foyun ödülleri geldi!"
+    hatirlatma: "&a&lOY &8» &fBugün oy vermedin! Oy ver, para ve anahtar kazan: &e/oy"
+    ip-siniri: "&cBu internet bağlantısından bugün bu sitede zaten {max} hesap oy ödülü aldı."
+    parti-yaklasiyor: "&d&lOY PARTİSİ &8» &fOy partisine &e{kalan} &foy kaldı! &e/oy"
+    parti: "&d&lOY PARTİSİ &8» &f{hedef} oya ulaşıldı! &aÇevrimiçi herkes ödül kazandı!"
+    parti-baslik: "&d&lOY PARTİSİ!"
+    parti-alt-baslik: "&fHerkese ödül!"
+    site-yok: "&7Oy siteleri henüz eklenmedi."
+    site-satir: "&e{sira}. &f{isim} &8» &b{adres}"
+    liste-baslik:
+      - "&a&lOY VER, ÖDÜL KAZAN"
+      - "&7Her site için günde bir kez oy verebilirsin. Bağlantıya tıkla:"
+    durum:
+      - "&7Ödül: &a{para} &7+ kasa anahtarı"
+      - "&7Bu ay: &e{ay} oy &8| &7Toplam: &e{toplam} &8| &7Oy partisi: &d{parti}"
+      - "&7Bu ayın oycuları: &e/oy siralama"
+
+# ---------------------------------------------------------------------------
+# Discord duyurulari: DiscordSRV kuruluysa bu olaylar Discord sohbet kanalina da
+# yazilir (Discord bicimi: **kalin**, :emoji:). Bos birakilan gonderilmez.
+# ---------------------------------------------------------------------------
+discord-duyurulari:
+  aktif: true
+  koth-basladi: ":crown: **KOTH başladı!** Arenadaki tepeyi {sure} saniye tutan kazanır. Oyunda: `/koth katil`"
+  koth-kazandi: ":trophy: **{oyuncu}** KOTH'u kazandı! Ödül: {para} + {anahtar} anahtarı"
+  oy-partisi: ":tada: **Oy partisi!** {hedef} oya ulaşıldı, oyundaki herkes ödül kazandı. Oy vermek için oyunda `/oy` yaz."
+
 genel-mesajlar:
   yetki-yok: "&cBunun için yetkin yok."
   sadece-oyuncu: "&cBu komut sadece oyunda kullanılabilir."
@@ -645,5 +750,6 @@ genel-mesajlar:
     - "&e/skycore oyun &7- hemen bir sohbet oyunu başlat"
     - "&e/skycore duyuru &7- sıradaki duyuruyu gönder"
     - "&e/skycore kurulum &7- gökyüzü spawn adasını kur (warp + hologram + kasa)"
+    - "&e/skycore hologramlar &7- kurulu adanın hologramlarını (sıralama tabloları dahil) yeniden oluştur"
     - "&e/skycore anahtar <oyuncu|herkes> <tür> [adet] &7- kasa anahtarı ver"
     - "&e/skycore koth <baslat|bitir> &7- KOTH etkinliğini yönet"

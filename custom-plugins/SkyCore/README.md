@@ -18,9 +18,10 @@ ile açılıp kapatılır, `/skycore reload` ile yenilenir).
 | **PvP arenası** | Güney | Adadaki tek PvP alanı (KOTH arenası kurulmazsa ortadaki altın tepe KOTH alanı olur) |
 | **Kasalar** | Batı | Günlük, Nadir ve Efsane kasası (ender sandıkları) |
 | **Atlama noktası** | Kuzeydoğu | İskeleden atla, süzülerek dünyaya in (paraşüt) |
+| **Sıralama tabloları** | Portal yolunun iki yanı | Altın kürsüler üstünde: en zenginler, bu ayın oycuları, KOTH şampiyonları, en çok görev |
 
 - Spawn noktası (EssentialsX Spawn: `default` ve `newbies`), 5 warp (`/warp market`, `arena`, `kasalar`, `portal`, `atla`)
-  ve 10 hologram (DecentHolograms; `/dh` ile düzenlenebilir) kendiliğinden ayarlanır.
+  ve 14 hologram (4'ü sıralama tablosu; DecentHolograms, `/dh` ile düzenlenebilir) kendiliğinden ayarlanır.
 - Ada korunur: blok kırma/koyma, sandık/kapı kullanma, kova, patlama, ateş, su taşması, kar/buz, yaprak dökülmesi yok;
   arena dışında hasar, açlık ve PvP yok; adada düşman yaratık doğmaz. Değiştirmek için `skycore.spawn.duzenle` yetkisi
   (OP'lerde var).
@@ -69,7 +70,9 @@ bloklarından güncel sürüme çevrildi.
 | **Kafa düşürme** | PvP'de ölen oyuncunun kafası yere düşer; üzerinde avcının adı ve tarih yazar. | — |
 | **Ölüm koordinatı** | Ölen oyuncuya öldüğü yerin koordinatı yazılır. | — |
 | **Hoş geldin başlığı** | Girişte (AuthMe şifresinden sonra) büyük "SKY SURVIVAL" başlığı ve ses. | — |
-| **Bilgi komutları** | Discord ve site adresleri (`config.yml` → `bilgi`). | `/discord`, `/site` |
+| **Sıralama tabloları** | En zenginler, en çok oynayanlar, en çok görev bitirenler, KOTH şampiyonları, bu ayın oycuları. Spawn'daki hologramlar dakikada bir güncellenir; para ve süre çevrimiçi oyunculardan okunur (çevrimdışının son değeri kalır). `skycore.siralama.gizli` olanlar (admin) görünmez. | `/siralama <para\|sure\|gorev\|koth\|oy>` |
+| **Oy ödülleri** | NuVotifier ile oy sitelerinden gelen her oy: 250₺ + Nadir anahtar (çevrimdışıysa girince verilir). Her 30 oyda bir **oy partisi**: çevrimiçi herkese anahtar. Girişte oy vermeyene hatırlatma. Hileye karşı: sadece sunucuda oynamış isimler, aynı siteden 12 saatte bir, aynı IP'den sitede günde en fazla 2 hesap. | `/oy`, `/oy siralama` |
+| **Discord** | `/discord` davet bağlantısı (tıklanabilir); DiscordSRV açıksa `/discord link` hesap bağlar. KOTH başlangıcı/kazananı ve oy partisi Discord kanalına da yazılır (`discord-duyurulari`). | `/discord`, `/discord link`, `/site` |
 
 ### Klan komutları
 
@@ -82,6 +85,7 @@ bloklarından güncel sürüme çevrildi.
 | Komut | Ne yapar |
 |---|---|
 | `/skycore kurulum [onayla]` | Spawn adasını ve KOTH arenasını kurar (önce bilgi gösterir) |
+| `/skycore hologramlar` | Kurulu adanın hologramlarını (sıralama tabloları dahil) yeniden oluşturur, bloklara dokunmaz |
 | `/skycore anahtar <oyuncu\|herkes> <gunluk\|nadir\|efsane> [adet]` | Kasa anahtarı verir |
 | `/skycore koth <baslat\|bitir>` | KOTH etkinliğini elle başlatır/bitirir |
 | `/skycore oyun` | Hemen bir sohbet oyunu başlatır |
@@ -93,17 +97,22 @@ bloklarından güncel sürüme çevrildi.
 TAB, DecentHolograms vb. için: `%skycore_klan%`, `%skycore_klan_etiket%`, `%skycore_klan_uye%`,
 `%skycore_klan_rutbe%`, `%skycore_gunluk_seri%`, `%skycore_kelle%`, `%skycore_koth_galibiyet%`, `%skycore_koth_son%`,
 `%skycore_gorev%` (bugün biten görev, ör. 2/3), `%skycore_gorev_toplam%`, `%skycore_koruma%` (yeni oyuncu korumasının kalan süresi).
-Hazır TAB ayarında klan etiketi listede/isim üstünde, klan ve günlük seri skor tablosunda gösterilir.
+Sıralama: `%skycore_top_<tablo>_<1-10>%` (hazır satır: "#1 Ali » 12.500₺"), `%skycore_top_<tablo>_<sıra>_isim%`,
+`%skycore_top_<tablo>_<sıra>_deger%`, `%skycore_sira_<tablo>%` (oyuncunun sırası); tablolar `para`, `sure`, `gorev`, `koth`, `oy`.
+Oy: `%skycore_oy_ay%`, `%skycore_oy_toplam%`, `%skycore_oy_parti%` (ör. 12/30).
+Hazır TAB ayarında klan etiketi listede/isim üstünde; klan, günlük seri, görev ve oy partisi skor tablosunda gösterilir.
 
 ### Yetkiler
 
 Herkese açık: `skycore.banknot`, `skycore.kelle`, `skycore.odul`, `skycore.vahsi`, `skycore.market`, `skycore.klan`, `skycore.koth`,
-`skycore.mezar`, `skycore.gorev`, `skycore.koruma`, `skycore.takas`. OP'lerde ayrıca `skycore.mezar.admin` (kilitli mezarı açar).
+`skycore.mezar`, `skycore.gorev`, `skycore.koruma`, `skycore.takas`, `skycore.siralama`, `skycore.oy`. OP'lerde ayrıca `skycore.mezar.admin` (kilitli mezarı açar).
 OP'lerde (ve LuckPerms'te `*` olan admin grubunda): `skycore.admin`, `skycore.spawn.duzenle`, `skycore.vahsi.bekleme-yok`.
-`skycore.savas.bypass` verilen oyuncu savaş moduna girmez.
+`skycore.savas.bypass` verilen oyuncu savaş moduna girmez. `skycore.siralama.gizli` olan oyuncu sıralamalarda görünmez
+(OP'ler otomatik almaz; LuckPerms'te `*` olan admin grubunda var).
 
 Gerekenler: Vault (VaultUnlocked) + EssentialsX ekonomisi. İsteğe bağlı: EssentialsX Spawn (spawn/warp),
-DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten sonra karşılama).
+DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten sonra karşılama), NuVotifier (oy ödülleri),
+DiscordSRV (Discord köprüsü, `/discord link`).
 
 ## Dupe ve hile korumaları
 
@@ -127,15 +136,17 @@ DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten
 | Yeni oyuncu korumasını, ada ya da klan PvP yasağını zehir/yavaşlık iksiriyle aşmak | Atılan ve kalıcı kötü iksirler korunan oyuncuyu etkilemez |
 | Marketten al → üret → markete sat ile para basmak | Varsayılan fiyatlarda yok; zümrüt satılamaz (köylü takası). Fiyat değiştirdikten sonra `python3 tools/market_kontrol.py` |
 | Kelleyi alt hesapla toplamak | Aynı IP'den kelle ödülü alınamaz |
+| Oy ödülünü alt hesaplarla, sahte isimlerle ya da çift gelen oyla katlamak | Sadece oynamış isimler; aynı siteden 12 saatte bir; aynı IP'den sitede günde 2 hesap (`CommunityTest`) |
 
 ## Geliştiriciler için
 
-Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 56 test).
+Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 66 test).
 
 - Eklenti gerçek **Paper 26.1.2 API** kaynağına karşı derlendi (`--release 21`, uyarısız).
 - MockBukkit henüz 26.x'i desteklemediği için testler **Paper 1.21.11 API**'siyle çalıştırıldı; SkyCore'un kullandığı API iki
-  sürümde aynı. 56 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, mezar, ağaç devirme,
-  hasat, görevler, yeni oyuncu koruması, takas, 16 dupe/hile denemesi, eski ayar dosyasının güncellenmesi dahil).
+  sürümde aynı. 66 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, mezar, ağaç devirme,
+  hasat, görevler, yeni oyuncu koruması, takas, sıralama tabloları, oy ödülleri (sahte NuVotifier olayıyla), Discord komutu,
+  16 dupe/hile denemesi, eski ayar dosyasının güncellenmesi dahil).
 - Spawn adası `tools/spawn_island.py` ile üretilir: `src/main/resources/spawn/ada.bp.gz` (bloklar) ve `spawn/ada.yml`
   (spawn, warp, portal, kasa, KOTH ve hologram noktaları).
 - KOTH arenası `tools/import_map.py` ile üretilir: `src/main/resources/koth/` (CC BY-SA 4.0, `koth/LICENSE.txt`).
