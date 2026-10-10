@@ -22,6 +22,11 @@
 - `server/plugins/Jobs/jobs/*.yml`: **Jobs Reborn** (Zrips) eklentisinin varsayılan meslek dosyalarından uyarlandı
   (Türkçe isim/açıklama, oyuncu öldürme ödülü ve slime bloğu döngüsü kaldırıldı). Jobs Reborn'un kendi lisansı geçerlidir.
 
+## DiscordSRV ayar dosyaları
+
+- `server/plugins/DiscordSRV/config.yml` ve `messages.yml`: **DiscordSRV**'nin varsayılan ayar ve mesaj dosyalarından
+  uyarlandı (Türkçe mesajlar, Sky Survival ayarları). DiscordSRV'nin kendi lisansı (GPL-3.0) geçerlidir.
+
 ## Geri kalan her şey
 
 Logo, amblem, banner'lar, spawn adası ve SkyCore eklentisi bu proje için sıfırdan hazırlandı.
