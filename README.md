@@ -13,6 +13,8 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 - **KOTH etkinlik arenası:** internetten alınıp düzenlenen ünlü **"The Hill"** haritası (CC BY-SA 4.0) gökyüzüne kurulur
 - Sunucuya özel yazılmış **SkyCore** eklentisi: sunucu marketi, klanlar, kasalar, KOTH etkinliği, rastgele ışınlanma, savaş modu,
   sohbet oyunları, banknot, kelle avı, günlük ödül serisi, aktiflik ödülü
+- **Survival kolaylıkları:** ölünce eşyalar mezara girer, eğilerek ağaç devirme ve damar kazma, sağ tıkla hasat,
+  günlük görevler, yeni oyuncu PvP koruması, güvenli takas menüsü
 - Hazır **vektör logo (SVG + PNG), sunucu ikonu, banner'lar, tanıtım kartı ve metinleri** ([`branding/`](branding))
 
 ---
@@ -39,6 +41,12 @@ Meslek, yetenek ve ekonomi odaklı, herkese açık bir **Survival** sunucusu (Pa
 | Birinin kellesine ödül koyma | `/kelle koy <oyuncu> <miktar>`, `/kelle liste` |
 | Sohbet oyunları (ilk bilen para kazanır) | Sohbete gelen soruyu ilk yaz |
 | Oturma / uzanma | `/sit`, `/lay`, `/crawl`, merdivene sağ tık |
+| Ölünce eşyalar kaybolmaz: mezarına girer, sağ tıkla geri al | `/mezar` (mezarlarının yeri) |
+| Ağacı tek seferde devirme / madeni damarıyla kazma | Eğil (Shift) + baltayla kütük, kazmayla maden kır |
+| Ekini sağ tıkla topla (kendiliğinden yeniden ekilir) | Olgun ekine sağ tık |
+| Her gün 3 yeni görev, bitirince para ve kasa anahtarı | `/gorev` |
+| Güvenli takas (dolandırılma yok) | `/takas <oyuncu>`, `/takas kabul` |
+| Yeni oyuncu koruması (ilk 1 saat PvP yok) | `/koruma` |
 
 Rütbeler: **Oyuncu → VIP → Moderatör → Admin**.
 
@@ -160,6 +168,11 @@ Yurtdışı ve Türk survival sunucularında sevilen özellikleri araştırıp t
 | **Kelle avı** | `/kelle koy <oyuncu> <miktar>` → onu öldüren parayı alır (aynı IP'den alınamaz) |
 | **Günlük ödül serisi** | `/odul` → her gün artan ödül, bir gün kaçırınca sıfırlanır |
 | **Aktiflik ödülü** | AFK olmadan her 60 dk oynayana 500₺ |
+| **Mezar** | Ölünce eşyalar ve XP oyuncunun kafası şeklindeki mezara girer (lavda yanmaz, kimse çalamaz); 15 dk sadece sahibi açar, 60 dk sonra dökülür. PvP'de eşyalar normal düşer |
+| **Ağaç devirme / damar kazma / sağ tık hasat** | Eğilerek baltayla ağacın tamamı, kazmayla bitişik madenler kırılır; olgun ekine sağ tık hasat + yeniden ekim. Arazi koruması, Jobs parası ve AuraSkills XP'si normal çalışır |
+| **Günlük görevler** | `/gorev` → her gün 3 rastgele görev (kaz, kes, öldür, balık, hasat, pişir, üret); ödül + hepsi bitince bonus ve Nadir anahtar. Kendi koyduğun blok sayılmaz. Görevler `gorevler.yml`'de |
+| **Yeni oyuncu koruması** | İlk 60 dk PvP'de vurulmaz/vuramaz (arenalar hariç); `/koruma kapat` |
+| **Güvenli takas** | `/takas <oyuncu>` → iki taraflı menü, ikisi de onaylayınca değişir; teklif değişince onaylar sıfırlanır |
 | **Otomatik duyurular, kafa düşürme, ölüm koordinatı, hoş geldin başlığı** | ipuçları; PvP'de ölenin kafası düşer; öldüğün yer yazılır; girişte büyük başlık |
 
 Tüm mesajlar ve miktarlar `server/plugins/SkyCore/config.yml` içinden değiştirilebilir (ilk açılışta oluşur), sonra `/skycore reload`.

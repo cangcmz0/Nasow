@@ -151,6 +151,11 @@ duyurular:
     - "&b&lİPUCU &8» &e/vahsi &file dünyada rastgele bir yere ışınlan."
     - "&b&lİPUCU &8» &fSpawn'daki &dkasalarda &fanahtarlarını aç. Anahtarlar: &e/odul&f, aktiflik ödülü, KOTH."
     - "&b&lİPUCU &8» &fHer akşam arenada &6KOTH &fvar! Tepeyi tut, efsane anahtarı kazan: &e/koth"
+    - "&b&lİPUCU &8» &fÖlünce eşyaların &cmezarına &fgirer, kaybolmaz. Mezarların: &e/mezar"
+    - "&b&lİPUCU &8» &fEğilerek baltayla kütük kır: &aağacın tamamı devrilir! &7Kazmayla madende de çalışır."
+    - "&b&lİPUCU &8» &fOlgun ekine &esağ tıkla&f: hasat edilir ve kendiliğinden yeniden ekilir."
+    - "&b&lİPUCU &8» &fHer gün yeni görevler! &e/gorev &file bak, bitir, ödülü al."
+    - "&b&lİPUCU &8» &fGüvenli takas için: &e/takas <oyuncu>"
 
 # ---------------------------------------------------------------------------
 # PvP'de olen oyuncunun kafasi duser
@@ -503,6 +508,125 @@ koth:
       - "&8Harita: &7The Hill - Articray, TheZaner, xXFracXx &8(CC BY-SA 4.0)"
     katildin: "&6♛ &fKOTH arenasına geldin! &7Etkinlik saatleri: &e/koth &8| &7Dönmek için: &e/spawn"
     katildin-etkinlik: "&6♛ &fKOTH arenasına geldin! &eOrtadaki tepeye çık ve tek başına tut!"
+
+# ---------------------------------------------------------------------------
+# Mezar: olunce esyalar ve XP oldugun yerde bir mezara (senin kafan) girer.
+# Lavda yanmaz, bosluga dusmez, baskasi kapamaz. Mezara sag tikla, hepsi geri gelir.
+# ---------------------------------------------------------------------------
+mezar:
+  aktif: true
+  # Bu sure boyunca mezari sadece sahibi acabilir, sonra herkese acilir
+  kilit-dakika: 15
+  # Bu sure dolunca esyalar mezarin yerine dokulur
+  sure-dakika: 60
+  # Oyuncu basina en fazla mezar (fazlasi olursa en eskisi dokulur)
+  oyuncu-basina-en-fazla: 5
+  # true: PvP'de olunce de mezar olusur (oldurenin ganimeti olmaz). false: PvP'de esyalar normal duser
+  pvp-olumlerinde: false
+  yazi: "&c☠ &f{oyuncu} &7mezarı"
+  mesajlar:
+    olustu: "&c☠ &fEşyaların mezarında: &e{x}, {y}, {z} &7({dunya}). &7İlk {kilit} dk sadece sen açabilirsin, {sure} dk sonra dökülür. &8(/mezar)"
+    alindi: "&a✔ &f{oyuncu} &fmezarındaki &e{adet} &feşya alındı."
+    kilitli: "&cBu mezar &f{oyuncu} &coyuncusuna ait. &7{dakika} dk sonra herkese açılır."
+    kirilamaz: "&cMezar kırılamaz, sağ tıklayarak aç."
+    suresi-doldu: "&7Mezarının süresi doldu, eşyalar yere döküldü: &f{x}, {y}, {z}"
+    yok: "&7Açılmamış mezarın yok."
+    liste-baslik:
+      - "&c&l☠ MEZARLARIN"
+    liste-satir: "&e{x}, {y}, {z} &7({dunya}) &8- &f{adet} eşya &8- &7{dakika} dk kaldı"
+
+# ---------------------------------------------------------------------------
+# Toplama kolayliklari. Arazi korumasi, Jobs parasi ve AuraSkills XP'si normal
+# kazmadaki gibi calisir; alet her blok icin asinir.
+# ---------------------------------------------------------------------------
+toplama:
+  # Egilerek (Shift) baltayla kutuk kirinca butun agac devrilir (sadece dogal agaclar)
+  agac-kesme:
+    aktif: true
+    egilerek: true
+    max-blok: 96
+  # Egilerek kazmayla maden kirinca bitisik ayni madenler de kazilir
+  damar-kazma:
+    aktif: true
+    egilerek: true
+    max-blok: 24
+  # Olgun ekine sag tikla: hasat edilir, tohum kendiliginden yeniden ekilir
+  sag-tik-hasat:
+    aktif: true
+
+# ---------------------------------------------------------------------------
+# Gunluk gorevler (/gorev). Gorev listesi ve oduller: gorevler.yml
+# ---------------------------------------------------------------------------
+gorevler:
+  aktif: true
+  turler:
+    kaz: "{adet} blok kaz"
+    oldur: "{adet} yaratık öldür"
+    balik: "{adet} balık tut"
+    hasat: "{adet} ekin topla"
+    pisir: "Fırından {adet} tane çıkar"
+    ure: "{adet} hayvan çiftleştir"
+  mesajlar:
+    baslik-liste:
+      - "&6&lGÜNLÜK GÖREVLER &7(yenilenmesine {saat} sa {dakika} dk)"
+    satir: "&e• &f{gorev} &8- &7{aciklama} &8[{cubuk}&8] &f{ilerleme}/{hedef} &8| &a{odul}"
+    satir-tamam: "&a✔ &7&m{gorev}&r &8- &a{odul} alındı"
+    alt-bilgi:
+      - "&7Hepsini bitirene bonus: &a{bonus} &d{anahtar}"
+    ilerleme: "&6Görev &8» &f{gorev}: &e{ilerleme}&7/&e{hedef}"
+    tamamlandi: "&6&lGÖREV TAMAM &8» &f{gorev} &8| &a+{odul}"
+    baslik: "&6&lGÖREV TAMAM"
+    alt-baslik: "&f{gorev}"
+    hepsi-bitti: "&6&lGÖREV &8» &e{oyuncu} &fbugünkü bütün görevlerini bitirdi! &a+{odul} bonus"
+    hatirlatma: "&6&lGÖREV &8» &fBugünkü görevlerin: &e{tamam}/{toplam} &7- bakmak için &e/gorev"
+
+# ---------------------------------------------------------------------------
+# Yeni oyuncu korumasi: ilk X dakika (toplam oynama suresi) PvP'de vurulamaz ve
+# vuramaz. Arenalarda gecerli degil. /koruma kapat ile erken kapatilabilir.
+# ---------------------------------------------------------------------------
+yeni-oyuncu-korumasi:
+  aktif: true
+  dakika: 60
+  mesajlar:
+    giris: "&a⛨ &fYeni oyuncu korumasındasın: &e{dakika} dk &fboyunca kimse sana vuramaz. &7(/koruma)"
+    durum: "&a⛨ &fKorumanın bitmesine &e{dakika} dk &fvar. Kapatmak için: &e/koruma kapat"
+    yok: "&7Yeni oyuncu koruman yok."
+    hedef-korumali: "&c{oyuncu} yeni oyuncu, korumada! Ona vuramazsın."
+    sen-korumalisin: "&cKorumadayken PvP yapamazsın. &7(/koruma kapat)"
+    kapat-onay: "&cKorumayı kapatırsan geri açılmaz! Emin misin? &f/koruma kapat onayla"
+    kapatildi: "&7Yeni oyuncu koruman kapatıldı. Dikkatli ol!"
+
+# ---------------------------------------------------------------------------
+# Guvenli takas (/takas <oyuncu>): iki taraf da esyalarini koyar ve onaylar.
+# ---------------------------------------------------------------------------
+takas:
+  aktif: true
+  # Iki oyuncu en fazla bu kadar blok uzakta olmali (0 = sinirsiz)
+  max-mesafe: 20
+  mesajlar:
+    yardim:
+      - "&b&lTAKAS"
+      - "&e/takas <oyuncu> &7- takas isteği gönder"
+      - "&e/takas kabul &8| &e/takas reddet &7- gelen isteği yanıtla"
+      - "&7Menüde sol taraf senin teklifin, sağ taraf karşı tarafınki."
+      - "&7İkiniz de &ayeşil &7onaya basınca eşyalar değişir."
+    istek-gonderildi: "&b&lTAKAS &8» &e{oyuncu} &foyuncusuna takas isteği gönderildi. &7(1 dk geçerli)"
+    istek-geldi: "&b&lTAKAS &8» &e{oyuncu} &fseninle takas yapmak istiyor: &a/takas kabul &7ya da &c/takas reddet"
+    istek-yok: "&cGeçerli bir takas isteğin yok."
+    reddedildi: "&7Takas istekleri reddedildi."
+    oyuncu-yok: "&cOyuncu bulunamadı (çevrimiçi olmalı)."
+    mesgul: "&cSen ya da o oyuncu şu an başka bir takasta."
+    savasta: "&cSavaştayken takas yapılamaz!"
+    uzak: "&cTakas için en fazla &f{mesafe} &cblok yakın olmalısınız."
+    baslik: "&8Takas: &0{oyuncu}"
+    onayla: "&eOnayla &7(tıkla)"
+    onaylandi: "&a✔ Onayladın &7(geri almak için tıkla)"
+    karsi-onayladi: "&a✔ Karşı taraf onayladı"
+    karsi-bekleniyor: "&7Karşı taraf bekleniyor..."
+    iptal-dugme: "&cTakası iptal et"
+    degisti-bekle: "&eTeklif değişti! Kontrol edip tekrar onayla."
+    tamamlandi: "&b&lTAKAS &8» &a✔ &e{oyuncu} &file takas tamamlandı!"
+    iptal: "&b&lTAKAS &8» &cTakas iptal edildi, eşyaların geri verildi."
 
 genel-mesajlar:
   yetki-yok: "&cBunun için yetkin yok."

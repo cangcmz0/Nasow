@@ -126,6 +126,11 @@ chunky world world
 chunky radius 5000
 chunky start
 
+# ---------- 10a) Dunya siniri (on-olusturulan alanla ayni: 5000 blok yaricap) ----------
+# Oyuncular dunyanin olusturulmamis kismina gidip lag yapmasin; /vahsi de bu sinirin icine isinlar.
+worldborder center 0 0
+worldborder set 10000
+
 # ---------- 10b) WorldGuard uyarilari Turkce (korumali bolgelerde) ----------
 # WorldGuard'in Turkcesi yok; "Hey! Sorry, but you can't..." yerine bunlar yazar.
 rg flag -w world __global__ deny-message &cBurası korumalı bölge, burada bunu yapamazsın!

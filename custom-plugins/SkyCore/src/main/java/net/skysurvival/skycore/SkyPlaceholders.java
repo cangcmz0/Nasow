@@ -7,7 +7,8 @@ import org.bukkit.OfflinePlayer;
 /**
  * PlaceholderAPI yer tutuculari (TAB, DecentHolograms vb. icin):
  * %skycore_klan%, %skycore_klan_etiket%, %skycore_klan_uye%, %skycore_klan_rutbe%, %skycore_gunluk_seri%,
- * %skycore_kelle%, %skycore_koth_galibiyet%, %skycore_koth_son%.
+ * %skycore_kelle%, %skycore_koth_galibiyet%, %skycore_koth_son%, %skycore_gorev% (2/3), %skycore_gorev_toplam%,
+ * %skycore_koruma% (yeni oyuncu korumasinin kalan suresi).
  * Bu sinif yalnizca PlaceholderAPI kuruluysa yuklenir.
  */
 final class SkyPlaceholders extends PlaceholderExpansion {
@@ -46,7 +47,8 @@ final class SkyPlaceholders extends PlaceholderExpansion {
     @Override
     public List<String> getPlaceholders() {
         return List.of("%skycore_klan%", "%skycore_klan_etiket%", "%skycore_klan_uye%", "%skycore_klan_rutbe%",
-                "%skycore_gunluk_seri%", "%skycore_kelle%", "%skycore_koth_galibiyet%", "%skycore_koth_son%");
+                "%skycore_gunluk_seri%", "%skycore_kelle%", "%skycore_koth_galibiyet%", "%skycore_koth_son%",
+                "%skycore_gorev%", "%skycore_gorev_toplam%", "%skycore_koruma%");
     }
 
     @Override
@@ -68,6 +70,10 @@ final class SkyPlaceholders extends PlaceholderExpansion {
             case "gunluk_seri" -> String.valueOf(plugin.data().dailyStreak(player.getUniqueId()));
             case "kelle" -> plugin.economy().format(plugin.data().bounty(player.getUniqueId()));
             case "koth_galibiyet" -> String.valueOf(plugin.data().kothWins(player.getUniqueId()));
+            case "gorev" -> player.getPlayer() == null ? "" : plugin.quests().summary(player.getPlayer());
+            case "gorev_toplam" -> String.valueOf(plugin.data().questsDone(player.getUniqueId()));
+            case "koruma" -> player.getPlayer() == null || !plugin.newbies().isProtected(player.getPlayer()) ? ""
+                    : plugin.newbies().minutesLeft(player.getPlayer()) + " dk";
             default -> null;
         };
     }

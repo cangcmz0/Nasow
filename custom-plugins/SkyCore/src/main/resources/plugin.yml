@@ -2,7 +2,7 @@ name: SkyCore
 version: '${version}'
 main: net.skysurvival.skycore.SkyCore
 api-version: '1.21'
-description: Sky Survival'a ozel ozellikler (spawn adasi, market, klan, kasa, KOTH, savas modu, sohbet oyunlari, banknot, kelle avi...)
+description: Sky Survival'a ozel ozellikler (spawn adasi, market, klan, kasa, KOTH, mezar, gorevler, takas, agac kesme, savas modu...)
 authors: [Sky Survival]
 depend: [Vault]
 softdepend: [Essentials, EssentialsSpawn, AuthMe, PlaceholderAPI, DecentHolograms]
@@ -56,7 +56,25 @@ commands:
     permission: skycore.klan
   koth:
     description: Tepenin Krali etkinligi bilgisi
+    usage: /koth [katil]
     permission: skycore.koth
+  mezar:
+    description: Acilmamis mezarlarin
+    aliases: [mezarlar, grave]
+    permission: skycore.mezar
+  gorev:
+    description: Gunluk gorevler
+    aliases: [gorevler, gorevim, quest]
+    permission: skycore.gorev
+  koruma:
+    description: Yeni oyuncu korumasi
+    usage: /koruma [kapat]
+    permission: skycore.koruma
+  takas:
+    description: Guvenli takas
+    usage: /takas <oyuncu> | kabul | reddet
+    aliases: [trade]
+    permission: skycore.takas
 
 permissions:
   skycore.admin:
@@ -78,6 +96,17 @@ permissions:
   skycore.klan:
     default: true
   skycore.koth:
+    default: true
+  skycore.mezar:
+    default: true
+  skycore.mezar.admin:
+    description: Kilitli mezarlari da acabilir
+    default: op
+  skycore.gorev:
+    default: true
+  skycore.koruma:
+    default: true
+  skycore.takas:
     default: true
   skycore.spawn.duzenle:
     description: Korumali spawn adasinda blok kirip koyabilir

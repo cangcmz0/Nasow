@@ -1,0 +1,139 @@
+# ============================================================================
+#  Sky Survival - Gunluk gorevler (/gorev)
+# ============================================================================
+#  Her gun (Turkiye saatiyle gece 00:00'da) her oyuncuya asagidaki havuzdan rastgele
+#  "gunluk-gorev-sayisi" kadar gorev verilir. Gorev bitince odul (para) ve istege bagli
+#  kasa anahtari verilir; hepsi bitince "bonus" da verilir.
+#
+#  tur:   kaz    -> blok kir (hedef: blok adlari ya da #etiket, ornegin #logs)
+#                   Oyuncunun kendi koydugu bloklar ve ipeksi dokunusla kazilan madenler sayilmaz.
+#         oldur  -> yaratik oldur (hedef: yaratik adlari ya da "dusman" = her dusman yaratik)
+#         balik  -> balik tut
+#         hasat  -> olgun ekin topla (hedef: wheat, carrots, potatoes, beetroots, nether_wart)
+#         pisir  -> firindan cikar (hedef: esya adlari, ornegin iron_ingot)
+#         ure    -> hayvan ciftlestir
+#  anahtar: gunluk / nadir / efsane (bos birakilirsa anahtar verilmez)
+#  Degisiklikten sonra: /skycore reload
+# ============================================================================
+gunluk-gorev-sayisi: 3
+
+# Gunun butun gorevleri bitince
+bonus:
+  para: 1000
+  anahtar: nadir
+
+gorevler:
+  tas-madencisi:
+    isim: "Taş Madencisi"
+    tur: kaz
+    hedef: [stone, deepslate, andesite, diorite, granite, tuff]
+    adet: 256
+    odul: 300
+  komur-avcisi:
+    isim: "Kömür Avcısı"
+    tur: kaz
+    hedef: [coal_ore, deepslate_coal_ore]
+    adet: 24
+    odul: 250
+  demir-madencisi:
+    isim: "Demir Madencisi"
+    tur: kaz
+    hedef: [iron_ore, deepslate_iron_ore]
+    adet: 16
+    odul: 400
+  bakir-madencisi:
+    isim: "Bakır Madencisi"
+    tur: kaz
+    hedef: [copper_ore, deepslate_copper_ore]
+    adet: 24
+    odul: 250
+  elmas-avcisi:
+    isim: "Elmas Avcısı"
+    tur: kaz
+    hedef: [diamond_ore, deepslate_diamond_ore]
+    adet: 3
+    odul: 800
+    anahtar: gunluk
+  nether-madencisi:
+    isim: "Nether Madencisi"
+    tur: kaz
+    hedef: [nether_quartz_ore, nether_gold_ore]
+    adet: 32
+    odul: 350
+  oduncu:
+    isim: "Oduncu"
+    tur: kaz
+    hedef: ["#logs"]
+    adet: 64
+    odul: 300
+  kazici:
+    isim: "Kazıcı"
+    tur: kaz
+    hedef: [dirt, grass_block, sand, red_sand, gravel, clay]
+    adet: 128
+    odul: 200
+  zombi-avcisi:
+    isim: "Zombi Avcısı"
+    tur: oldur
+    hedef: [zombie, husk, drowned, zombie_villager]
+    adet: 20
+    odul: 300
+  iskelet-avcisi:
+    isim: "İskelet Avcısı"
+    tur: oldur
+    hedef: [skeleton, stray, bogged]
+    adet: 15
+    odul: 300
+  orumcek-avcisi:
+    isim: "Örümcek Avcısı"
+    tur: oldur
+    hedef: [spider, cave_spider]
+    adet: 12
+    odul: 250
+  creeper-avcisi:
+    isim: "Creeper Avcısı"
+    tur: oldur
+    hedef: [creeper]
+    adet: 8
+    odul: 350
+  canavar-avcisi:
+    isim: "Canavar Avcısı"
+    tur: oldur
+    hedef: [dusman]
+    adet: 40
+    odul: 450
+    anahtar: gunluk
+  balikci:
+    isim: "Balıkçı"
+    tur: balik
+    adet: 12
+    odul: 300
+  ciftci:
+    isim: "Çiftçi"
+    tur: hasat
+    hedef: [wheat, carrots, potatoes, beetroots]
+    adet: 64
+    odul: 300
+  nether-ciftcisi:
+    isim: "Siğil Toplayıcı"
+    tur: hasat
+    hedef: [nether_wart]
+    adet: 32
+    odul: 250
+  asci:
+    isim: "Aşçı"
+    tur: pisir
+    hedef: [cooked_beef, cooked_porkchop, cooked_chicken, cooked_mutton, cooked_cod, cooked_salmon, baked_potato]
+    adet: 32
+    odul: 250
+  demirci:
+    isim: "Demirci"
+    tur: pisir
+    hedef: [iron_ingot, gold_ingot, copper_ingot]
+    adet: 32
+    odul: 300
+  hayvan-bakicisi:
+    isim: "Hayvan Bakıcısı"
+    tur: ure
+    adet: 10
+    odul: 250

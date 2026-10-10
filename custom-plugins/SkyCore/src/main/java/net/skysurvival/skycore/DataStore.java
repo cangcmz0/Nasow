@@ -105,6 +105,57 @@ final class DataStore {
         set(key + ".z", origin.z());
     }
 
+    // ---- Gunluk gorevler ----
+
+    String questDate(UUID id) {
+        return yaml.getString(player(id, "gorev.tarih"));
+    }
+
+    List<String> quests(UUID id) {
+        return yaml.getStringList(player(id, "gorev.liste"));
+    }
+
+    void setQuests(UUID id, String name, String date, List<String> quests) {
+        set(player(id, "isim"), name);
+        set(player(id, "gorev"), null);
+        set(player(id, "gorev.tarih"), date);
+        set(player(id, "gorev.liste"), quests);
+    }
+
+    int questProgress(UUID id, String quest) {
+        return yaml.getInt(player(id, "gorev.ilerleme." + quest), 0);
+    }
+
+    void setQuestProgress(UUID id, String quest, int value) {
+        set(player(id, "gorev.ilerleme." + quest), value);
+    }
+
+    boolean questBonus(UUID id) {
+        return yaml.getBoolean(player(id, "gorev.bonus"), false);
+    }
+
+    void setQuestBonus(UUID id) {
+        set(player(id, "gorev.bonus"), true);
+    }
+
+    int questsDone(UUID id) {
+        return yaml.getInt(player(id, "gorev-toplam"), 0);
+    }
+
+    void addQuestDone(UUID id) {
+        set(player(id, "gorev-toplam"), questsDone(id) + 1);
+    }
+
+    // ---- Yeni oyuncu korumasi ----
+
+    boolean protectionOff(UUID id) {
+        return yaml.getBoolean(player(id, "koruma-kapali"), false);
+    }
+
+    void setProtectionOff(UUID id) {
+        set(player(id, "koruma-kapali"), true);
+    }
+
     // ---- KOTH ----
 
     int kothWins(UUID id) {

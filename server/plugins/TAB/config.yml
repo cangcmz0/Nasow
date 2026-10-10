@@ -87,6 +87,7 @@ scoreboard:
         - "&fPara: &a%vault_eco_balance_formatted%"
         - "&fKlan: &b%skycore_klan%"
         - "&fGünlük seri: &e%skycore_gunluk_seri% gün"
+        - "&fGörevler: &6%skycore_gorev%"
         - ""
         - "&fÇevrimiçi: &a%online%"
         - "&fPing: &a%ping%ms"

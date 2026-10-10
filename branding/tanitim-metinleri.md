@@ -22,7 +22,7 @@ Logoyu değiştirmek için: `python3 tools/logo/make_logo.py` (renkler ve yazıl
 
 ## Kısa açıklama (sunucu listeleri, ~150 karakter)
 
-> Gökyüzünde başlayan Türk Survival! Meslekler, yetenekler, klanlar, ₺ ekonomi, kelle avı ve sohbet oyunları. Crack & Premium, Java & Bedrock.
+> Gökyüzünde başlayan Türk Survival! Meslekler, klanlar, ₺ ekonomi, günlük görevler, mezar, ağaç devirme. Crack & Premium, Java & Bedrock.
 
 ## Uzun açıklama (sunucu listeleri)
 
@@ -34,7 +34,9 @@ Logoyu değiştirmek için: `python3 tools/logo/make_logo.py` (renkler ve yazıl
 🛡 **Klanlar:** Klanını kur, arkadaşlarını davet et, klan evin olsun (`/klan`).
 💰 **Ekonomi:** ₺ para birimi, sunucu marketi (`/market`), oyuncu marketleri, banknot.
 🎯 **Kelle avı:** Düşmanının kellesine ödül koy (`/kelle`).
-🎁 **Ödüller:** Günlük ödül serisi (`/odul`), aktiflik ödülü, kasalar, sohbet oyunları.
+🎁 **Ödüller:** Günlük ödül serisi (`/odul`), günlük görevler (`/gorev`), aktiflik ödülü, kasalar, sohbet oyunları.
+⚰ **Mezar:** Ölünce eşyaların kaybolmaz, mezarına girer.
+🌲 **Kolaylıklar:** Eğilerek ağaç devirme ve damar kazma, sağ tıkla hasat, güvenli takas (`/takas`), yeni oyuncu koruması.
 👑 **Etkinlikler:** Her akşam ünlü "The Hill" haritasında Tepenin Kralı (KOTH) etkinliği.
 🔒 **Güvenlik:** Hile koruması, X-Ray engeli, grief geri alma, şifreli giriş.
 📱 **Herkese açık:** Crack & Premium, Java (1.8 – 26.x) & Bedrock (telefon/konsol).

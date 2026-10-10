@@ -51,6 +51,10 @@ abstract class TestBase {
         Plugin vault = MockBukkit.createMockPlugin("Vault");
         server.getServicesManager().register(Economy.class, fakeEconomy(), vault, ServicePriority.Normal);
         plugin = MockBukkit.load(SkyCore.class);
+        // Yeni oyuncu korumasi PvP testlerini bozmasin; kendi testinde acilir.
+        plugin.getConfig().set("yeni-oyuncu-korumasi.aktif", false);
+        plugin.saveConfig();
+        plugin.reload();
     }
 
     @AfterEach

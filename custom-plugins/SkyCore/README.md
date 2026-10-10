@@ -52,6 +52,13 @@ bloklarından güncel sürüme çevrildi.
 | **Anahtar kaynakları** | Günlük Kasa: her `/odul`. Nadir Kasa: her aktiflik ödülü. Efsane Kasa: KOTH kazanmak ve 7 günlük seri. | `/skycore anahtar` |
 | **KOTH** (Tepenin Kralı) | Her gün 20:00 ve 22:30'da "The Hill" arenasındaki tepeyi 120 sn tek başına (ya da klanınla) tutan kazanır: 5000₺ + Efsane anahtarı. Başka klandan biri tepedeyse sayaç durur. Ekranın üstünde ilerleme çubuğu. | `/koth`, `/koth katil` |
 | **Vahşi doğa** | Dünyada 500-5000 blok arası rastgele, güvenli (su/lav/kaktüs olmayan) bir yere ışınlar; parçalar arka planda yüklenir, sunucu donmaz. 60 sn bekleme. | `/vahsi` (`/wild`) |
+| **Mezar** | Ölünce eşyalar ve XP, ölünen yerde oyuncunun kafası şeklinde bir mezara girer (lavda yanmaz, boşluğa düşmez). Sahibi sağ tıklayınca hepsi geri gelir, zırhlar giydirilir. İlk 15 dk sadece sahibi açabilir, 60 dk sonra eşyalar dökülür; oyuncu başına en fazla 5 mezar. Mezar kırılamaz, patlamadan/pistondan/sudan etkilenmez. PvP ölümlerinde (ayara göre) eşyalar normal düşer. | `/mezar` |
+| **Ağaç devirme** | Eğilerek baltayla kütük kırınca ağacın tamamı devrilir (en fazla 96 blok). Sadece doğal ağaçlar: oyuncunun kütükten yaptığı duvarlar devrilmez. Balta her kütük için aşınır. | Shift + balta |
+| **Damar kazma** | Eğilerek kazmayla maden kırınca bitişik aynı madenler de kazılır (en fazla 24, derin kayrak türü dahil); doğru kazma gerekir. | Shift + kazma |
+| **Sağ tık hasat** | Olgun buğday, havuç, patates, pancar, siğil, kakaoya sağ tıkla: hasat edilir ve tohum kendiliğinden yeniden ekilir. | Sağ tık |
+| **Günlük görevler** | Her gün (00:00'da) her oyuncuya 19 görevlik havuzdan rastgele 3 görev: kaz, öldür, balık tut, hasat et, fırından çıkar, hayvan üret. Bitirince para (bazılarında anahtar), üçü bitince 1000₺ + Nadir anahtar. Oyuncunun kendi koyduğu bloklar ve ipeksi dokunuşla kazılan madenler sayılmaz. | `/gorev` |
+| **Yeni oyuncu koruması** | Toplam oynama süresi 60 dakikayı geçmeyen oyuncu PvP'de vurulamaz ve vuramaz (arenalarda geçmez). | `/koruma`, `/koruma kapat` |
+| **Güvenli takas** | İki oyuncu aynı menüye eşya koyar, karşı tarafınkini görür; ikisi de onaylayınca değişir. Teklif değişince onaylar sıfırlanır, değişiklikten hemen sonra onay kabul edilmez (son saniye hilesine karşı). Menü kapanırsa herkes eşyasını geri alır. Takaslar konsola kaydedilir. | `/takas <oyuncu>`, `/takas kabul` |
 | **Savaş modu** (combat log) | PvP'ye giren iki oyuncu 15 sn "savaşta" sayılır; ekranda geri sayım çıkar. Bu sürede `/spawn`, `/home`, `/tpa`, `/warp`, `/vahsi`, `/back` gibi kaçış komutları çalışmaz. Savaştayken oyundan çıkan oyuncu ölür ve eşyaları yere düşer. | — |
 | **Sohbet oyunları** | 10 dakikada bir sohbete soru gelir: kelimeyi ilk yazan, işlemi ilk çözen ya da karışık harflerden kelimeyi ilk bulan para kazanır. Türkçe karakter farkı önemsenmez (kılıç = kilic). | `/skycore oyun` |
 | **Banknot** | Parayı kağıda çevirir; sağ tıklayınca geri hesaba yatar (Shift + sağ tık: hepsi). | `/banknot <miktar>` (`5k`, `1.000`, `2,5`) |
@@ -79,17 +86,19 @@ bloklarından güncel sürüme çevrildi.
 | `/skycore koth <baslat\|bitir>` | KOTH etkinliğini elle başlatır/bitirir |
 | `/skycore oyun` | Hemen bir sohbet oyunu başlatır |
 | `/skycore duyuru` | Sıradaki duyuruyu gönderir |
-| `/skycore reload` | Ayarları (config.yml, market.yml) yeniden yükler |
+| `/skycore reload` | Ayarları (config.yml, market.yml, gorevler.yml) yeniden yükler |
 
 ### PlaceholderAPI
 
 TAB, DecentHolograms vb. için: `%skycore_klan%`, `%skycore_klan_etiket%`, `%skycore_klan_uye%`,
-`%skycore_klan_rutbe%`, `%skycore_gunluk_seri%`, `%skycore_kelle%`, `%skycore_koth_galibiyet%`, `%skycore_koth_son%`.
+`%skycore_klan_rutbe%`, `%skycore_gunluk_seri%`, `%skycore_kelle%`, `%skycore_koth_galibiyet%`, `%skycore_koth_son%`,
+`%skycore_gorev%` (bugün biten görev, ör. 2/3), `%skycore_gorev_toplam%`, `%skycore_koruma%` (yeni oyuncu korumasının kalan süresi).
 Hazır TAB ayarında klan etiketi listede/isim üstünde, klan ve günlük seri skor tablosunda gösterilir.
 
 ### Yetkiler
 
-Herkese açık: `skycore.banknot`, `skycore.kelle`, `skycore.odul`, `skycore.vahsi`, `skycore.market`, `skycore.klan`, `skycore.koth`.
+Herkese açık: `skycore.banknot`, `skycore.kelle`, `skycore.odul`, `skycore.vahsi`, `skycore.market`, `skycore.klan`, `skycore.koth`,
+`skycore.mezar`, `skycore.gorev`, `skycore.koruma`, `skycore.takas`. OP'lerde ayrıca `skycore.mezar.admin` (kilitli mezarı açar).
 OP'lerde (ve LuckPerms'te `*` olan admin grubunda): `skycore.admin`, `skycore.spawn.duzenle`, `skycore.vahsi.bekleme-yok`.
 `skycore.savas.bypass` verilen oyuncu savaş moduna girmez.
 
@@ -98,11 +107,12 @@ DecentHolograms (hologramlar), PlaceholderAPI (yer tutucular), AuthMe (girişten
 
 ## Geliştiriciler için
 
-Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 31 test).
+Kaynak kod: `src/main/java/net/skysurvival/skycore/`. Testler: `src/test/java/` (MockBukkit, 40 test).
 
 - Eklenti gerçek **Paper 26.1.2 API** kaynağına karşı derlendi (`--release 21`, uyarısız).
 - MockBukkit henüz 26.x'i desteklemediği için testler **Paper 1.21.11 API**'siyle çalıştırıldı; SkyCore'un kullandığı API iki
-  sürümde aynı. 31 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, eski ayar dosyasının
+  sürümde aynı. 40 testin hepsi geçti (ada ve arena kurulumu, koruma, PvP, portal, market, klan, kasa, KOTH, mezar, ağaç devirme,
+  hasat, görevler, yeni oyuncu koruması, takas, eski ayar dosyasının
   güncellenmesi dahil).
 - Spawn adası `tools/spawn_island.py` ile üretilir: `src/main/resources/spawn/ada.bp.gz` (bloklar) ve `spawn/ada.yml`
   (spawn, warp, portal, kasa, KOTH ve hologram noktaları).

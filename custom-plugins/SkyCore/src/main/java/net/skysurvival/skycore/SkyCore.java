@@ -38,6 +38,11 @@ public class SkyCore extends JavaPlugin implements Listener {
     private KothModule koth;
     private ClanModule clans;
     private MarketModule market;
+    private GraveModule graves;
+    private GatheringModule gathering;
+    private QuestModule quests;
+    private NewbieModule newbies;
+    private TradeModule trades;
     private List<Module> modules;
 
     /** AuthMe girisi tamamlanmis ve "hos geldin" islemleri yapilmis oyuncular. */
@@ -69,8 +74,13 @@ public class SkyCore extends JavaPlugin implements Listener {
         koth = new KothModule(this);
         clans = new ClanModule(this);
         market = new MarketModule(this);
+        graves = new GraveModule(this);
+        gathering = new GatheringModule(this);
+        quests = new QuestModule(this);
+        newbies = new NewbieModule(this);
+        trades = new TradeModule(this);
         modules = List.of(combat, chatGames, banknotes, bounties, dailyRewards, playtime, announcer, deaths, welcome,
-                spawn, wild, crates, koth, clans, market);
+                spawn, wild, crates, koth, clans, market, graves, gathering, quests, newbies, trades);
 
         for (Module module : modules) {
             getServer().getPluginManager().registerEvents(module, this);
@@ -93,6 +103,10 @@ public class SkyCore extends JavaPlugin implements Listener {
         command("klan", clans);
         command("klansohbet", clans);
         command("koth", koth);
+        command("mezar", graves);
+        command("gorev", quests);
+        command("koruma", newbies);
+        command("takas", trades);
 
         modules.forEach(Module::start);
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -190,6 +204,8 @@ public class SkyCore extends JavaPlugin implements Listener {
         }
         welcome.greet(player);
         dailyRewards.remind(player);
+        quests.remind(player);
+        newbies.remind(player);
         koth.showTo(player);
     }
 
@@ -245,5 +261,21 @@ public class SkyCore extends JavaPlugin implements Listener {
 
     MarketModule market() {
         return market;
+    }
+
+    GraveModule graves() {
+        return graves;
+    }
+
+    QuestModule quests() {
+        return quests;
+    }
+
+    NewbieModule newbies() {
+        return newbies;
+    }
+
+    TradeModule trades() {
+        return trades;
     }
 }
